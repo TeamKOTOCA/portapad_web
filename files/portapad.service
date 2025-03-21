@@ -1,0 +1,11 @@
+[Unit]
+Description=PortaPad Service
+After=network.target
+
+[Service]
+ExecStart=/opt/portapad/service
+Restart=always
+User=root
+
+[Install]
+WantedBy=multi-user.target
