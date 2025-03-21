@@ -1,7 +1,7 @@
 <html>
     <head>
         <title>smartpad</title>
-        <link rel="manifest" href="./manifest.json">
+        <link rel="manifest" href="../manifest.json">
         <link rel=”icon” href=“./portapad_icon.png”>
         <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     </head>
@@ -11,6 +11,9 @@
                 background-color: #000;
                 margin: 0;
                 padding: 0;
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: cover;
             }
             html, css{
                 touch-action:none;
@@ -22,6 +25,10 @@
         if (navigator.serviceWorker) {
             navigator.serviceWorker.register ('/service-worker.js');
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+                document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurls")})`;
+        });
 
         if(localStorage.getItem('websocketaddress') !== null){
             const websocketaddress = localStorage.getItem('websocketaddress');

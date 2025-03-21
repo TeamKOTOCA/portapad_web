@@ -1,27 +1,40 @@
 <html>
     <head>
         <title>smartpad / 設定</title>
-        <link rel="manifest" href="./manifest.json">
-        <link rel=”icon” href=“./portapad_icon.png”>
+        <link rel="manifest" href="../manifest.json">
         <link rel="stylesheet" href="./style.css">
         <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     </head>
     <body>
+        <a href="../index.html">←トップへ戻る</a>
         <h1>設定</h1>
-        <a href="../index.html">トップへ戻る</a>
-        <div>
-            <label for="websocketaddress">ホストPCID: </label>
-            <input id="websocketaddress" type="text" name="websocketaddress" placeholder="ホストPCのコードを入力">    
-        </div>
-        <div>
-            <label for="fileInput">背景画像を選択: </label>
-            <input type="file" id="fileInput">
-        </div>
+        <table>
+            <tr>
+                <th>ホストPCID</th>
+                <td><input type="text" id="websocketaddress" name="websocketaddress" placeholder="ホストPCのコードを入力"></td>
+            </tr>
+            <tr>
+                <th>背景画像</th>
+                <td><button id="back_remove" onclick="back_remove()">❌</button><input type="file" id="fileInput"></td>
+            </tr>
+        </table>
+
         <footer>
             <button onclick="window.location.href = './index.html';">もとに戻す</button>
             <button onclick="Save();">保存</button>
         </footer>
         <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurls")})`;
+                document.getElementById("websocketaddress").value = localStorage.getItem("websocketaddress");
+            });
+
+            function back_remove(){
+                document.body.style.backgroundImage = "";
+                localStorage.removeItem("backgroundurls");
+            }
+
+            var backgroundurls;
             function Save(){
                 var websocketaddress = document.getElementById("websocketaddress").value;
                 if(websocketaddress != ""){
@@ -36,6 +49,8 @@
             const reader = new FileReader();
             reader.onload = () => {
                 document.body.style.backgroundImage = `url(${reader.result})`;
+                backgroundurls = reader.result;
+                localStorage.setItem("backgroundurls", backgroundurls);
             };
             reader.readAsDataURL(file);
             });

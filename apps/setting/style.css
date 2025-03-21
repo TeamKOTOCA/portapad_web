@@ -1,16 +1,50 @@
-body{
+html,body{
+    margin: 0;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     backdrop-filter: blur(5px);
 }
 
+a{
+    font-size: 0.75em;
+    text-decoration: none;
+}
 
+h1{
+    text-align: center;
+}
+
+table{
+    width: calc(100% - 20px);
+    margin: 10px;
+}
+tr{
+    height: 4em;
+}
+input[type="text"]{
+    width: 100%;
+    padding: 1em 10px;
+    border: 1px solid #dddddd;
+    border-radius: 0.5em;
+}
+
+#back_remove{
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0.5em;
+}
+#back_remove:hover{
+    background-color: #f0f0f0aa;
+}
 
 footer{
     position: absolute;
     bottom: 0;
     left: 0;
+    right: 0;
     width: 100vw;
     height: fit-content;
     box-shadow: 0px 0px 10px 0px #dddddd;
@@ -23,6 +57,7 @@ footer button{
     width: 40%;
     border: none;
     background: none;
+    border-radius: 0.5em;
 }
 footer button:first-child:hover{
     background-color: #f0f0f0aa;
@@ -30,7 +65,6 @@ footer button:first-child:hover{
 footer button:last-child{
     margin-left: 10px;
     background-color: #0771d4;
-    border-radius: 0.5em;
     color: white;
 }
 footer button:last-child:hover{
