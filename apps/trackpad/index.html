@@ -21,10 +21,6 @@
         </style>
     </body>
     <script>
-        //WAPの実装
-        if (navigator.serviceWorker) {
-            navigator.serviceWorker.register ('../service-worker.js');
-        }
 
         document.addEventListener('DOMContentLoaded', function() {
                 document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurls")})`;
