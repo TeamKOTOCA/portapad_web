@@ -15,7 +15,7 @@
                 background-repeat: no-repeat;
                 background-size: cover;
             }
-            html, css{
+            html,body{
                 touch-action:none;
             }
         </style>
@@ -23,17 +23,18 @@
     <script>
         //WAPの実装
         if (navigator.serviceWorker) {
-            navigator.serviceWorker.register ('/service-worker.js');
+            navigator.serviceWorker.register ('../service-worker.js');
         }
 
         document.addEventListener('DOMContentLoaded', function() {
                 document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurls")})`;
         });
 
+        var ws;
         if(localStorage.getItem('websocketaddress') !== null){
             const websocketaddress = localStorage.getItem('websocketaddress');
-            const ws = new WebSocket('ws://' + websocketaddress + ":3001");
-            console.log('ws://' + websocketaddress + ":3001");
+            ws = new WebSocket('wss://' + websocketaddress + ":3001");
+            console.log('wss://' + websocketaddress + ":3001");
         }else{
             window.location.href = "../index.html";
         }
