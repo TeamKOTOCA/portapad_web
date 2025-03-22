@@ -3,12 +3,13 @@
     "short_name": "PorPad",
     "categories": "utilities",
     "background_color": "#ffffff",
+    "theme_color": "#0771d4",
     "icons": [{
-        "src": "./portapad_icon.png",
+        "src": "./portapad.webp",
         "sizes": "256x256",
-        "type": "image/png"
+        "type": "image/webp"
       }],
-    "start_url": "/",
+    "start_url": "./index.html",
     "scope": "/",
     "display": "standalone"
   }

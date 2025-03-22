@@ -64,9 +64,9 @@ footer button:first-child:hover{
 }
 footer button:last-child{
     margin-left: 10px;
-    background-color: #0771d4;
+    background: linear-gradient(45deg, #054d91, #0771d4);
     color: white;
 }
 footer button:last-child:hover{
-    background-color: #065aa9;
+    background: linear-gradient(45deg, #033768, #054d91);
 }
