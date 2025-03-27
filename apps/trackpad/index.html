@@ -30,7 +30,7 @@
         if(localStorage.getItem('websocketaddress') !== null){
             const websocketaddress = localStorage.getItem('websocketaddress');
             ws = new WebSocket('wss://' + websocketaddress + ":8000");
-            console.log('ws://' + websocketaddress + ":8000");
+            console.log('wss://' + websocketaddress + ":8000");
         }else{
             window.location.href = "../index.html";
         }
