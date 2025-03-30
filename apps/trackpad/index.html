@@ -98,14 +98,10 @@
                             isdorugY = event.touches[0].clientY;
                         }else{
                             //スクロール
-//                            xdif = xdif / 6;
-                            ydif = ydif / 10;
+                            xdif = xdif / 6;
+                            ydif = ydif / 6;
                             isscroll = true;
-                            if(ydif > 0){
-                                ws.send("scroll,up");
-                            }else{
-                                ws.send("scroll,down");
-                            }
+                            ws.send("scroll," + xdif + "," + ydif);
                         }
                             isdorugX = event.touches[0].clientX;
                             isdorugY = event.touches[0].clientY;
