@@ -11,9 +11,9 @@
             <h1>PCコードを選択</h1>
 
             <div id="a_codes">
-                <div class="a_card">
+                <button class="a_card">
                     <h2>xxxx-xxxx-xxxx-xxxx</h2>
-                </div>
+                </button>
             </div>
             <style>
                 html,body{
@@ -21,18 +21,27 @@
                 }
                 h1{
                     text-align: center;
+                    margin-top: 1em;
                 }
                 .a_card{
                     width: 90vw;
                     margin: 5vw;
-                    border: 10px solid #1464cc;
+                    border: 5px solid #1464cc;
                     border-radius: 10px;
+                    box-shadow: #aaa 0px 0px 10px;
+                    background-color: #fff;
+                    cursor: pointer;
+                }
+                .a_card:hover{
+                    box-shadow: #ddd 0px 0px 5px;
                 }
                 .a_card h2{
                     padding-left: 10px;
                 }
             </style>
         </div>
+        <!--websocket&WebRTCの接続処理-->
+        <script src="./connect.js"></script>
         <script>
             //WAPの実装
             if (navigator.serviceWorker) {
