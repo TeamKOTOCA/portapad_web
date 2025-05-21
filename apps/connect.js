@@ -21,6 +21,7 @@
         ws.onopen = (event) => {
             console.log('WebSocket接続が開きました。');
             ws.send('client');
+            ws.send('hostview');
         };
 
         ws.onmessage = (event) => {
@@ -30,8 +31,9 @@
 
             console.log(event.data);
             document.getElementById("alot").textContent = JSON.stringify(message);
-            
-            if(message.mtype === "sdp"){
+            if(message.mtype === "hosts"){
+                let hostids = JSON,parse(message.body);
+            }else if(message.mtype === "sdp"){
                 // 受信したSDPをリモートのSDPとして設定
                 pc.setRemoteDescription(new RTCSessionDescription(message.body))
                     .then(() => {
