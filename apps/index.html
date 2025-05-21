@@ -1,12 +1,37 @@
 <html>
     <head>
-        <title>smartpad / 機能選択</title>
+        <title>PortaPad</title>
         <link rel="manifest" href="./manifest.json">
         <link rel=”icon” href=“./portapad_icon.png”>
         <link rel="stylesheet" href="./style.css">
         <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     </head>
     <body>
+        <div id="bodybox">
+            <h1>PCコードを選択</h1>
+
+            <div id="a_codes">
+                <div class="a_card">
+                    <h2>xxxx-xxxx-xxxx-xxxx</h2>
+                </div>
+            </div>
+            <style>
+                html,body{
+                    margin: 0;
+                }
+                h1{
+                    text-align: center;
+                }
+                .a_card{
+                    width: 90vw;
+                    margin: 5vw;
+                    border: 10px solid #1464cc;
+                    border-radius: 10px;
+                }
+                .a_card h2{
+                    padding-left: 10px;
+                }
+            </style>
         </div>
         <script>
             //WAPの実装
