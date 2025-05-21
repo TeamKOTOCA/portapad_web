@@ -32,7 +32,7 @@
             console.log(event.data);
             document.getElementById("alot").textContent = JSON.stringify(message);
             if(message.mtype === "hosts"){
-                let hostids = JSON,parse(message.body);
+                let hostids = JSON.parse(message.body);
             }else if(message.mtype === "sdp"){
                 // 受信したSDPをリモートのSDPとして設定
                 pc.setRemoteDescription(new RTCSessionDescription(message.body))
