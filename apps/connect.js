@@ -31,9 +31,18 @@
 
             console.log(event.data);
             if(message.mtype === "hosts"){
-                let hostbody = JSON.parse(message.body);
-                let hostids = JSON.parse(hostbody.body);
+                let hostids = JSON.parse(message.body);
+
+
+                const container = document.getElementById("bodybox");
                 console.log("hosts: " + hostids);
+                hostids.forEach((id, index) => {
+                    container.innerHTML += `
+                        <button class="a_card" onclick="peersend(${id})">
+                            <h2>${id}</h2>
+                        </button>
+                    `;
+                });
             }else if(message.mtype === "sdp"){
                 // 受信したSDPをリモートのSDPとして設定
                 pc.setRemoteDescription(new RTCSessionDescription(message.body))
@@ -97,7 +106,7 @@
             alert('WebSocket接続でエラーが発生しました。');
         };
 
-        // peersend関数の修正
+        // peersend関数
         function peersend(tohost){
             console.log(tohost);
             pc.createOffer()
