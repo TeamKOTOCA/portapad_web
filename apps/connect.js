@@ -18,7 +18,7 @@
             };
         };
 
-        ws.onopen = (event) => {
+        ws.onopen = () => {
             console.log('WebSocket接続が開きました。');
             ws.send('client');
             ws.send('hostview');
@@ -33,6 +33,7 @@
             document.getElementById("alot").textContent = JSON.stringify(message);
             if(message.mtype === "hosts"){
                 let hostids = JSON.parse(message.body);
+                console.log(hostids);
             }else if(message.mtype === "sdp"){
                 // 受信したSDPをリモートのSDPとして設定
                 pc.setRemoteDescription(new RTCSessionDescription(message.body))
