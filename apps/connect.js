@@ -30,10 +30,10 @@
             const message = JSON.parse(event.data);
 
             console.log(event.data);
-            document.getElementById("alot").textContent = JSON.stringify(message);
             if(message.mtype === "hosts"){
-                let hostids = JSON.parse(message.body);
-                console.log(hostids);
+                let hostbody = JSON.parse(message.body);
+                let hostids = JSON.parse(hostbody.body);
+                console.log("hosts: " + hostids);
             }else if(message.mtype === "sdp"){
                 // 受信したSDPをリモートのSDPとして設定
                 pc.setRemoteDescription(new RTCSessionDescription(message.body))
