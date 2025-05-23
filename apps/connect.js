@@ -12,7 +12,6 @@
         // データチャネルのイベントハンドラ
         dataChannel.onopen = () => {
             console.log("データチャネルが開きました！");
-            dataChannel.send("aaaaa");
             dataChannel.onmessage = (event) => {
                 console.log("受信したメッセージ:", event.data);
             };
@@ -34,11 +33,12 @@
                 let hostids = JSON.parse(message.body);
 
 
-                const container = document.getElementById("bodybox");
+                const container = document.getElementById("a_codes");
+                container.innerHTML = "";
                 console.log("hosts: " + hostids);
                 hostids.forEach((id, index) => {
                     container.innerHTML += `
-                        <button class="a_card" onclick="peersend(${id})">
+                        <button class="a_card" onclick="peersend('${id}')">
                             <h2>${id}</h2>
                         </button>
                     `;
@@ -124,3 +124,24 @@
             })
             .catch(error => console.error("Offer作成エラー:", error));
         }
+
+
+
+    //実際に送信する関数
+
+    function SendRtcMBtn(btype){
+        const sendbtn = "bt" + btype;
+        if (dataChannel && dataChannel.readyState === "open") {
+            dataChannel.send(sendbtn);
+        } else {
+            console.log("dataChannelがまだ開いていません!");
+        }
+    }
+    function SendRtcMMove(x,y){
+        const sendmove = "mm" + x + "," + y;
+        if (dataChannel && dataChannel.readyState === "open") {
+            dataChannel.send(sendmove);
+        } else {
+            console.log("dataChannelがまだ開いていません!");
+        }
+    }
