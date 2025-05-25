@@ -1,11 +1,4 @@
-<html>
-    <head>
-        <title>smartpad</title>
-        <link rel="manifest" href="../manifest.json">
-        <link rel=”icon” href=“./portapad_icon.png”>
-        <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    </head>
-    <body id="body">
+    <div id="body">
         <style>
             #body{
                 background-color: #000;
@@ -19,24 +12,12 @@
                 touch-action:none;
             }
         </style>
-    </body>
+    </div>
     <script>
 
         document.addEventListener('DOMContentLoaded', function() {
                 document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurls")})`;
         });
-
-        var ws;
-        if(localStorage.getItem('websocketaddress') !== null){
-            const websocketaddress = localStorage.getItem('websocketaddress');
-            ws = new WebSocket('wss://' + websocketaddress + ":8000");
-            console.log('wss://' + websocketaddress + ":8000");
-        }else{
-            window.location.href = "../index.html";
-        }
-
-        ws.addEventListener('open', (event) => {
-            console.log('WebSocket接続が開きました。');
 
             var allview = document.getElementById("body");
             var isdorugX;
@@ -60,13 +41,13 @@
                 console.log(Date.now() - touchtime);
                 if(Date.now() - touchtime <= 200){
                     if(touchfingers === 1){
-                        ws.send("lefclick");
+                        SendRtcMBtn(0);
                     }else if(touchfingers === 2){
-                        ws.send("rigclick");
+                        SendRtcMBtn(1);
                     }
                 }
                 if(event.touches.length === 0){
-                    ws.send("end");
+                    SendRtcMUp();
                 }
                 isscroll = false;
             });
@@ -87,13 +68,13 @@
                 if(Math.abs(xdif) <= 20 && Math.abs(ydif) <= 20){
                     //カーソル移動
                     if(event.touches.length == 1){
-                        ws.send("cursol," + xdif + "," +ydif);
+                        SendRtcMMove(xdif,ydif);
                     }else if(event.touches.length == 2){
                         if(!isscroll && Math.abs(event.touches[0].clientX - isdorugX) <= 2 && Math.abs(event.touches[0].clientY - isdorugY) <= 2 && Math.abs(event.touches[1].clientX - isdorugX) >= 2 && Math.abs(event.touches[1].clientY - isdorugY) >= 2 ){
                             //どらっぐ
                             x = event.touches[1].clientX - lastX;
                             y = event.touches[1].clientY - lastY;
-                            ws.send("drag," + xdif + "," + ydif);
+                            SendRtcMDrag(xdif,ydif);
                             isdorugX = event.touches[0].clientX;
                             isdorugY = event.touches[0].clientY;
                         }else{
@@ -101,7 +82,7 @@
                             xdif = xdif / 6;
                             ydif = ydif / 6;
                             isscroll = true;
-                            ws.send("scroll," + xdif + "," + ydif);
+                            SendRtcMScroll(xdif,ydif);
                         }
                             isdorugX = event.touches[0].clientX;
                             isdorugY = event.touches[0].clientY;
@@ -110,13 +91,4 @@
                     lastX = x;
                     lastY = y;
             });
- 
-            ws.addEventListener('close', (event) => {
-            console.log('WebSocket接続が閉じられました。');
-            });
-            ws.addEventListener('error', (event) => {
-            console.error('WebSocketエラーが発生しました：', event);
-            });
-        });
     </script>
-</html>

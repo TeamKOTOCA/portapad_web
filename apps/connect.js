@@ -11,7 +11,7 @@
         const dataChannel = pc.createDataChannel("operate");
         // データチャネルのイベントハンドラ
         dataChannel.onopen = () => {
-            console.log("データチャネルが開きました！");
+            console.log("データチャネルが開きました");
             dataChannel.onmessage = (event) => {
                 console.log("受信したメッセージ:", event.data);
             };
@@ -130,7 +130,7 @@
     //実際に送信する関数
 
     function SendRtcMBtn(btype){
-        const sendbtn = "bt" + btype;
+        const sendbtn = "mb" + btype;
         if (dataChannel && dataChannel.readyState === "open") {
             dataChannel.send(sendbtn);
         } else {
@@ -143,5 +143,53 @@
             dataChannel.send(sendmove);
         } else {
             console.log("dataChannelがまだ開いていません!");
+        }
+    }
+        function SendRtcMDrag(x,y){
+        const sendmove = "md" + x + "," + y;
+        if (dataChannel && dataChannel.readyState === "open") {
+            dataChannel.send(sendmove);
+        } else {
+            console.log("dataChannelがまだ開いていません!");
+        }
+    }
+        function SendRtcMScroll(x,y){
+        const sendmove = "ms" + x + "," + y;
+        if (dataChannel && dataChannel.readyState === "open") {
+            dataChannel.send(sendmove);
+        } else {
+            console.log("dataChannelがまだ開いていません!");
+        }
+    }
+    function SendRtcMUp(){
+        const sendmove = "mu";
+        if (dataChannel && dataChannel.readyState === "open") {
+            dataChannel.send(sendmove);
+        } else {
+            console.log("dataChannelがまだ開いていません!");
+        }
+    }
+    function SendRtcKPush(key){
+        const sendkey = "kp" + key;
+        if (dataChannel && dataChannel.readyState === "open") {
+            dataChannel.send(sendkey);
+        } else {
+            console.log("dataChannelがまだ開いていません");
+        }
+    }
+    function SendRtcKDown(key){
+        const sendkey = "kd" + key;
+        if (dataChannel && dataChannel.readyState === "open") {
+            dataChannel.send(sendkey);
+        } else {
+            console.log("dataChannelがまだ開いていません");
+        }
+    }
+    function SendRtcKUp(key){
+        const sendkey = "ku" + key;
+        if (dataChannel && dataChannel.readyState === "open") {
+            dataChannel.send(sendkey);
+        } else {
+            console.log("dataChannelがまだ開いていません");
         }
     }
