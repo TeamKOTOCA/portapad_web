@@ -1,0 +1,19 @@
+#bodybox{
+    display: flex;
+    flex-wrap: wrap;
+}
+.manu_card{
+    width: 240px;
+    flex-grow: 1;
+    background-color: #fff;
+    box-shadow: #aaa 0px 0px 10px;
+    border-radius: 20px;
+    border: #0771d4 solid 5px;
+    margin: 10px;
+}
+.manu_card:hover{
+    box-shadow: none;
+}
+.manu_card img{
+    width: 200px;
+}

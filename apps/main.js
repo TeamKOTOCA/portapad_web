@@ -193,18 +193,35 @@
     }
 
 
-
+    changepage("c_manu");
     //ページ移管
+    //changepage('c_b_trackpad')
+    //こんな感じで呼び出す
     async function changepage(topage){
-        console.log("change started");
+        document.querySelectorAll('style[data-page-css]').forEach(el => el.remove());
+
         try {
-        const res = await fetch("./" + topage +"/index.html");
-        if (!res.ok) throw new Error('fetch HTML error');
+            const res = await fetch("./" + topage +"/index.html");
+            if (!res.ok) throw new Error('fetch HTML error');
             const html = await res.text();
             document.getElementById('bodybox').innerHTML = html;
         } catch (e) {
             console.error(e);
         }
-        const module = await import("./" + topage +"/index.js");
-        module.initTouchHandler();
+
+        try{
+            const module = await import(`./${topage}/index.js`);
+            module.initTouchHandler();
+        }catch(e){
+            console.error("jsモジュールエラー: " + e);
+        }
+        try {
+            const res = await fetch("./" + topage +"/index.css");
+            const css = await res.text();
+
+            const css_f = "<style>" + css + "</style>";
+            document.getElementById('bodybox').innerHTML += css_f;
+        } catch (e) {
+            console.error("css無しorエラー: " + e);
+        }
     }
