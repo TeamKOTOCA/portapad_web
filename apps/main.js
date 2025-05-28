@@ -128,7 +128,7 @@
 
     //実際に送信する関数
 
-    function SendRtcMBtn(btype){
+    window.SendRtcMBtn = function(btype){
         const sendbtn = "mb" + btype;
         if (dataChannel && dataChannel.readyState === "open") {
             dataChannel.send(sendbtn);
@@ -136,7 +136,7 @@
             console.log("dataChannelがまだ開いていません!");
         }
     }
-    function SendRtcMMove(x,y){
+    window.SendRtcMMove = function(x,y){
         const sendmove = "mm" + x + "," + y;
         if (dataChannel && dataChannel.readyState === "open") {
             dataChannel.send(sendmove);
@@ -144,7 +144,7 @@
             console.log("dataChannelがまだ開いていません!");
         }
     }
-        function SendRtcMDrag(x,y){
+    window.SendRtcMDrag = function(x,y){
         const sendmove = "md" + x + "," + y;
         if (dataChannel && dataChannel.readyState === "open") {
             dataChannel.send(sendmove);
@@ -152,7 +152,7 @@
             console.log("dataChannelがまだ開いていません!");
         }
     }
-        function SendRtcMScroll(x,y){
+    window.SendRtcMScroll = function(x,y){
         const sendmove = "ms" + x + "," + y;
         if (dataChannel && dataChannel.readyState === "open") {
             dataChannel.send(sendmove);
@@ -160,7 +160,7 @@
             console.log("dataChannelがまだ開いていません!");
         }
     }
-    function SendRtcMUp(){
+    window.SendRtcMUp = function(){
         const sendmove = "mu";
         if (dataChannel && dataChannel.readyState === "open") {
             dataChannel.send(sendmove);
@@ -168,7 +168,7 @@
             console.log("dataChannelがまだ開いていません!");
         }
     }
-    function SendRtcKPush(key){
+    window.SendRtcKPush = function(key){
         const sendkey = "kp" + key;
         if (dataChannel && dataChannel.readyState === "open") {
             dataChannel.send(sendkey);
@@ -176,7 +176,7 @@
             console.log("dataChannelがまだ開いていません");
         }
     }
-    function SendRtcKDown(key){
+    window.SendRtcKDown = function(key){
         const sendkey = "kd" + key;
         if (dataChannel && dataChannel.readyState === "open") {
             dataChannel.send(sendkey);
@@ -184,7 +184,7 @@
             console.log("dataChannelがまだ開いていません");
         }
     }
-    function SendRtcKUp(key){
+    window.SendRtcKUp = function(key){
         const sendkey = "ku" + key;
         if (dataChannel && dataChannel.readyState === "open") {
             dataChannel.send(sendkey);
@@ -207,13 +207,6 @@
         } catch (e) {
             console.error(e);
         }
-
-        try{
-            const module = await import(`./${topage}/index.js?${Date.now()}`);
-            module.initTouchHandler();
-        }catch(e){
-            console.error("jsモジュールエラー: " + e);
-        }
         try {
             const res = await fetch("./" + topage +"/index.css");
             const css = await res.text();
@@ -222,5 +215,11 @@
             document.getElementById('bodybox').innerHTML += css_f;
         } catch (e) {
             console.error("css無しorエラー: " + e);
+        }
+
+        try{
+            const module = await import(`./${topage}/index.js?${Date.now()}`);
+        }catch(e){
+            console.error("jsモジュールエラー: " + e);
         }
     }

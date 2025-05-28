@@ -1,4 +1,5 @@
-                document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurls")})`;
+            console.log("asd");
+document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurls")})`;
 
             var allview = document.getElementById("body");
             var isdorugX;
@@ -10,6 +11,7 @@
             var touchfingers = 1;
 
             allview.addEventListener('touchstart', (event) => {
+                console.log("aaa");
                 touchtime = Date.now();
                 touchfingers = event.touches.length;
                 if (touchfingers === 2) {
@@ -22,18 +24,20 @@
                 console.log(Date.now() - touchtime);
                 if(Date.now() - touchtime <= 200){
                     if(touchfingers === 1){
-                        SendRtcMBtn(0);
+                        window.SendRtcMBtn(0);
                     }else if(touchfingers === 2){
-                        SendRtcMBtn(1);
+                        window.SendRtcMBtn(1);
                     }
                 }
                 if(event.touches.length === 0){
-                    SendRtcMUp();
+                    window.SendRtcMUp();
                 }
                 isscroll = false;
             });
 
             allview.addEventListener('touchmove', (event) => {
+                console.log("aaa");
+                allview.style.backgroundColor = "#fff";
                 try{
                     document.body.requestFullscreen();
                     document.body.requestWakeLock();
@@ -49,13 +53,13 @@
                 if(Math.abs(xdif) <= 20 && Math.abs(ydif) <= 20){
                     //カーソル移動
                     if(event.touches.length == 1){
-                        SendRtcMMove(xdif,ydif);
+                        window.SendRtcMMove(xdif,ydif);
                     }else if(event.touches.length == 2){
                         if(!isscroll && Math.abs(event.touches[0].clientX - isdorugX) <= 2 && Math.abs(event.touches[0].clientY - isdorugY) <= 2 && Math.abs(event.touches[1].clientX - isdorugX) >= 2 && Math.abs(event.touches[1].clientY - isdorugY) >= 2 ){
                             //どらっぐ
                             x = event.touches[1].clientX - lastX;
                             y = event.touches[1].clientY - lastY;
-                            SendRtcMDrag(xdif,ydif);
+                            window.SendRtcMDrag(xdif,ydif);
                             isdorugX = event.touches[0].clientX;
                             isdorugY = event.touches[0].clientY;
                         }else{
@@ -63,7 +67,7 @@
                             xdif = xdif / 6;
                             ydif = ydif / 6;
                             isscroll = true;
-                            SendRtcMScroll(xdif,ydif);
+                            window.SendRtcMScroll(xdif,ydif);
                         }
                             isdorugX = event.touches[0].clientX;
                             isdorugY = event.touches[0].clientY;
