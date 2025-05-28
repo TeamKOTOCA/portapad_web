@@ -12,6 +12,7 @@
         // データチャネルのイベントハンドラ
         dataChannel.onopen = () => {
             console.log("データチャネルが開きました");
+            changepage("c_manu");
             dataChannel.onmessage = (event) => {
                 console.log("受信したメッセージ:", event.data);
             };
@@ -193,12 +194,10 @@
     }
 
 
-    changepage("c_manu");
     //ページ移管
     //changepage('c_b_trackpad')
     //こんな感じで呼び出す
     async function changepage(topage){
-        document.querySelectorAll('style[data-page-css]').forEach(el => el.remove());
 
         try {
             const res = await fetch("./" + topage +"/index.html");
@@ -210,7 +209,7 @@
         }
 
         try{
-            const module = await import(`./${topage}/index.js`);
+            const module = await import(`./${topage}/index.js?${Date.now()}`);
             module.initTouchHandler();
         }catch(e){
             console.error("jsモジュールエラー: " + e);
