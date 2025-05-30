@@ -11,7 +11,6 @@ document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurl
             var touchfingers = 1;
 
             allview.addEventListener('touchstart', (event) => {
-                console.log("aaa");
                 touchtime = Date.now();
                 touchfingers = event.touches.length;
                 if (touchfingers === 2) {
@@ -36,8 +35,6 @@ document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurl
             });
 
             allview.addEventListener('touchmove', (event) => {
-                console.log("aaa");
-                allview.style.backgroundColor = "#fff";
                 try{
                     document.body.requestFullscreen();
                     document.body.requestWakeLock();
