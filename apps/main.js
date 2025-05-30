@@ -16,6 +16,9 @@
             dataChannel.onmessage = (event) => {
                 console.log("受信したメッセージ:", event.data);
             };
+            dataChannel.onclose = () => {
+                window.location.reload();
+            }
         };
 
         ws.onopen = () => {
