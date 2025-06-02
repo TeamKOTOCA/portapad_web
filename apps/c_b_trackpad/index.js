@@ -61,8 +61,6 @@ document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurl
                             isdorugY = event.touches[0].clientY;
                         }else{
                             //スクロール
-                            xdif = xdif / 6;
-                            ydif = ydif / 6;
                             isscroll = true;
                             window.SendRtcMScroll(xdif,ydif);
                         }
