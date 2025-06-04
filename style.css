@@ -2,6 +2,10 @@
 	font-family: 'topfont';
 	src: url(./apps/Kiwi_maru.ttf);
 }
+@font-face {
+	font-family: 'tegaki';
+	src: url(./apps/yosugara.ttf);
+}
 
 body,html{
     margin: 0;
@@ -17,28 +21,42 @@ header h1{
 header h1 img{
     height: 50px;
 }
-.top{
-    display: flex;
-    background-color: #ddd;
-    margin-bottom: -100px;
+
+.top h2{
+    font-family: 'tegaki','topfont';
+    text-align: center;
+    font-size: 8vw;
+    margin: 10vh 0 5vh 0;
 }
 .top img{
-    width: 200px;
-    padding: 0 20px;
-    border-radius: 20px;
-    background-color: #fff;
-    margin: calc(25vh - 100px) 30px -100px;
-    border: 5px #ccc solid;
+    border-radius: 50px;
+    border: #ddd 5px solid;
+    height: 150px;
+    width: 150px;
+    padding: 25px;
+    margin: 0 calc(50% - 110px);
 }
-.cachecopy{
-    font-size: 2em;
-    position: absolute;
-    top: 40%;
-    right: calc(50vw - 3em);
+.top h1{
+    text-align: center;
+    font-size: 8vw;
+    font-weight: bold;
+    background: linear-gradient(45deg, #054d91, #0771d4); /* 左から右へのグラデーション */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-top: 0;
 }
-.cachecopy span{
-    font-size: 1.25em;
+
+#install a{
+    display: block;
+    text-align: center;
+    margin: 10px calc(50% - 100px);
+    padding: 1em;
+    text-decoration: none;
+    border-radius: 15px;
+    border: #333 2px solid;
 }
-.top div{
-    margin: calc(25vh - 100px) 30px -100px;
+#install .host{
+    background: linear-gradient(45deg, #054d91, #0771d4);
+    border: none;
+    color: #fff;
 }
