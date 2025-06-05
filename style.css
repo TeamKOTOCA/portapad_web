@@ -46,18 +46,50 @@ header h1 img{
     -webkit-text-fill-color: transparent;
     margin-top: 0;
 }
-
+#install{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
 #install a{
     display: block;
-    text-align: center;
-    margin: 10px calc(50% - 100px);
+    margin: 10px;
     padding: 1em;
     text-decoration: none;
-    border-radius: 15px;
-    border: #333 2px solid;
+    border-radius: 10px;
+    color: #000;
 }
-#install .host{
-    background: linear-gradient(45deg, #054d91, #0771d4);
+#install a:first-child{
+    background: linear-gradient(to right, #063057 50%, #054d91 50%, #0771d4 100%);
+
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: background-position 0.3s ease;
     border: none;
     color: #fff;
+    padding: calc(1em + 2px);
+}
+#install a:last-child{
+    background: linear-gradient(to right, #054d91 0%, #0771d4 50%, #fff 50%);
+
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: background-position 0.3s ease;
+    border: #333 2px solid;
+}
+#install a:hover {
+    background-position: left bottom;
+}
+
+
+@media screen and (max-width: 800px) {
+    .top h2 span{
+        display: block;
+    }
+    .top img{
+        height: 100px;
+        width: 100px;
+        margin-left: calc(50% - 55px);
+    }
 }
