@@ -4,6 +4,7 @@ document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurl
             var allview = document.getElementById("body");
             var isdorugX;
             var isdorugY;
+            var isright = false;
             var isscroll = false;
             var lastX= 0;
             var lastY= 0;
@@ -14,6 +15,7 @@ document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurl
                 touchtime = Date.now();
                 touchfingers = event.touches.length;
                 if (touchfingers === 2) {
+                    isright = true;
                     isdorugX = event.touches[0].clientX;
                     isdorugY = event.touches[0].clientY;
                 }
@@ -22,7 +24,7 @@ document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurl
             allview.addEventListener('touchend', (event) => {
                 console.log(Date.now() - touchtime);
                 if(Date.now() - touchtime <= 200){
-                    if(touchfingers === 1){
+                    if(touchfingers === 1 && isright == false){
                         window.SendRtcMBtn(0);
                     }else if(touchfingers === 2){
                         window.SendRtcMBtn(1);
@@ -32,6 +34,7 @@ document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurl
                     window.SendRtcMUp();
                 }
                 isscroll = false;
+                isright = false;
             });
 
             allview.addEventListener('touchmove', (event) => {
