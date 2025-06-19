@@ -82,11 +82,90 @@ header h1 img{
     background-position: left bottom;
 }
 
+#update{
+    background: linear-gradient(to right, #054d91 0%, #0771d4 100%);
+
+    clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 90%);
+    padding: 50px 0;
+}
+#update h2{
+    text-align: center;
+    color: #fff;
+}
+#update_box{
+    margin: 10px;
+    padding: 10px;
+    border-radius: 1em;
+    background-color: #dddddd22;
+}
+#update_box:hover{
+    background-color: #dddddd33;
+}
+.update_card{
+    margin: 10px 0;
+}
+.update_time{
+    font-size: small;
+    margin: 0;
+    color: #ddd;
+}
+.update_h4{
+    margin: 0;
+    color: #fff;
+    font-size: 1.2em;
+}
+.update_detil{
+    margin: 0;
+    color: #fff;
+}
+
+#qanda{
+    background: linear-gradient(to right, #054d91 0%, #0771d4 100%);
+    margin: 10px;
+    border-radius: 1em;
+    padding: 10px;
+}
+#qanda h2{
+    color: #fff;
+    text-align: center;
+}
+#qanda div{
+    background-color: #ffffff17;
+    border-radius: 1em;
+    padding: 5px;
+    margin: 10px 0;
+}
+#qanda h4,#qanda p{
+    color: #fff;
+}
+#qanda h4::before{
+    font-size: 1.2em;
+    content: "Q";
+    color: #b42c2c;
+    padding: 0.25em;
+}
+
+footer p{
+    text-align: center;
+}
 
 @media screen and (max-width: 800px) {
     .top h2 span{
         display: block;
         font-size: 13vw;
+    }
+    .top img{
+        height: 100px;
+        width: 100px;
+        margin-left: calc(50% - 80px);
+    }
+}
+@media screen and (min-width: 1100px) {
+    .top h2 span{
+        font-size: 80px;
+    }
+    .top h1{
+        font-size: 80px;
     }
     .top img{
         height: 100px;
