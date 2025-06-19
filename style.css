@@ -138,15 +138,55 @@ header h1 img{
 #qanda h4,#qanda p{
     color: #fff;
 }
+#qanda h4{
+    margin: 0;
+    padding: 0.5em;
+    background-color: #ffffff17;
+    border-radius: 1em;
+}
 #qanda h4::before{
     font-size: 1.2em;
     content: "Q";
-    color: #b42c2c;
+    color: #ff4a4a;
     padding: 0.25em;
+}
+
+
+footer{
+    background-color: #ddd;
+    padding: 20px 10px;
+}
+.link{
+    background: linear-gradient(to right, #222222 50%, #555555 50%);
+    margin: 5px 5px;
+    height: 36px;
+    border-radius: 23px;
+    display: flex;
+    width: fit-content;
+    padding: 5px;
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: background-position 0.3s ease;
+
+}
+.link img{
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+}
+.link a{
+    text-decoration: none;
+    color: #fff;
+    margin: 0 10px;
+    font-size: 22px;
+}
+.link:hover {
+    background-position: left bottom;
 }
 
 footer p{
     text-align: center;
+    margin: 0;
 }
 
 @media screen and (max-width: 800px) {
