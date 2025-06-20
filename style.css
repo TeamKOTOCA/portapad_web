@@ -227,6 +227,15 @@ footer{
 .link:hover {
     background-position: left bottom;
 }
+.icense{
+    background: none;
+    border-radius: 0;
+}
+.license_img{
+    height: 50px;
+    text-align: center;
+    margin: 10px auto 0 auto;
+}
 
 footer p{
     text-align: center;
