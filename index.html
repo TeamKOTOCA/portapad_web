@@ -3,14 +3,30 @@
     <head>
         <!--基本情報-->
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-        <title>PortaPad - ニッチで便利なインプット。</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <link rel="stylesheet" href="./style.css">
         <link rel="icon" href="favicon.ico">
+        <title>PortaPad - ニッチで便利なインプット。</title>
+        <meta name=”description“ content=“Portapadは、スマホからパソコンを動かすみたいなちょっと特殊でとっても便利な入力に特化したソフト!“ />
+
+        <!-- Open Graph Meta Tags -->
+        <meta property="og:type" content="website">
+        <meta property="og:url" content="https://portapad.kotoca.net">
+        <meta property="og:title" content="PortaPad - ニッチで便利なインプット。">
+        <meta property="og:description" content="PortaPadは、スマホからパソコンを動かすみたいなちょっと特殊でとっても便利な入力に特化したソフト!">
+        <meta property="og:image" content="https://portapad.kotoca.net/portapadall.png">
+
+        <!-- Twitter Meta Tags -->
+        <meta property="twitter:card" content="summary_large_image">
+        <meta property="twitter:url" content="https://portapad.kotoca.net">
+        <meta property="twitter:title" content="PortaPad - ニッチで便利なインプット。">
+        <meta property="twitter:description" content="PortaPadは、スマホからパソコンを動かすみたいなちょっと特殊でとっても便利な入力に特化したソフト!">
+        <meta property="twitter:image" content="https://portapad.kotoca.net/portapadall.png">
+
     </head>
 	<body>
         <header>
-            <h1><img src="./portapad.webp" alt="PortaPad-logo"></h1>
+            <img src="./portapad.webp" alt="PortaPad-logo">
         </header>
         <div class="top">
             <h2><span>ニッチで便利な</span><span>インプット。</span></h2>
@@ -28,6 +44,12 @@
                     <p class="update_time">2025/06/20</p>
                     <h4 class="update_h4">インストーラーの修正</h4>
                     <p class="update_detil">インストール時のエラーの要因を修正しました。それに合わせてインストール完了時の再起動も同時に行うように変更しました。</p>
+                </div>
+                <hr>
+                <div class="update_card">
+                    <p class="update_time">2025/06/21</p>
+                    <h4 class="update_h4">公式サイトの修正</h4>
+                    <p class="update_detil">開発者向け情報の追加、デザインの変更を行いました。</p>
                 </div>
             </div>
         </div>
@@ -69,7 +91,11 @@
                 <h3>開発者向けドキュメント</h3>
                 <p>現在作成中です</p>
             </div>
-            <div id="fordev_lic">
+            <div id="fordev_bag" class="maxwidth400">
+                <h3>バグ報告先</h3>
+                <p>GitHub Issuesを立てていただくか、<a href="https://discord.gg/Et4ZmfuR6Q">Evex Deveropers</a>のgeneralチャンネルに投げてください。</p>
+            </div>
+            <div id="fordev_lic" class="maxwidth400">
                 <h3>ライセンス</h3>
                 <p>
                     PortaPadに関係するサイトやアプリケーションには
