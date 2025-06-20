@@ -151,18 +151,52 @@ header h1 img{
     padding: 0.25em;
 }
 
+#fordev{
+    background: linear-gradient(to right, #054d91 0%, #0771d4 100%);
+
+    clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%);
+    padding: 50px 0;
+    color: #fff;
+    text-align: center;
+}
+#fordev_repo table{
+    background-color: #ffffff17;
+    margin: 10px 0;
+    border-radius: 1em;
+    margin: 0 auto;
+    padding: 10px;
+    text-align: left;
+}
+#fordev a{
+    text-decoration: none;
+    background-color: #ffffff30;
+    color: #fff;
+    padding: 0 10px;
+    border-radius: 1em;
+}
+#fordev a:hover{
+    background-color: #ffffff70;
+}
+
+#fordev_lic{
+    margin: 10px;
+    width: calc(100% - 20px);
+    max-width: 500px;
+    margin: 0 auto;
+}
 
 footer{
     background-color: #ddd;
+    text-align: center;
     padding: 20px 10px;
 }
 .link{
     background: linear-gradient(to right, #222222 50%, #555555 50%);
-    margin: 5px 5px;
+    margin: 5px auto;
     height: 36px;
     border-radius: 23px;
     display: flex;
-    width: fit-content;
+    width: 300px;
     padding: 5px;
     background-size: 200% 100%;
     background-position: right bottom;
