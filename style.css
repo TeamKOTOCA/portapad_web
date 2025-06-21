@@ -165,7 +165,7 @@ header img{
     background: linear-gradient(to right, #054d91 0%, #0771d4 100%);
 
     clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 100%);
-    padding: 50px 0;
+    padding: 100px 0 50px 0;
     color: #fff;
     text-align: center;
 }
@@ -226,6 +226,15 @@ footer{
 }
 .link:hover {
     background-position: left bottom;
+}
+.icense{
+    background: none;
+    border-radius: 0;
+}
+.license_img{
+    height: 50px;
+    text-align: center;
+    margin: 10px auto 0 auto;
 }
 
 footer p{
