@@ -227,9 +227,8 @@ footer{
 .link:hover {
     background-position: left bottom;
 }
-.icense{
-    background: none;
-    border-radius: 0;
+#license{
+    background-color: #ffffff00 !important;
 }
 .license_img{
     height: 50px;
