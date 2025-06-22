@@ -14,7 +14,12 @@
             console.log("データチャネルが開きました");
             changepage("c_manu");
             dataChannel.onmessage = (event) => {
+                const datatype = event.data.slice(0,2);
+                if(datatype == "ms"){
+                    
+                }
                 console.log("受信したメッセージ:", event.data);
+
             };
             dataChannel.onclose = () => {
                 window.location.reload();
