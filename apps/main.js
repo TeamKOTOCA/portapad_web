@@ -14,14 +14,23 @@
             console.log("データチャネルが開きました");
             changepage("c_manu");
             dataChannel.onmessage = (event) => {
+                console.log("受信メッセ:", event.data);
                 const datatype = event.data.slice(0,2);
                 const databody = event.data.slice(2);
                 if(datatype == "ms"){
                     const remotemonitor = databody.split(",");
                     const innerWidth = window.innerWidth;
-                    const innerHeight = window.innerHeight;                    
+                    const innerHeight = window.innerHeight;
+                    const widthscal = remotemonitor[0] / innerWidth;
+                    const heightscal = remotemonitor[1] / innerHeight;
+                    if(widthscal == heightscal){
+                        console.log("画面比率は同じです")
+                    }else if(widthscal <= heightscal){
+                        console.log("縦のほうが長くなる")
+                    }else if(widthscal >= heightscal){
+                        console.log("yokoのほうが長くなる")
+                    }
                 }
-                console.log("受信したメッセージ:", event.data);
 
             };
             dataChannel.onclose = () => {

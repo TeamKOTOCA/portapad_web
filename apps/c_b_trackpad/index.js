@@ -1,4 +1,4 @@
-            console.log("asd");
+            console.log("trackpad");
 document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurls")})`;
 
             var allview = document.getElementById("body");
