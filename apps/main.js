@@ -15,8 +15,11 @@
             changepage("c_manu");
             dataChannel.onmessage = (event) => {
                 const datatype = event.data.slice(0,2);
+                const databody = event.data.slice(2);
                 if(datatype == "ms"){
-                    
+                    const remotemonitor = databody.split(",");
+                    const innerWidth = window.innerWidth;
+                    const innerHeight = window.innerHeight;                    
                 }
                 console.log("受信したメッセージ:", event.data);
 
