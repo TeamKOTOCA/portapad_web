@@ -3,7 +3,10 @@
         console.log('wss://portapad-signal.onrender.com');
 
         // WebRTCの初期化
-        const pc = new RTCPeerConnection();
+        let pc;
+        if (!pc) {
+        pc = new RTCPeerConnection();
+        }
         // ICE候補の保留
         const pendingIceCandidates = [];
         let fromhost = null;
@@ -90,7 +93,7 @@
                 // ICE候補を追加する前に、必ずsetRemoteDescriptionが完了していることを確認
                 console.log("受け取ったICE候補 message.body:", message.body);
                 if (pc.remoteDescription) {
-                    const candidate = new RTCIceCandidate(JSON.parse(message.body));
+                    const candidate = new RTCIceCandidate(message.body);
                     pc.addIceCandidate(candidate)
                         .catch(e => console.error("ICE候補の追加に失敗:", e));
                     console.log("iceきた");
