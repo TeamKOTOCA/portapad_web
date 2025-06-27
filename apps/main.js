@@ -246,3 +246,7 @@
             console.error("jsモジュールエラー: " + e);
         }
     }
+
+    function viewform(a){
+        window.open(a);
+    }
