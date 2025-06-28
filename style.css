@@ -13,14 +13,27 @@ body,html{
 }
 header{
     top: 0;
-    height: 60px;
-    width: 100%;
-    position: fixed;
-    z-index: 2;
-}
-header img{
     height: 50px;
-    margin: 5px calc(50% - 25px);
+    width: 100px;
+    position: fixed;
+    display: flex;
+    z-index: 2;
+    margin: 5px calc(50% - 55px);
+    padding: 0 5px;
+    background: linear-gradient(45deg, #054d91, #0771d4); 
+    border-radius: 10px;
+}
+header .logo{
+    height: 50px;
+    width: 50px;
+}
+header button{
+    background: none;
+    border: 0;
+}
+header button img{
+    height: 30px;
+    padding: 0 5px;
 }
 
 .top h2{
@@ -41,7 +54,7 @@ header img{
     text-align: center;
     font-size: 8vw;
     font-weight: bold;
-    background: linear-gradient(45deg, #054d91, #0771d4); /* 左から右へのグラデーション */
+    background: linear-gradient(45deg, #054d91, #0771d4); 
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-top: 0;

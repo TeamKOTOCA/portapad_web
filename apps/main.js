@@ -13,6 +13,7 @@
 
         window.widthscal = 1;
         window.heightscal = 1;
+        window.heightwidthscal = 1;
 
         const dataChannel = pc.createDataChannel("operate");
         // データチャネルのイベントハンドラ
@@ -29,6 +30,7 @@
                     const innerHeight = window.innerHeight;
                     widthscal = remotemonitor[0] / innerWidth;
                     heightscal = remotemonitor[1] / innerHeight;
+                    heightwidthscal = remotemonitor[0] / remotemonitor[1];
                     if(widthscal == heightscal){
                         console.log("画面比率は同じです")
                     }else if(widthscal <= heightscal){
