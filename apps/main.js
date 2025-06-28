@@ -11,6 +11,9 @@
         const pendingIceCandidates = [];
         let fromhost = null;
 
+        window.widthscal = 1;
+        window.heightscal = 1;
+
         const dataChannel = pc.createDataChannel("operate");
         // データチャネルのイベントハンドラ
         dataChannel.onopen = () => {
@@ -24,8 +27,8 @@
                     const remotemonitor = databody.split(",");
                     const innerWidth = window.innerWidth;
                     const innerHeight = window.innerHeight;
-                    const widthscal = remotemonitor[0] / innerWidth;
-                    const heightscal = remotemonitor[1] / innerHeight;
+                    widthscal = remotemonitor[0] / innerWidth;
+                    heightscal = remotemonitor[1] / innerHeight;
                     if(widthscal == heightscal){
                         console.log("画面比率は同じです")
                     }else if(widthscal <= heightscal){
