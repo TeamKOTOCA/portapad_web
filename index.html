@@ -38,6 +38,15 @@
                 <img src="./portapad.webp" class="logo" alt="PortaPad-logo">
                 <button onclick="hamburger()"><img id="hamburger" src="./humbar.png" alt="hamburgermenu"></button>
         </header>
+        <menu id="menu">
+            <ul>
+                <a href="#update"><li>News</li></a>
+                <a href="#qanda"><li>Q&A</li></a>
+                <a href="#fordev"><li>ForDeveloper</li></a>
+                <a href="https://forms.office.com/r/crkcUE4GD6" target="_blank"><li>Contact</li></a>
+            </ul>
+            <div class="link"><img src="./x.jpg" alt="x logo"><a href="https://x.com/portapad_dev" target="_blank" rel="noopener noreferrer">OfficialX</a></div>
+        </menu>
         <div class="top">
             <h2><span>ニッチで便利な</span><span>インプット。</span></h2>
             <img src="./portapad.webp" alt="トップイメージ">
@@ -50,6 +59,12 @@
         <div id="update">
             <h2>お知らせ</h2>
             <div id="update_box">
+                <div class="update_card">
+                    <p class="update_time">2025/06/30</p>
+                    <h4 class="update_h4">メニュー実装</h4>
+                    <p class="update_detil">メニューができた</p>
+                </div>
+                <hr>
                 <div class="update_card">
                     <p class="update_time">2025/06/27</p>
                     <h4 class="update_h4">大幅なバグ消し</h4>
@@ -143,11 +158,16 @@
         <script>
             var menu_view = false;
             var menu_btn = document.getElementById("hamburger");
+            var menu = document.getElementById("menu");
             function hamburger(){
                 if(menu_view == false){
+                    menu.classList.remove("closemenu");
+                    menu.classList.add("showmenu");
                     menu_btn.src = "./ham_close.png";
                     menu_view = true;
                 }else{
+                    menu.classList.remove("showmenu");
+                    menu.classList.add("closemenu");
                     menu_btn.src = "./humbar.png";
                     menu_view = false;
                 }
