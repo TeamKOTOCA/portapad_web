@@ -20,8 +20,14 @@ header{
     z-index: 2;
     margin: 5px calc(50% - 55px);
     padding: 0 5px;
-    background: linear-gradient(45deg, #054d91, #0771d4); 
+    background: linear-gradient(45deg, #054d91 0, #0771d4 50%,  #054d91 100%);
+    background-size: 200% 100%;
+    background-position: left bottom;
     border-radius: 10px;
+    transition: background-position 0.3s ease;
+}
+header:hover{
+    background-position: right bottom;
 }
 header .logo{
     height: 50px;

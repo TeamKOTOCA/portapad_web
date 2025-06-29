@@ -36,7 +36,7 @@
 	<body>
         <header>
                 <img src="./portapad.webp" class="logo" alt="PortaPad-logo">
-                <button><img src="./humbar.png" alt=""></button>
+                <button onclick="hamburger()"><img id="hamburger" src="./humbar.png" alt="hamburgermenu"></button>
         </header>
         <div class="top">
             <h2><span>ニッチで便利な</span><span>インプット。</span></h2>
@@ -140,5 +140,18 @@
             <div class="link"><img src="./x.jpg" alt="x logo"><a href="https://x.com/portapad_dev" target="_blank" rel="noopener noreferrer">公式X</a></div>
             <p>© 2025 Povo43. Licensed under CC BY-SA 4.0</p>
         </footer>
+        <script>
+            var menu_view = false;
+            var menu_btn = document.getElementById("hamburger");
+            function hamburger(){
+                if(menu_view == false){
+                    menu_btn.src = "./ham_close.png";
+                    menu_view = true;
+                }else{
+                    menu_btn.src = "./humbar.png";
+                    menu_view = false;
+                }
+            }
+        </script>
     </body>
 </html>
