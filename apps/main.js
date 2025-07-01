@@ -11,9 +11,10 @@
         const pendingIceCandidates = [];
         let fromhost = null;
 
-        window.widthscal = 1;
-        window.heightscal = 1;
-        window.heightwidthscal = 1;
+        
+        window.RCScal = 1;
+        window.RCHeight = 1;
+        window.RCWidth = 1;
 
         const dataChannel = pc.createDataChannel("operate");
         // データチャネルのイベントハンドラ
@@ -28,15 +29,16 @@
                     const remotemonitor = databody.split(",");
                     const innerWidth = window.innerWidth;
                     const innerHeight = window.innerHeight;
-                    widthscal = remotemonitor[0] / innerWidth;
-                    heightscal = remotemonitor[1] / innerHeight;
-                    heightwidthscal = remotemonitor[0] / remotemonitor[1];
-                    if(widthscal == heightscal){
-                        console.log("画面比率は同じです")
-                    }else if(widthscal <= heightscal){
+                    const widthscal = remotemonitor[0] / innerWidth;
+                    const heightscal = remotemonitor[1] / innerHeight;
+                    RCWidth = remotemonitor[0];
+                    RCHeight = remotemonitor[1];
+                    if(widthscal < heightscal){
                         console.log("縦のほうが長くなる")
-                    }else if(widthscal >= heightscal){
+                        RCScal = heightscal;
+                    }else if(widthscal > heightscal){
                         console.log("yokoのほうが長くなる")
+                        RCScal = widthscal;
                     }
                 }
 
@@ -166,6 +168,14 @@
     }
     window.SendRtcMMove = function(x,y){
         const sendmove = "mm" + x + "," + y;
+        if (dataChannel && dataChannel.readyState === "open") {
+            dataChannel.send(sendmove);
+        } else {
+            console.log("dataChannelがまだ開いていません!");
+        }
+    }
+    window.SendRtcMPosition = function(x,y){
+        const sendmove = "mp" + x + "," + y;
         if (dataChannel && dataChannel.readyState === "open") {
             dataChannel.send(sendmove);
         } else {
