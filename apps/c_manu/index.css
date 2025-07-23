@@ -1,6 +1,7 @@
 #bodybox{
     display: flex;
     flex-wrap: wrap;
+    background-color: #fff;
 }
 .manu_card{
     width: 240px;

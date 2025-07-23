@@ -38,10 +38,6 @@ document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurl
             });
 
             allview.addEventListener('touchmove', (event) => {
-                try{
-                    document.body.requestFullscreen();
-                    document.body.requestWakeLock();
-                }catch{}
 
                 const touches = event.changedTouches;
                 const touch = touches[0];
