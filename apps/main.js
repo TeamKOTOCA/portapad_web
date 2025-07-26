@@ -25,6 +25,7 @@
                 console.log("受信メッセ:", event.data);
                 const datatype = event.data.slice(0,2);
                 const databody = event.data.slice(2);
+                dataChannel.send("ce" + "");
                 if(datatype == "ms"){
                     const remotemonitor = databody.split(",");
                     const innerWidth = window.innerWidth;
