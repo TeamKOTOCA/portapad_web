@@ -41,6 +41,11 @@
                         console.log("yokoのほうが長くなる")
                         RCScal = widthscal;
                     }
+                }else if(datatype == "co"){
+                    let private_key = "";
+                    if(localStorage.getItem(databody) !== null){
+                        private_key = localStorage.getItem(databody);
+                    }
                 }
 
             };
