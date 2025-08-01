@@ -1,72 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <title>Ed25519 署名テスト</title>
-    <script type="module">
-        import { sign, getPublicKey } from "https://esm.sh/@noble/ed25519";
-
-        async function signMessage() {
-            const secretB64 = document.getElementById("secret").value.trim();
-            const message = document.getElementById("message").value;
-
-            if (!secretB64 || !message) {
-                alert("秘密鍵とメッセージを入力してください");
-                return;
-            }
-
-            // Base64 -> Uint8Array
-            const secretBytes = Uint8Array.from(atob(secretB64), c => c.charCodeAt(0));
-
-            try {
-                const pubKey = await getPublicKey(secretBytes);
-                const signature = await sign(new TextEncoder().encode(message), secretBytes);
-
-                const pubKeyB64 = btoa(String.fromCharCode(...pubKey));
-                const signB64 = btoa(String.fromCharCode(...signature));
-
-                document.getElementById("pubkey").textContent = pubKeyB64;
-                document.getElementById("signature").textContent = signB64;
-            } catch (e) {
-                console.error(e);
-                alert("署名に失敗しました。鍵の形式を確認してください。");
-            }
-        }
-
-        window.signMessage = signMessage;
-    </script>
-    <style>
-        body {
-            font-family: sans-serif;
-            padding: 20px;
-        }
-        input, textarea {
-            width: 100%;
-            margin-bottom: 10px;
-        }
-        code {
-            display: block;
-            white-space: break-spaces;
-            word-break: break-all;
-            background: #f0f0f0;
-            padding: 8px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>QRコード検出 - jsQR</title>
 </head>
 <body>
-    <h1>Ed25519 署名テスト</h1>
-    <label>秘密鍵（Base64 / 32バイト）:</label>
-    <input id="secret" placeholder="Pa8P+GEF2u9fUFRUJmwHL4JcZ1vyT4z3T7Fc775djuU=">
+  <h1>QRコード検出</h1>
+  <video id="video" width="320" height="240" autoplay></video>
+  <canvas id="canvas" hidden></canvas>
+  <p>検出結果: <span id="output">なし</span></p>
 
-    <label>チャレンジ文字列:</label>
-    <input id="message" placeholder="任意の文字列を入力">
+  <script src="https://unpkg.com/jsqr/dist/jsQR.js"></script>
+  <script>
+    const video = document.getElementById('video');
+    const canvas = document.getElementById('canvas');
+    const output = document.getElementById('output');
+    const context = canvas.getContext('2d');
 
-    <button onclick="signMessage()">署名する</button>
+    // カメラ起動
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } })
+      .then(stream => {
+        video.srcObject = stream;
+        video.setAttribute("playsinline", true); // iOS対応
+        requestAnimationFrame(tick);
+      });
 
-    <h2>公開鍵 (Base64)</h2>
-    <code id="pubkey"></code>
+    function tick() {
+      if (video.readyState === video.HAVE_ENOUGH_DATA) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        context.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imageData.data, imageData.width, imageData.height);
 
-    <h2>署名 (Base64)</h2>
-    <code id="signature"></code>
+        if (code) {
+          output.textContent = code.data;
+        } else {
+          output.textContent = "なし";
+        }
+      }
+      requestAnimationFrame(tick);
+    }
+  </script>
 </body>
 </html>
