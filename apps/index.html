@@ -10,10 +10,11 @@
         <div id="bodybox">
             <h1>PCコードを選択</h1>
             <div id="a_codes">
-                <button class="a_card" onclick="window.location.reload()">
-                    <h2>再読み込み</h2>
-                </button>
             </div>
+            <button class="a_card" onclick="window.location.reload()">
+                <h2>再読み込み</h2>
+            </button>
+            <button id="installBtn">インストール</button>
             <style>
                 html,body{
                     margin: 0;
@@ -37,6 +38,9 @@
                 }
                 .a_card h2{
                     padding-left: 10px;
+                }
+                #installBtn{
+                    display: none;
                 }
             </style>
         </div>

