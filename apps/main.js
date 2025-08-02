@@ -2,6 +2,17 @@
         ws = new WebSocket('wss://portapad-signal.onrender.com');
         console.log('wss://portapad-signal.onrender.com');
 
+
+        //認証用ed25519のいろいろ
+        import * as ed25519 from "https://esm.sh/@noble/ed25519";
+        import { sha512 } from "https://esm.sh/@noble/hashes/sha512?target=es2020";
+        ed25519.etc.sha512Sync = sha512;
+        const base64ToUint8Array = (b64) =>
+            Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+        const uint8ArrayToBase64 = (bytes) =>
+            btoa(String.fromCharCode(...bytes));
+
+
         // WebRTCの初期化
         let pc;
         if (!pc) {
@@ -21,7 +32,7 @@
         dataChannel.onopen = () => {
             console.log("データチャネルが開きました");
             changepage("c_manu");
-            dataChannel.onmessage = (event) => {
+            dataChannel.onmessage = async (event) => {
                 console.log("受信メッセ:", event.data);
                 const datatype = event.data.slice(0,2);
                 const databody = event.data.slice(2);
@@ -40,10 +51,25 @@
                         console.log("yokoのほうが長くなる")
                         RCScal = widthscal;
                     }
-                }else if(datatype == "co"){
-                    let private_key = "";
+                }else if(datatype == "ca"){
+                    //ダミーコードを用意
+                    let private_key = "Pa8P+GEF2u9fUFRUJmwHL4JcZ1vyT4z3T7Fc775djuU=";
                     if(localStorage.getItem(databody) !== null){
                         private_key = localStorage.getItem(databody);
+                    }
+                    try {
+                        const secretKey = base64ToUint8Array(btoa(private_key));
+                        if (secretKey.length !== 32) {
+                            throw new Error("秘密鍵は32バイトである必要があります");
+                        }
+
+                        //const pubKey = await ed25519.getPublicKey(secretKey);
+                        const signature = await ed25519.sign(new TextEncoder().encode(databody), secretKey);
+                        const signatureBase64 = uint8ArrayToBase64(signature);
+                        dataChannel.send("cb" + signatureBase64);
+                    } catch (err) {
+                        console.error(err);
+                        alert("【接続できません】署名に失敗しました: " + err.message);
                     }
                 }
 
@@ -143,7 +169,7 @@
         };
 
         // peersend関数
-        function peersend(tohost){
+        window.peersend = function(tohost){
             console.log(tohost);
             pc.createOffer()
             .then(offer => pc.setLocalDescription(offer).then(() => offer)) // 作成したofferをローカルのSDPとして設定
@@ -240,7 +266,7 @@
     //ページ移管
     //changepage('c_b_trackpad')
     //こんな感じで呼び出す
-    async function changepage(topage){
+    window.changepage = async function(topage){
 
         try {
             const res = await fetch("./" + topage +"/index.html");
