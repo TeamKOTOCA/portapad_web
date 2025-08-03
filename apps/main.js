@@ -53,12 +53,12 @@
                     }
                 }else if(datatype == "ca"){
                     //ダミーコードを用意
-                    let private_key = "Pa8P+GEF2u9fUFRUJmwHL4JcZ1vyT4z3T7Fc775djuU=";
+                    let private_key = "Gj+nyCMQ+Ylu0InwPRTxxyfN2Kc6ycdV7Q/sC4gMisU=";
                     if(localStorage.getItem(databody) !== null){
                         private_key = localStorage.getItem(databody);
                     }
                     try {
-                        const secretKey = base64ToUint8Array(btoa(private_key));
+                        const secretKey = base64ToUint8Array(private_key.trim());
                         if (secretKey.length !== 32) {
                             throw new Error("秘密鍵は32バイトである必要があります");
                         }
