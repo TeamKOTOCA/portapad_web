@@ -11,6 +11,7 @@
     border-radius: 20px;
     border: #0771d4 solid 5px;
     margin: 10px;
+    transition: all 0.05s ease;
 }
 .manu_card:hover{
     box-shadow: none;

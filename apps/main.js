@@ -293,6 +293,6 @@
         }
     }
 
-    function viewform(a){
+    window.viewform = function(a){
         window.open(a);
     }
