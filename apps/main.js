@@ -31,7 +31,6 @@
         // データチャネルのイベントハンドラ
         dataChannel.onopen = () => {
             console.log("データチャネルが開きました");
-            changepage("c_manu");
             dataChannel.onmessage = async (event) => {
                 console.log("受信メッセ:", event.data);
                 const datatype = event.data.slice(0,2);
@@ -67,6 +66,7 @@
                         const signature = await ed25519.sign(new TextEncoder().encode(databody), secretKey);
                         const signatureBase64 = uint8ArrayToBase64(signature);
                         dataChannel.send("cb" + signatureBase64);
+                        changepage("c_manu");
                     } catch (err) {
                         console.error(err);
                         alert("【接続できません】署名に失敗しました: " + err.message);
