@@ -52,7 +52,7 @@
                     }
                 }else if(datatype == "ca"){
                     //ダミーコードを用意
-                    let private_key = "Gj+nyCMQ+Ylu0InwPRTxxyfN2Kc6ycdV7Q/sC4gMisU=";
+                    let private_key = "Dj+nyCMQ+Ylu0InwPRTxxyfN2Kc6ycdV7Q/sC4gMisU=";
                     if(localStorage.getItem(databody) !== null){
                         private_key = localStorage.getItem(databody);
                     }
@@ -69,9 +69,8 @@
                         changepage("c_manu");
                     } catch (err) {
                         console.error(err);
-                        alert("【接続できません】署名に失敗しました: " + err.message);
                     }
-                }else if(datatype = "cb"){
+                }else if(datatype == "cb"){
                     changepage("c_certification");
                 }
 
