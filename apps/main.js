@@ -71,6 +71,8 @@
                         console.error(err);
                         alert("【接続できません】署名に失敗しました: " + err.message);
                     }
+                }else if(datatype = "cb"){
+                    changepage("c_certification");
                 }
 
             };
