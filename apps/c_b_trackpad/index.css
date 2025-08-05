@@ -1,0 +1,16 @@
+#body{
+    background-color: #fff;
+    margin: 0;
+    padding: 0;
+}
+#back_to_manu{
+    background-color: #fff;
+    border: #1f6acc 4px solid;
+    padding: 0.5em 1em;
+    border-radius: 0.9em;
+    margin: 10px;
+    box-shadow: 0px 0px 10px #ddd;
+}
+#back_to_manu:hover{
+    box-shadow: none;
+}

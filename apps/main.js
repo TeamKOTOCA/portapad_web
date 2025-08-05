@@ -54,7 +54,7 @@
                 }else if(datatype == "ca"){
                     window.pccode = databody;
                     //ダミーコードを用意
-                    let private_key = "Dj+nyCMQ+Ylu0InwPRTxxyfN2Kc6ycdV7Q/sC4gMisU=";
+                    let private_key = "Gj+nyCMQ+Ylu0InwPRTxxyfN2Kc6ycdV7Q/sC4gMisU=";
                     if(localStorage.getItem(databody) !== null){
                         private_key = localStorage.getItem(databody);
                     }
