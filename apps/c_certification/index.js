@@ -39,7 +39,20 @@ loadJsQR().then(() => {
       const code = jsQR(imageData.data, imageData.width, imageData.height);
 
       if (code) {
-        output.textContent = code.data;
+          output.textContent = code.data;
+          // Base64としてデコードできるか & 32バイトか
+          try {
+            const decoded = atob(code.data);
+            if (decoded.length === 32) {
+              output.textContent += " ✅ 有効なEd25519秘密鍵です";
+              localStorage.setItem(window.pccode, code.data);
+              window.changepage("c_manu");
+            } else {
+              output.textContent += " ❌ 長さが32バイトではありません";
+            }
+          } catch (e) {
+            output.textContent += " ❌ Base64として無効です";
+          }
       } else {
         output.textContent = "なし";
       }

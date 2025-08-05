@@ -26,6 +26,7 @@
         window.RCScal = 1;
         window.RCHeight = 1;
         window.RCWidth = 1;
+        window.pccode = "";
 
         const dataChannel = pc.createDataChannel("operate");
         // データチャネルのイベントハンドラ
@@ -51,6 +52,7 @@
                         RCScal = widthscal;
                     }
                 }else if(datatype == "ca"){
+                    window.pccode = databody;
                     //ダミーコードを用意
                     let private_key = "Dj+nyCMQ+Ylu0InwPRTxxyfN2Kc6ycdV7Q/sC4gMisU=";
                     if(localStorage.getItem(databody) !== null){
