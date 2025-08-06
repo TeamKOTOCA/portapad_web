@@ -256,7 +256,7 @@ menu ul li:hover{
     color: #fff;
     text-align: center;
 }
-#fordev_repo table{
+.fordev_tables{
     background-color: #ffffff17;
     margin: 10px 0;
     border-radius: 1em;

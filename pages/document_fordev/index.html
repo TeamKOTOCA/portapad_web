@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>通信プロトコルの概観</title>
+  <link rel="stylesheet" href="../../style.css">
+  <style>
+    @font-face {
+        font-family: 'topfont';
+        src: url(../../apps/Kiwi_maru.ttf);
+    }
+
+    body,html{
+        margin: 0;
+        font-family: topfont, serif;
+    }
+    body {
+      line-height: 1.6;
+      padding: 2em;
+    }
+    h1, h2 {
+      color: #2074c8;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1em;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    code {
+      background-color: #f9f9f9;
+      padding: 2px 4px;
+      border-radius: 4px;
+    }
+    pre {
+      background-color: #f9f9f9;
+      padding: 1em;
+      overflow-x: auto;
+    }
+    .back_btn_div{
+      text-align: center;
+    }
+    .back_btn{
+      background: linear-gradient(45deg, #054d91 0,#0771d4 100%);
+      color: #fff;
+      text-decoration: none;
+      padding: 10px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+    <header>
+            <img src="../../portapad.webp" class="logo" alt="PortaPad-logo">
+            <button onclick="hamburger()"><img id="hamburger" src="../../humbar.png" alt="hamburgermenu"></button>
+    </header>
+    <menu id="menu">
+        <ul>
+            <a href="../../index.html" onclick="hamburger()"><li>Top</li></a>
+            <a href="../../#update" onclick="hamburger()"><li>News</li></a>
+            <a href="../../#qanda" onclick="hamburger()"><li>Q&A</li></a>
+            <a href="../../#fordev" onclick="hamburger()"><li>ForDeveloper</li></a>
+            <a href="https://forms.office.com/r/crkcUE4GD6" target="_blank" onclick="hamburger()"><li>Contact</li></a>
+        </ul>
+        <div class="link"><img src="../../x.jpg" alt="x logo"><a href="https://x.com/portapad_dev" target="_blank" rel="noopener noreferrer">OfficialX</a></div>
+    </menu>
+    
+  <h1>通信プロトコルの概観</h1>
+
+  <h2>ハードウェア</h2>
+  <ul>
+    <li><strong>WebSocket</strong><br>
+      使用場所: シグナリングサーバーとの通信<br>
+      特徴:
+      <ul>
+        <li>TCP基盤の双方向通信プロトコル</li>
+        <li>常時接続を維持してメッセージをリアルタイム送信</li>
+      </ul>
+    </li>
+    <li><strong>WebRTC (Web Real-Time Communication)</strong><br>
+      使用場所: クライアントとホスト間のピアツーピア通信<br>
+      特徴:
+      <ul>
+        <li>双方向のP2P通信を可能にするリアルタイムプロトコル</li>
+        <li>STUN/TURN/ICEを用いてNAT越えや接続確立</li>
+        <li>DataChannelを通してデータを低遅延でやり取り</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h2>接続と認証</h2>
+  <ul>
+    <li><strong>STUN</strong>（Session Traversal Utilities for NAT）: クライアントのグローバルIPアドレスを取得</li>
+    <li><strong>TURN</strong>（Traversal Using Relays around NAT）: P2P接続が困難な場合に中継サーバーを使用</li>
+    <li><strong>ICE</strong>（Interactive Connectivity Establishment）: 複数の候補接続を評価し、最適な通信経路を確立</li>
+    <li><strong>認証: ed25519 + base64署名</strong>
+      <ul>
+        <li>クライアントは秘密鍵で認証コードを署名し送信</li>
+        <li>サーバーは公開鍵で検証</li>
+      </ul>
+    </li>
+  </ul>
+
+  <h2>データ伝送</h2>
+  <p><strong>DataChannel (WebRTC)</strong>: クライアントとホストの操作通信に使用。低遅延・高効率な通信手段。</p>
+
+  <h3>通信プロトコル形式（データのヘッダー）</h3>
+  <table>
+    <thead>
+      <tr><th>ヘッダー</th><th>内容</th><th>形式例</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>mm</code></td><td>マウス移動</td><td><code>mm{x},{y}</code></td></tr>
+      <tr><td><code>mp</code></td><td>マウスポインターの位置設定</td><td><code>mp{x},{y}</code></td></tr>
+      <tr><td><code>md</code></td><td>マウスドラッグ</td><td><code>md{x},{y}</code></td></tr>
+      <tr><td><code>ms</code></td><td>スクロール</td><td><code>ms{x},{y}</code></td></tr>
+      <tr><td><code>mu</code></td><td>マウスボタンUP</td><td><code>mu</code></td></tr>
+      <tr><td><code>mb</code></td><td>マウスボタン押下</td><td><code>mb{type}</code></td></tr>
+      <tr><td><code>kp</code></td><td>キー入力（押下）</td><td><code>kp{key}</code></td></tr>
+      <tr><td><code>kd</code></td><td>キー押し続け</td><td><code>kd{key}</code></td></tr>
+      <tr><td><code>ku</code></td><td>キー離す</td><td><code>ku{key}</code></td></tr>
+      <tr><td><code>ca</code></td><td>認証コード要求</td><td><code>ca{code}</code></td></tr>
+      <tr><td><code>cb</code></td><td>認証コード応答（署名）</td><td><code>cb{signature}</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>WebSocketメッセージ構造（JSON）</h3>
+  <pre><code>{
+  "mtype": "sdp", 
+  "tohost": "abc123",
+  "body": { ... },
+  "fromhost": "xyz789"
+}</code></pre>
+  <ul>
+    <li><code>mtype</code>: メッセージの種類（例: <code>sdp</code>, <code>ice</code>, <code>hosts</code>, <code>sdpoffer</code>）</li>
+    <li><code>tohost</code>/<code>fromhost</code>: 接続先/送信元識別</li>
+    <li><code>body</code>: 実際の内容（SDP, ICE候補, hostリストなど）</li>
+  </ul>
+
+  <h2>セキュリティ</h2>
+  <p><strong>ed25519 + base64による認証</strong>: クライアントが送信する<code>ca</code>要求に対して、秘密鍵を使った署名で<code>cb</code>を返答</p>
+
+  <h2>フォールバック</h2>
+  <p><strong>予備シグナリングサーバー</strong>: <code>sec_sigserver</code> として接続不能時の代替を用意</p>
+
+  <hr>
+
+  <p>このシステムは、マウス・キーボードなどのリモート操作をWebRTC経由でリアルタイムに行うための通信プロトコルを実装しています。データはDataChannelで送信され、セキュアな認証方式により改竄やなりすましを防止します。</p>
+
+  <div class="back_btn_div">
+    <a href="../../index.html" class="back_btn">Topへ戻る</a>
+  </div>
+        <script>
+            var menu_view = false;
+            var menu_btn = document.getElementById("hamburger");
+            var menu = document.getElementById("menu");
+            function hamburger(){
+                if(menu_view == false){
+                    menu.classList.remove("closemenu");
+                    menu.classList.add("showmenu");
+                    menu_btn.src = "../../ham_close.png";
+                    menu_view = true;
+                }else{
+                    menu.classList.remove("showmenu");
+                    menu.classList.add("closemenu");
+                    menu_btn.src = "../../humbar.png";
+                    menu_view = false;
+                }
+            }
+        </script>
+</body>
+</html>
