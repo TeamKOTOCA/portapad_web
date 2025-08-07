@@ -1,6 +1,12 @@
+        //シグナリングサーバーが設定されていなければ公式のものを追加
+        if(localStorage.getItem("sigserver") == null || localStorage.getItem("sigserver") == ""){
+            localStorage.setItem("sigserver", "wss://portapad-signal.onrender.com");
+        }
+        var sigserverinput = document.getElementById("sigserver_address");
+        sigserverinput.value = localStorage.getItem("sigserver");
+
         var ws;
-        ws = new WebSocket('wss://portapad-signal.onrender.com');
-        console.log('wss://portapad-signal.onrender.com');
+        ws = new WebSocket(localStorage.getItem("sigserver"));
 
 
         //認証用ed25519のいろいろ
@@ -189,6 +195,16 @@
             })
             .catch(error => console.error("Offer作成エラー:", error));
         }
+
+
+
+        //設定の保存（トップページ）
+        window.savesetting_top = function(){
+            var sigserverinput = document.getElementById("sigserver_address");
+            localStorage.setItem("sigserver", sigserverinput.value);
+            window.location.reload()
+        }
+
 
     //実際に送信する関数
 

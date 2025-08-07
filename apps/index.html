@@ -12,12 +12,21 @@
             <div id="a_codes">
             </div>
             <button class="a_card" onclick="window.location.reload()">
-                <h2>&#x21BB;再読み込み</h2>
+                <h2>&#x21BB;リストの更新</h2>
             </button>
             <button id="installBtn">インストール</button>
+            <h2>設定</h2>
+            <div>
+                <label for="name">
+                    シグナリングサーバー:
+                    <input id="sigserver_address" type="text" name="sigserver_address" />
+                </label>
+            </div>
+            <button id="setting_save_button" onclick="savesetting_top();">設定の保存</button>
             <style>
                 html,body{
                     margin: 0;
+                    text-align: center;
                 }
                 h1{
                     text-align: center;
@@ -27,7 +36,7 @@
                 .a_card{
                     width: 90vw;
                     margin: 10px 5vw;
-                    border: 5px solid #1464cc;
+                    border: 2px solid #1464cc;
                     border-radius: 10px;
                     box-shadow: #aaa 0px 0px 10px;
                     background-color: #fff;
@@ -41,6 +50,28 @@
                 }
                 #installBtn{
                     display: none;
+                }
+                #sigserver_address{
+                    border: none;
+                    border-bottom: #1464cc 1px solid;
+                    width: 300px;
+                    padding: 10px 5px 5px 5px;
+                }
+                #sigserver_address:focus{
+                    outline: none;
+                    background-color: #eee;
+                }
+                #setting_save_button{
+                    margin-top: 20px;
+                    background-color: #fff;
+                    padding: 5px 10px;
+                    border-radius: 10px;
+                    border: 2px solid #1464cc;
+                    box-shadow: #ddd 0px 0px 10px;
+                    transition: all 0.05s ease;
+                }
+                #setting_save_button:hover{
+                    box-shadow: none;
                 }
             </style>
         </div>
