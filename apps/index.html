@@ -22,7 +22,9 @@
                     <input id="sigserver_address" type="text" name="sigserver_address" />
                 </label>
             </div>
-            <button id="setting_save_button" onclick="savesetting_top();">設定の保存</button>
+            <button class="small_button" id="setting_save_button" onclick="savesetting_top();">設定の保存</button>
+            <button class="small_button" onclick="localStorage.clear();">ホストリストの削除</button>
+            <p><small>※すべてのホストとのペアリングが解除されます。また、設定も削除されます。</small></p>
             <style>
                 html,body{
                     margin: 0;
@@ -61,8 +63,9 @@
                     outline: none;
                     background-color: #eee;
                 }
-                #setting_save_button{
-                    margin-top: 20px;
+                .small_button{
+                    display: block;
+                    margin: 20px auto 0 auto;
                     background-color: #fff;
                     padding: 5px 10px;
                     border-radius: 10px;
@@ -70,7 +73,7 @@
                     box-shadow: #ddd 0px 0px 10px;
                     transition: all 0.05s ease;
                 }
-                #setting_save_button:hover{
+                .small_button:hover{
                     box-shadow: none;
                 }
             </style>
