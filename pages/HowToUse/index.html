@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portapad 接続ガイド</title>
+    <style>
+        @font-face {
+            font-family: 'topfont';
+            src: url(../../apps/Kiwi_maru.ttf);
+        }
+        @font-face {
+            font-family: 'tegaki';
+            src: url(../../apps/yosugara.ttf);
+        }
+
+        body, html {
+            margin: 0;
+            font-family: 'topfont', serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+        }
+
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .guide-section {
+            background: #fff;
+            margin: 20px 0;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .guide-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .guide-section h2 {
+            background: linear-gradient(45deg, #054d91, #0771d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+            font-weight: bold;
+            position: relative;
+            padding-left: 10px;
+        }
+
+        .guide-section h2:before {
+            content: attr(data-icon);
+            position: absolute;
+            left: -40px;
+            top: 0;
+            font-size: 0.8em;
+            background: linear-gradient(45deg, #054d91, #0771d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .guide-section h3 {
+            color: #054d91;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+            border-left: 4px solid #0771d4;
+            padding-left: 15px;
+        }
+
+        .guide-section h4 {
+            color: #054d91;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+            background-color: #f0f7ff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border-left: 4px solid #0771d4;
+        }
+
+        .guide-section h4::before {
+            font-size: 1.1em;
+            content: "Q";
+            color: #ff4a4a;
+            padding: 0 10px 0 0;
+            font-weight: bold;
+        }
+
+        .guide-section p {
+            color: #333;
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+
+        .guide-section ol, .guide-section ul {
+            color: #333;
+            margin: 15px 0;
+            padding-left: 25px;
+        }
+
+        .guide-section li {
+            margin: 8px 0;
+            font-size: 1.1em;
+        }
+
+        .guide-section ol li {
+            background: linear-gradient(90deg, rgba(7, 113, 212, 0.1), rgba(248, 249, 250, 0.1));
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 3px solid #0771d4;
+            list-style: none;
+            counter-increment: step-counter;
+            position: relative;
+        }
+
+        .guide-section ol {
+            counter-reset: step-counter;
+        }
+
+        .guide-section ol li::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: -35px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(45deg, #054d91, #0771d4);
+            color: #fff;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .guide-section ul li {
+            background: rgba(7, 113, 212, 0.05);
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+            border-left: 2px solid #0771d4;
+        }
+
+        .guide-section code {
+            background: linear-gradient(45deg, rgba(5, 77, 145, 0.1), rgba(7, 113, 212, 0.1));
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: #054d91;
+        }
+
+        .guide-section a {
+            color: #0771d4;
+            text-decoration: none;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(7, 113, 212, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .guide-section a:hover {
+            background: linear-gradient(45deg, #054d91, #0771d4);
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* 特別なセクション用のスタイル */
+        #install {
+            background: linear-gradient(135deg, rgba(5, 77, 145, 0.05), rgba(7, 113, 212, 0.05));
+            border: 2px solid rgba(7, 113, 212, 0.2);
+        }
+
+        #connect {
+            background: linear-gradient(135deg, rgba(7, 113, 212, 0.05), rgba(5, 77, 145, 0.05));
+            border: 2px solid rgba(5, 77, 145, 0.2);
+        }
+
+        #auth {
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.05), rgba(255, 152, 0, 0.05));
+            border: 2px solid rgba(255, 193, 7, 0.3);
+        }
+
+        #security {
+            background: linear-gradient(135deg, rgba(40, 167, 69, 0.05), rgba(25, 135, 84, 0.05));
+            border: 2px solid rgba(40, 167, 69, 0.3);
+        }
+
+        #trouble {
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.05), rgba(178, 34, 52, 0.05));
+            border: 2px solid rgba(220, 53, 69, 0.3);
+        }
+
+        /* レスポンシブデザイン */
+        @media screen and (max-width: 800px) {
+            main {
+                padding: 10px;
+            }
+            
+            .guide-section {
+                margin: 15px 0;
+                padding: 20px;
+            }
+            
+            .guide-section h2 {
+                font-size: 1.8em;
+                padding-left: 0;
+            }
+            
+            .guide-section h2:before {
+                position: static;
+                margin-right: 10px;
+            }
+            
+            .guide-section ol li::before {
+                left: -30px;
+                width: 20px;
+                height: 20px;
+                font-size: 0.8em;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .guide-section h2 {
+                font-size: 1.6em;
+            }
+            
+            .guide-section h3 {
+                font-size: 1.2em;
+            }
+            
+            .guide-section ol li {
+                margin-left: 20px;
+            }
+            
+            .guide-section ol li::before {
+                left: -25px;
+            }
+        }
+        .backtotop{
+            text-align: center;
+            display: block;
+            text-decoration: none;
+            color: #fff;
+            background: linear-gradient(90deg, #054d91, #0771d4);
+            border-radius: 10px;
+            padding: 10px 0;
+            box-shadow: #ddd 0px 0px 10px;
+        }
+        .backtotop:hover{
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+<main>
+
+<a class="backtotop" href="../../index.html">トップへ戻る</a>
+<section id="install" class="guide-section">
+<h2>STEP 1: インストール</h2>
+
+<h3>💻 PC側（ホスト）のセットアップ</h3>
+<ol>
+<li>公式サイトから「ホストをインストール」をクリック</li>
+<li>ダウンロードした<code>portapad_installer.exe</code>を実行</li>
+<li>インストーラーの指示に従って進める</li>
+<li>完了すると自動でPortapadが起動します</li>
+</ol>
+
+<h3>📱 スマホ側（クライアント）のセットアップ</h3>
+<p>スマホのブラウザで <a href="https://portapad.kotoca.net/apps">portapad.kotoca.net/apps</a> にアクセス</p>
+</section>
+
+<section id="connect" class="guide-section">
+<h2>STEP 2: 接続する</h2>
+<ol>
+<li>PCとスマホを同じWi-Fiに接続（同じネットワークに接続）</li>
+<li>スマホのブラウザで <a href="https://portapad.kotoca.net/apps">portapad.kotoca.net/apps</a> を開き「PCコードを選択」画面を表示</li>
+<li>接続したいPCを選択（表示されない場合は「リストの更新」をタップ）</li>
+</ol>
+</section>
+
+<section id="auth" class="guide-section">
+<h2>STEP 3: 認証する</h2>
+
+<h3>初回接続時</h3>
+<ul>
+<li>QRコード読み取り画面が表示</li>
+<li>PC画面に認証用QRコードが表示される</li>
+<li>スマホのカメラでQRコードを読み取る</li>
+<li>「✅ 有効なEd25519秘密鍵です」と表示されたら成功</li>
+<li>トップページに戻るので再度接続</li>
+</ul>
+
+<h3>2回目以降</h3>
+<p>認証情報が保存され、自動接続されます。</p>
+</section>
+
+<section id="operate" class="guide-section">
+<h2>STEP 4: 操作する</h2>
+<p>接続が完了するとメインメニューが表示されます。</p>
+</section>
+
+<section id="qanda" class="guide-section">
+<h2>よくある質問</h2>
+
+<div>
+<h4>接続できません</h4>
+<ul>
+<li>PCとスマホが同じWi-Fiに接続されているか</li>
+<li>PCでPortapadが起動しているか（タスクトレイにアイコンがあるか）</li>
+<li>「リストの更新」ボタンを押す</li>
+</ul>
+</div>
+
+<div>
+<h4>操作が反応しません</h4>
+<ul>
+<li>QRコードを正しく読み取ったか確認</li>
+<li>PC画面にQRコードが表示されない場合はPCのPortapadを再起動</li>
+</ul>
+</div>
+
+<div>
+<h4>動作が重い・遅い</h4>
+<ul>
+<li>Wi-Fiの電波状況を確認</li>
+<li>他のアプリを閉じてメモリを空ける</li>
+<li>PCとスマホを近づける</li>
+</ul>
+</div>
+
+<div>
+<h4>全画面表示したい</h4>
+<ul>
+<li>メインメニューの「全画面」ボタンをタップ</li>
+<li>画面が自動で暗くならなくなります</li>
+</ul>
+</div>
+</section>
+
+<section id="security" class="guide-section">
+<h2>セキュリティについて</h2>
+<ul>
+<li>認証: デジタル署名により、あなたのPCにだけ接続</li>
+<li>暗号化: 通信はすべて暗号化</li>
+<li>ローカル接続: 同じWi-Fi内のみで動作</li>
+</ul>
+</section>
+
+<section id="trouble" class="guide-section">
+<h2>トラブルシューティング</h2>
+<ul>
+<li>スマホアプリの再読み込み（ブラウザ更新）</li>
+<li>PCアプリの再起動</li>
+<li>Wi-Fi再接続</li>
+<li>PC再起動（最終手段）</li>
+</ul>
+</section>
+<a class="backtotop" href="../../index.html">トップへ戻る</a>
+</main>
+</body>
+</html>

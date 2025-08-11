@@ -138,11 +138,10 @@ menu ul li:hover{
     text-align: center;
     justify-content: center;
     align-items: center;
-    margin-bottom: 50px;
 }
 #install a{
     display: block;
-    margin: 10px;
+    margin: 10px 10px 0 10px;
     padding: 1em;
     text-decoration: none;
     border-radius: 10px;
@@ -168,6 +167,22 @@ menu ul li:hover{
 }
 #install a:hover {
     background-position: left bottom;
+}
+.howtouse_out{
+    display: block;
+    text-align: center;
+    margin: 30px auto 50px auto;
+}
+.howtouse{
+    width: 100px;
+    text-align: center;
+    padding: 20px;
+    border-radius: 10px;
+    color: #555555;
+    text-decoration: none;
+}
+.howtouse:hover{
+    background-color: #ddd;
 }
 
 #update{
