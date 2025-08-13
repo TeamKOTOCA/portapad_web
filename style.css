@@ -185,6 +185,20 @@ menu ul li:hover{
     background-color: #ddd;
 }
 
+#aboutportapad div{
+    display: flex;
+    width: fit-content;
+    margin: 10px auto;
+}
+#aboutportapad div div{
+    display: block;
+}
+#aboutportapad img{
+    width: 200px;
+    height: 200px;
+}
+
+
 #update{
     background: linear-gradient(to right, #054d91 0%, #0771d4 100%);
 

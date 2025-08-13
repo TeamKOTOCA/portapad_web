@@ -293,7 +293,7 @@
             const html = await res.text();
             document.getElementById('bodybox').innerHTML = html;
         } catch (e) {
-            console.error(e);
+            console.error("html関連エラー: " + e);
         }
         try {
             const res = await fetch("./" + topage +"/index.css");
