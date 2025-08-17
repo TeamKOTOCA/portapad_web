@@ -20,10 +20,27 @@
             background-color: #f8f9fa;
             line-height: 1.6;
         }
+        header{
+            text-align: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+        }
+
+        header img{
+            height: 50px;
+            width: 50px;
+            border-radius: 10px;
+            margin: 10px;
+            border: #054d91 2px solid;
+            background-color: #fff;
+        }
 
         main {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 60px auto 0 auto;
             padding: 20px;
         }
 
@@ -256,10 +273,17 @@
         }
         .backtotop:hover{
             box-shadow: none;
+            background: linear-gradient(90deg, #02396b, #0771d4);
+        }
+        footer{
+            text-align: center;
         }
     </style>
 </head>
 <body>
+    <header>
+        <img src="../../assets/portapad.webp" alt="logo">
+    </header>
 <main>
 
 <a class="backtotop" href="../../index.html">トップへ戻る</a>
@@ -308,63 +332,19 @@
 <p>接続が完了するとメインメニューが表示されます。</p>
 </section>
 
-<section id="qanda" class="guide-section">
-<h2>よくある質問</h2>
-
-<div>
-<h4>接続できません</h4>
-<ul>
-<li>PCとスマホが同じWi-Fiに接続されているか</li>
-<li>PCでPortapadが起動しているか（タスクトレイにアイコンがあるか）</li>
-<li>「リストの更新」ボタンを押す</li>
-</ul>
-</div>
-
-<div>
-<h4>操作が反応しません</h4>
-<ul>
-<li>QRコードを正しく読み取ったか確認</li>
-<li>PC画面にQRコードが表示されない場合はPCのPortapadを再起動</li>
-</ul>
-</div>
-
-<div>
-<h4>動作が重い・遅い</h4>
-<ul>
-<li>Wi-Fiの電波状況を確認</li>
-<li>他のアプリを閉じてメモリを空ける</li>
-<li>PCとスマホを近づける</li>
-</ul>
-</div>
-
-<div>
-<h4>全画面表示したい</h4>
-<ul>
-<li>メインメニューの「全画面」ボタンをタップ</li>
-<li>画面が自動で暗くならなくなります</li>
-</ul>
-</div>
-</section>
-
-<section id="security" class="guide-section">
-<h2>セキュリティについて</h2>
-<ul>
-<li>認証: デジタル署名により、あなたのPCにだけ接続</li>
-<li>暗号化: 通信はすべて暗号化</li>
-<li>ローカル接続: 同じWi-Fi内のみで動作</li>
-</ul>
-</section>
-
 <section id="trouble" class="guide-section">
 <h2>トラブルシューティング</h2>
 <ul>
 <li>スマホアプリの再読み込み（ブラウザ更新）</li>
 <li>PCアプリの再起動</li>
 <li>Wi-Fi再接続</li>
-<li>PC再起動（最終手段）</li>
+<li>PC再起動</li>
 </ul>
 </section>
 <a class="backtotop" href="../../index.html">トップへ戻る</a>
 </main>
+<footer>
+    &copy; Povo43
+</footer>
 </body>
 </html>
