@@ -16,3 +16,7 @@
 #back_to_manu:hover{
     box-shadow: none;
 }
+
+html,body{
+	touch-action:none;
+}
