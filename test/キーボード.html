@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>JIS Keyboard (CSS Grid only)</title>
+<style>
+  .kbd{
+    display: grid;
+    grid-template-columns: repeat(var(30), 1fr);
+    grid-template-rows: 22px repeat(var(5), 44px);
+    gap: 6px;
+    margin: 24px auto;
+    padding: 12px;
+    box-sizing: border-box;
+    border-radius: 12px;
+  }
+  button{
+    border-radius: 10px;
+    padding: 5px;
+    border: #0771d4 solid 2px;
+  }
+
+  .key{
+    display: grid;
+    place-items: center;
+    user-select: none;
+    border: #0771d4 solid 2px;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #eeeeee, #ffffff);
+    font: 13px/1.2 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    box-sizing: border-box;
+    padding: 6px;
+  }
+  .key:hover{
+    background: linear-gradient(90deg, #dddddd, #eeeeee);    
+  }
+
+  /* 行のベース（行の“ずれ”は左側に空白を置いて表現） */
+  /* 便宜上、1キー ≒ 2カラム相当として配分 */
+  .r1{ grid-row: 1; }
+  .r2{ grid-row: 2; }
+  .r3{ grid-row: 3; }
+  .r4{ grid-row: 4; }
+  .r5{ grid-row: 5; }
+  .r6{ grid-row: 6; }
+
+  /* 幅ユーティリティ（1キー=2カラム相当） */
+  .w0-5{ grid-column: span 1; }
+  .w1{ grid-column: span 2; }
+  .w1-5{ grid-column: span 3; } /* 1.5u相当 */
+  .w2{ grid-column: span 4; }   /* 2u相当（Tab/Caps/Shift 左など） */
+  .w2-5{ grid-column: span 5; }
+  .w3{ grid-column: span 6; }   /* Backspace/Enterなどに使用 */
+
+  /* 高さまたぎ（Enter） */
+  .h2{ grid-row: span 2; }
+</style>
+</head>
+<body>
+<button>戻る</button>
+<div class="kbd">
+  <div class="key r1 w1">F1</div>
+  <div class="key r1 w1">F2</div>
+  <div class="key r1 w1">F3</div>
+  <div class="key r1 w1">F4</div>
+  <div class="key r1 w1">F5</div>
+  <div class="key r1 w1">F6</div>
+  <div class="key r1 w1">F7</div>
+  <div class="key r1 w1">F8</div>
+  <div class="key r1 w1">F9</div>
+  <div class="key r1 w1">F10</div>
+  <div class="key r1 w1">F11</div>
+  <div class="key r1 w1">F12</div>
+  <div class="key r1 w1">Num Lk</div>
+  <div class="key r1 w1">Prt Sc</div>
+  <div class="key r1 w1">Insert</div>
+  <div class="key r1 w1">Delete</div>
+
+  <!-- Row 1: 半/全, 数字列, 記号, Backspace -->
+  <div class="key r2 w1">半/全</div>
+  <div class="key r2 w1">1</div>
+  <div class="key r2 w1">2</div>
+  <div class="key r2 w1">3</div>
+  <div class="key r2 w1">4</div>
+  <div class="key r2 w1">5</div>
+  <div class="key r2 w1">6</div>
+  <div class="key r2 w1">7</div>
+  <div class="key r2 w1">8</div>
+  <div class="key r2 w1">9</div>
+  <div class="key r2 w1">0</div>
+  <div class="key r2 w1">=<br>-</div>
+  <div class="key r2 w1">~<br>^</div>
+  <div class="key r2 w1">|<br>¥</div>
+  <div class="key r2 w2">Backspace</div>
+
+  <!-- Row 2: Tab, Q〜P, @, [ , ] -->
+  <div class="key r3 w1-5">Tab</div>
+  <div class="key r3 w1">Q</div>
+  <div class="key r3 w1">W</div>
+  <div class="key r3 w1">E</div>
+  <div class="key r3 w1">R</div>
+  <div class="key r3 w1">T</div>
+  <div class="key r3 w1">Y</div>
+  <div class="key r3 w1">U</div>
+  <div class="key r3 w1">I</div>
+  <div class="key r3 w1">O</div>
+  <div class="key r3 w1">P</div>
+  <div class="key r3 w1">`<br>@</div>
+  <div class="key r3 w1">&#123;<br>[</div>
+  <div class="key r3 w2 h2">Enter</div>
+
+  <!-- Row 3: Caps/英数, A〜L, ;, : , Enter（縦2段またぎ） -->
+  <div class="key r4 w2">Caps Lock</div>
+  <div class="key r4 w1">A</div>
+  <div class="key r4 w1">S</div>
+  <div class="key r4 w1">D</div>
+  <div class="key r4 w1">F</div>
+  <div class="key r4 w1">G</div>
+  <div class="key r4 w1">H</div>
+  <div class="key r4 w1">J</div>
+  <div class="key r4 w1">K</div>
+  <div class="key r4 w1">L</div>
+  <div class="key r4 w1">+<br>;</div>
+  <div class="key r4 w1">*<br>:</div>
+  <div class="key r4 w1">&#125;<br>]</div>
+
+  <!-- Row 4: Shift, Z〜/, む, 右Shift -->
+  <div class="key r5 w2-5">Shift</div>
+  <div class="key r5 w1">Z</div>
+  <div class="key r5 w1">X</div>
+  <div class="key r5 w1">C</div>
+  <div class="key r5 w1">V</div>
+  <div class="key r5 w1">B</div>
+  <div class="key r5 w1">N</div>
+  <div class="key r5 w1">M</div>
+  <div class="key r5 w1">&lt;<br>,</div>
+  <div class="key r5 w1">&gt;<br>.</div>
+  <div class="key r5 w1">?<br>/</div>
+  <div class="key r5 w1">_<br>\</div>
+  <div class="key r5 w1">Shift</div>
+  <div class="key r5 w1">↑</div>
+  <div class="key r5 w0-5">Fn</div>
+
+  <!-- Row 5: Ctrl, Win, Alt, 無変換, Space, 変換, ひらがな/カタカナ, Alt, Win, Menu, Ctrl -->
+  <div class="key r6 w1-5">Ctrl</div>
+  <div class="key r6 w1">Fn</div>
+  <div class="key r6 w1">Win</div>
+  <div class="key r6 w1">Alt</div>
+  <div class="key r6 w1">無変換</div>
+  <div class="key r6 w3"></div>
+  <div class="key r6 w1">変換</div>
+  <div class="key r6 w1">ひら<br>ｶﾀｶﾅ</div>
+  <div class="key r6 w1">Alt</div>
+  <div class="key r6 w1">Win</div>
+  <div class="key r6 w1">Ctrl</div>
+  <div class="key r6 w1">←</div>
+  <div class="key r6 w1">↓</div>
+  <div class="key r6 w1">→</div>
+</div>
+
+</body>
+</html>

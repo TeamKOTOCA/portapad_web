@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CSS Grid ボタンレイアウトGUI</title>
+  <style>
+    :root{
+      --cell: 56px; /* セルの基本サイズ */
+      --gap: 6px;   /* セル間の隙間 */
+      --grid-bg: #f7f7fb;
+      --line: #d9d9e3;
+      --accent: #4f46e5;
+      --text: #111827;
+    }
+    html, body { height: 100%; }
+    body{
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans JP, sans-serif;
+      color: var(--text); background: #fff;
+      display: grid; grid-template-rows: auto 1fr; gap: 12px;
+    }
+    header{
+      position: sticky; top: 0; z-index: 10; backdrop-filter: blur(6px);
+      background: rgba(255,255,255,.85); border-bottom: 1px solid #eee;
+    }
+    .toolbar{
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 10px 12px; max-width: 1200px; margin: 0 auto;
+    }
+    .toolbar .group{ display:flex; gap:8px; align-items:center; background:#fafafa; padding:8px 10px; border:1px solid #eee; border-radius:10px; }
+    .toolbar label{ font-size: 12px; color:#374151; }
+    .toolbar input[type="number"], .toolbar input[type="text"], .toolbar select{
+      width: 80px; padding: 6px 8px; border:1px solid #ddd; border-radius:8px; font-size:14px; background:#fff;
+    }
+    .toolbar input[type="text"]{ width: 140px; }
+    .btn{ appearance: none; border: 1px solid #ddd; background:#fff; padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:600; }
+    .btn:hover{ border-color:#bbb; }
+    .btn.primary{ background: var(--accent); color:#fff; border-color: transparent; }
+    .btn.ghost{ background: transparent; }
+
+    main{ display:grid; grid-template-columns: 1fr 320px; gap: 12px; max-width: 1200px; margin: 0 auto 24px; width: 100%; padding: 0 12px; }
+    @media (max-width: 980px){ main{ grid-template-columns: 1fr; } }
+
+    /* キャンバス */
+    .stage-wrap{ position: relative; overflow: auto; border:1px solid #e5e7eb; border-radius: 12px; background: var(--grid-bg); }
+    .stage{ position: relative; margin: 16px; display: grid; grid-template-rows: repeat(6, var(--cell)); grid-template-columns: repeat(12, var(--cell)); gap: var(--gap); background-size: calc(var(--cell) + var(--gap)) calc(var(--cell) + var(--gap)); background-image: linear-gradient(to right, var(--line) 1px, transparent 1px), linear-gradient(to bottom, var(--line) 1px, transparent 1px); padding: var(--gap); }
+
+    .node{ display:flex; align-items:center; justify-content:center; background:#fff; border:1px solid #d1d5db; border-radius: 10px; font-weight:600; cursor: grab; user-select:none; position: relative; overflow: hidden; }
+    .node:active{ cursor: grabbing; }
+    .node.selected{ outline: 2px solid var(--accent); outline-offset: 2px; }
+    .node .handle{ position:absolute; right:2px; bottom:2px; width:12px; height:12px; border:1px solid #9ca3af; background:#f3f4f6; border-radius:2px; cursor: nwse-resize; }
+
+    .hover-cell{ position:absolute; pointer-events:none; outline:2px dashed #9ca3af; outline-offset:-2px; border-radius:8px; }
+
+    /* サイド */
+    aside{ border:1px solid #e5e7eb; border-radius: 12px; padding: 12px; background:#fafafa; display:flex; flex-direction:column; gap:12px; }
+    aside h3{ margin:0; font-size:14px; color:#374151; }
+    aside .field{ display:grid; grid-template-columns: auto 1fr; gap: 8px; align-items:center; }
+    aside input[type="number"], aside input[type="text"], aside select{ width: 100%; padding: 8px; border:1px solid #ddd; border-radius: 8px; background:#fff; }
+    aside .row { display:flex; gap:8px; }
+    textarea.code{ width:100%; min-height: 160px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; border:1px solid #e5e7eb; border-radius: 8px; padding: 10px; background:#fff; }
+    .hint{ font-size:12px; color:#6b7280; }
+
+    .palette{ display:flex; gap:8px; align-items:center; }
+    .palette input{ width: 140px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="toolbar">
+      <div class="group">
+        <label>行</label><input type="number" id="rows" min="1" value="6" />
+        <label>列</label><input type="number" id="cols" min="1" value="12" />
+        <label>セル(px)</label><input type="number" id="cell" min="24" max="160" value="56" />
+        <label>ギャップ(px)</label><input type="number" id="gap" min="0" max="40" value="6" />
+        <button class="btn" id="applyGrid">反映</button>
+      </div>
+      <div class="group palette">
+        <label>新規ボタン</label>
+        <input type="text" id="newLabel" placeholder="ラベル" />
+        <button class="btn" id="addBtn">追加</button>
+        <select id="preset">
+          <option value="">プリセット</option>
+          <option value="digits">0-9, 記号</option>
+          <option value="qwerty">QWERTY 英字列</option>
+          <option value="jp-mod">JP 修飾キー</option>
+        </select>
+        <button class="btn" id="addPreset">一括追加</button>
+      </div>
+      <div class="group">
+        <button class="btn" id="exportHtml">HTML/CSS エクスポート</button>
+        <button class="btn ghost" id="exportJson">JSON保存</button>
+        <button class="btn ghost" id="importJson">JSON読み込み</button>
+        <button class="btn" id="clearAll">全削除</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="stage-wrap">
+      <div id="stage" class="stage" tabindex="0" aria-label="レイアウトキャンバス"></div>
+      <div id="hover" class="hover-cell" hidden></div>
+    </div>
+
+    <aside>
+      <h3>選択中のボタン</h3>
+      <div class="hint">クリックで選択。ドラッグで移動、右下ハンドルでサイズ変更。矢印キーで微調整（Shift+矢印でサイズ）。</div>
+      <div class="row">
+        <div class="field" style="flex:1">
+          <label>ラベル</label>
+          <input type="text" id="p-label" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="field" style="flex:1">
+          <label>行開始</label>
+          <input type="number" id="p-rs" min="1" value="1" />
+        </div>
+        <div class="field" style="flex:1">
+          <label>列開始</label>
+          <input type="number" id="p-cs" min="1" value="1" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="field" style="flex:1">
+          <label>行スパン</label>
+          <input type="number" id="p-rspan" min="1" value="1" />
+        </div>
+        <div class="field" style="flex:1">
+          <label>列スパン</label>
+          <input type="number" id="p-cspan" min="1" value="1" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="field" style="flex:1">
+          <label>水平配置</label>
+          <select id="p-justify">
+            <option>stretch</option><option>start</option><option>center</option><option>end</option>
+          </select>
+        </div>
+        <div class="field" style="flex:1">
+          <label>垂直配置</label>
+          <select id="p-align">
+            <option>stretch</option><option>start</option><option>center</option><option>end</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <button class="btn" id="applyNode">選択に反映</button>
+        <button class="btn" id="dupNode">複製</button>
+        <button class="btn" id="delNode">削除</button>
+      </div>
+
+      <h3>コード</h3>
+      <textarea id="code" class="code" readonly></textarea>
+      <div class="row">
+        <button class="btn" id="copyCode">コピー</button>
+      </div>
+    </aside>
+  </main>
+
+  <template id="nodeTpl">
+    <button class="node" type="button"><span class="txt">Button</span><i class="handle"></i></button>
+  </template>
+
+  <script>
+    const stage = document.getElementById('stage');
+    const hover = document.getElementById('hover');
+    const tpl = document.getElementById('nodeTpl');
+
+    const rowsEl = document.getElementById('rows');
+    const colsEl = document.getElementById('cols');
+    const cellEl = document.getElementById('cell');
+    const gapEl  = document.getElementById('gap');
+    const applyGridBtn = document.getElementById('applyGrid');
+
+    const addBtn = document.getElementById('addBtn');
+    const newLabel = document.getElementById('newLabel');
+    const presetSel = document.getElementById('preset');
+    const addPresetBtn = document.getElementById('addPreset');
+
+    const pLabel = document.getElementById('p-label');
+    const pRS = document.getElementById('p-rs');
+    const pCS = document.getElementById('p-cs');
+    const pRspan = document.getElementById('p-rspan');
+    const pCspan = document.getElementById('p-cspan');
+    const pJustify = document.getElementById('p-justify');
+    const pAlign = document.getElementById('p-align');
+    const applyNodeBtn = document.getElementById('applyNode');
+    const dupNodeBtn = document.getElementById('dupNode');
+    const delNodeBtn = document.getElementById('delNode');
+
+    const exportHtmlBtn = document.getElementById('exportHtml');
+    const exportJsonBtn = document.getElementById('exportJson');
+    const importJsonBtn = document.getElementById('importJson');
+    const clearAllBtn = document.getElementById('clearAll');
+    const codeEl = document.getElementById('code');
+    const copyCodeBtn = document.getElementById('copyCode');
+
+    let selected = null;
+
+    function applyGrid(){
+      const r = Math.max(1, parseInt(rowsEl.value||6));
+      const c = Math.max(1, parseInt(colsEl.value||12));
+      const size = Math.max(24, parseInt(cellEl.value||56));
+      const gap = Math.max(0, parseInt(gapEl.value||6));
+      stage.style.setProperty('--cell', size + 'px');
+      stage.style.setProperty('--gap', gap + 'px');
+      stage.style.gridTemplateRows = `repeat(${r}, var(--cell))`;
+      stage.style.gridTemplateColumns = `repeat(${c}, var(--cell))`;
+      // 更新後、はみ出しを補正
+      for (const n of stage.querySelectorAll('.node')) { snapIntoGrid(n); }
+      updateCode();
+      saveLocal();
+    }
+
+    applyGridBtn.addEventListener('click', applyGrid);
+    applyGrid();
+
+    function createNode(label='Button', pos={rs:1, cs:2, rspan:1, cspan:2}){
+      const node = tpl.content.firstElementChild.cloneNode(true);
+      node.querySelector('.txt').textContent = label;
+      node.dataset.rs = pos.rs; node.dataset.cs = pos.cs; node.dataset.rspan = pos.rspan; node.dataset.cspan = pos.cspan;
+      updateGridPos(node);
+      node.addEventListener('pointerdown', onPointerDown);
+      node.addEventListener('click', e=>{ if(e.detail===1) select(node); });
+      node.querySelector('.handle').addEventListener('pointerdown', onResizeDown);
+      stage.appendChild(node);
+      select(node);
+      updateCode();
+      saveLocal();
+    }
+
+    addBtn.addEventListener('click', ()=>{
+      createNode(newLabel.value.trim()||'a', pickFreeCell());
+      newLabel.value = '';
+    });
+
+    const PRESETS = {
+      digits: ['1','2','3','4','5','6','7','8','9','0','-','^'],
+      qwerty: ['Q','W','E','R','T','Y','U','I','O','P','A','S','D','F','G','H','J','K','L','Z','X','C','V','B','N','M'],
+      'jp-mod': ['Tab','Caps','Shift','Ctrl','Alt','Cmd','Henkan','Muhenkan','Kana','Eisu','Space','Enter','Bksp']
+    };
+
+    addPresetBtn.addEventListener('click', ()=>{
+      const key = presetSel.value; if(!key) return;
+      const arr = PRESETS[key] || [];
+      for(const label of arr){ createNode(label, pickFreeCell()); }
+    });
+
+    function pickFreeCell(){
+      const r = parseInt(rowsEl.value); const c = parseInt(colsEl.value);
+      outer: for(let i=1;i<=r;i++){
+        for(let j=1;j<=c;j++){
+          if(!occupied(i,j)) return {rs:i, cs:j, rspan:1, cspan:2};
+        }
+      }
+      return {rs:1, cs:1, rspan:1, cspan:2};
+    }
+
+    function occupied(rs, cs){
+      for(const n of stage.querySelectorAll('.node')){
+        const r0 = +n.dataset.rs, c0 = +n.dataset.cs, rh = +n.dataset.rspan, cw = +n.dataset.cspan;
+        if(rs>=r0 && rs<r0+rh && cs>=c0 && cs<c0+cw) return true;
+      }
+      return false;
+    }
+
+    function updateGridPos(node){
+      node.style.gridRow = `${node.dataset.rs} / span ${node.dataset.rspan}`;
+      node.style.gridColumn = `${node.dataset.cs} / span ${node.dataset.cspan}`;
+    }
+
+    function select(node){
+      for(const n of stage.querySelectorAll('.node')) n.classList.remove('selected');
+      selected = node || null;
+      if(selected){
+        selected.classList.add('selected');
+        pLabel.value = selected.querySelector('.txt').textContent;
+        pRS.value = +selected.dataset.rs; pCS.value = +selected.dataset.cs;
+        pRspan.value = +selected.dataset.rspan; pCspan.value = +selected.dataset.cspan;
+        pJustify.value = getComputedStyle(selected).justifySelf || 'stretch';
+        pAlign.value = getComputedStyle(selected).alignSelf || 'stretch';
+      }
+    }
+
+    applyNodeBtn.addEventListener('click', ()=>{
+      if(!selected) return;
+      selected.querySelector('.txt').textContent = pLabel.value;
+      selected.dataset.rs = clamp(+pRS.value, 1, parseInt(rowsEl.value));
+      selected.dataset.cs = clamp(+pCS.value, 1, parseInt(colsEl.value));
+      selected.dataset.rspan = clamp(+pRspan.value, 1, 999);
+      selected.dataset.cspan = clamp(+pCspan.value, 1, 999);
+      selected.style.justifySelf = pJustify.value; selected.style.alignSelf = pAlign.value;
+      snapIntoGrid(selected);
+      updateGridPos(selected);
+      updateCode(); saveLocal();
+    });
+
+    dupNodeBtn.addEventListener('click', ()=>{ if(selected){
+      const pos = { rs: +selected.dataset.rs, cs: +selected.dataset.cs + +selected.dataset.cspan, rspan:+selected.dataset.rspan, cspan:+selected.dataset.cspan };
+      createNode(selected.querySelector('.txt').textContent, pos);
+    }});
+
+    delNodeBtn.addEventListener('click', ()=>{ if(selected){ selected.remove(); selected=null; updateCode(); saveLocal(); }});
+
+    // ---- ドラッグ移動 ----
+    let drag = null;
+    function onPointerDown(e){
+      if(e.target.classList.contains('handle')) return; // リサイズに委譲
+      const n = e.currentTarget;
+      select(n);
+      n.setPointerCapture(e.pointerId);
+      drag = { n, start:e, base:{ rs:+n.dataset.rs, cs:+n.dataset.cs } };
+      hover.hidden = false; drawHover(n);
+      n.addEventListener('pointermove', onPointerMove);
+      n.addEventListener('pointerup', onPointerUp, { once:true });
+    }
+    function onPointerMove(e){ if(!drag) return; trackMove(e); }
+    function onPointerUp(e){ if(!drag) return; commitMove(); cleanupDrag(); }
+
+    function trackMove(e){
+      const cell = locateCell(e);
+      if(!cell) return;
+      const {rs, cs} = cell;
+      const n = drag.n; const rh = +n.dataset.rspan, cw = +n.dataset.cspan;
+      n.dataset.rs = clamp(rs,1,parseInt(rowsEl.value)-rh+1);
+      n.dataset.cs = clamp(cs,1,parseInt(colsEl.value)-cw+1);
+      updateGridPos(n); drawHover(n);
+    }
+
+    function locateCell(e){
+      const rect = stage.getBoundingClientRect();
+      const gap = parseInt(getComputedStyle(stage).getPropertyValue('--gap'));
+      const size = parseInt(getComputedStyle(stage).getPropertyValue('--cell')) + gap;
+      const x = clamp(e.clientX - rect.left - gap, 0, rect.width);
+      const y = clamp(e.clientY - rect.top  - gap, 0, rect.height);
+      const cs = Math.floor(x / size) + 1;
+      const rs = Math.floor(y / size) + 1;
+      if(cs<1 || rs<1) return null; return {rs, cs};
+    }
+
+    function commitMove(){ saveLocal(); updateCode(); }
+    function cleanupDrag(){ if(drag){ drag.n.removeEventListener('pointermove', onPointerMove); drag=null; hover.hidden=true; } }
+
+    function drawHover(n){
+      const rect = cellRect(+n.dataset.rs, +n.dataset.cs, +n.dataset.rspan, +n.dataset.cspan);
+      Object.assign(hover.style, { left:rect.left+'px', top:rect.top+'px', width:rect.width+'px', height:rect.height+'px' });
+    }
+
+    function cellRect(rs, cs, rspan, cspan){
+      const gap = parseInt(getComputedStyle(stage).getPropertyValue('--gap'));
+      const cell = parseInt(getComputedStyle(stage).getPropertyValue('--cell'));
+      const left = (cs-1) * (cell+gap) + gap + 16; // stage padding + margin
+      const top  = (rs-1) * (cell+gap) + gap + 16;
+      const width = cspan * cell + (cspan-1) * gap;
+      const height = rspan * cell + (rspan-1) * gap;
+      return {left, top, width, height};
+    }
+
+    // ---- リサイズ ----
+    let rez = null;
+    function onResizeDown(e){
+      e.stopPropagation();
+      const n = e.currentTarget.closest('.node');
+      select(n);
+      n.setPointerCapture(e.pointerId);
+      rez = { n, start:e, base:{ rspan:+n.dataset.rspan, cspan:+n.dataset.cspan } };
+      hover.hidden = false; drawHover(n);
+      n.addEventListener('pointermove', onResizeMove);
+      n.addEventListener('pointerup', onResizeUp, { once:true });
+    }
+    function onResizeMove(e){ if(!rez) return; trackResize(e); }
+    function onResizeUp(e){ if(!rez) return; commitMove(); cleanupResize(); }
+
+    function trackResize(e){
+      const cell = locateCell(e);
+      if(!cell) return;
+      const n = rez.n; const rs = +n.dataset.rs, cs = +n.dataset.cs;
+      let rspan = Math.max(1, cell.rs - rs + 1);
+      let cspan = Math.max(1, cell.cs - cs + 1);
+      // グリッド端でクランプ
+      rspan = clamp(rspan, 1, parseInt(rowsEl.value) - rs + 1);
+      cspan = clamp(cspan, 1, parseInt(colsEl.value) - cs + 1);
+      n.dataset.rspan = rspan; n.dataset.cspan = cspan; updateGridPos(n); drawHover(n);
+    }
+    function cleanupResize(){ if(rez){ rez.n.removeEventListener('pointermove', onResizeMove); rez=null; hover.hidden=true; } }
+
+    // ---- キーボード操作 ----
+    stage.addEventListener('keydown', (e)=>{
+      if(!selected) return;
+      const step = 1; let changed = false;
+      if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Delete','Backspace'].includes(e.key)) e.preventDefault();
+      if(e.key==='Delete' || e.key==='Backspace'){ selected.remove(); selected=null; changed=true; }
+      const grow = e.shiftKey; // サイズ変更モード
+      if(e.key==='ArrowUp'){ if(grow){ selected.dataset.rspan = Math.max(1, +selected.dataset.rspan - 1); } else { selected.dataset.rs = Math.max(1, +selected.dataset.rs - step); } changed=true; }
+      if(e.key==='ArrowDown'){ if(grow){ selected.dataset.rspan = Math.max(1, +selected.dataset.rspan + 1); } else { selected.dataset.rs = Math.min(parseInt(rowsEl.value), +selected.dataset.rs + step); } changed=true; }
+      if(e.key==='ArrowLeft'){ if(grow){ selected.dataset.cspan = Math.max(1, +selected.dataset.cspan - 1); } else { selected.dataset.cs = Math.max(1, +selected.dataset.cs - step); } changed=true; }
+      if(e.key==='ArrowRight'){ if(grow){ selected.dataset.cspan = Math.max(1, +selected.dataset.cspan + 1); } else { selected.dataset.cs = Math.min(parseInt(colsEl.value), +selected.dataset.cs + step); } changed=true; }
+      if(changed){ snapIntoGrid(selected); updateGridPos(selected); updateCode(); saveLocal(); select(selected); }
+    });
+
+    // ---- エクスポート / インポート ----
+    exportHtmlBtn.addEventListener('click', ()=>{
+      codeEl.value = generateExport();
+      codeEl.scrollTop = 0;
+      copyToClipboard(codeEl.value);
+    });
+
+    exportJsonBtn.addEventListener('click', ()=>{
+      const data = serialize();
+      const text = JSON.stringify(data, null, 2);
+      codeEl.value = text;
+      download('layout.json', text);
+    });
+
+    importJsonBtn.addEventListener('click', async ()=>{
+      const [file] = await pickFile('.json'); if(!file) return;
+      const text = await file.text();
+      try{
+        const data = JSON.parse(text);
+        deserialize(data);
+      }catch(err){ alert('JSONの読み込みに失敗しました'); }
+    });
+
+    clearAllBtn.addEventListener('click', ()=>{
+      if(!confirm('全ノードを削除しますか？')) return;
+      stage.querySelectorAll('.node').forEach(n=>n.remove());
+      selected=null; updateCode(); saveLocal();
+    });
+
+    copyCodeBtn.addEventListener('click', ()=> copyToClipboard(codeEl.value));
+
+    function serialize(){
+      const list = [...stage.querySelectorAll('.node')].map(n=>({
+        label: n.querySelector('.txt').textContent,
+        rs:+n.dataset.rs, cs:+n.dataset.cs, rspan:+n.dataset.rspan, cspan:+n.dataset.cspan,
+        align: getComputedStyle(n).alignSelf, justify: getComputedStyle(n).justifySelf,
+      }));
+      return { grid:{ rows:+rowsEl.value, cols:+colsEl.value, cell:+cellEl.value, gap:+gapEl.value }, nodes:list };
+    }
+
+    function deserialize(data){
+      rowsEl.value = data.grid?.rows ?? 6; colsEl.value = data.grid?.cols ?? 12; cellEl.value = data.grid?.cell ?? 56; gapEl.value = data.grid?.gap ?? 6; applyGrid();
+      stage.querySelectorAll('.node').forEach(n=>n.remove());
+      for(const it of (data.nodes||[])){
+        createNode(it.label, { rs:it.rs, cs:it.cs, rspan:it.rspan, cspan:it.cspan });
+        const n = stage.lastElementChild; n.style.alignSelf = it.align || 'stretch'; n.style.justifySelf = it.justify || 'stretch';
+      }
+      updateCode(); saveLocal();
+    }
+
+    function generateExport(){
+      const data = serialize();
+      const {rows, cols, cell, gap} = data.grid;
+      const css = `/* コンテナ */\n.container{\n  display: grid;\n  grid-template-rows: repeat(${rows}, ${cell}px);\n  grid-template-columns: repeat(${cols}, ${cell}px);\n  gap: ${gap}px;\n}\n/* ボタン共通 */\n.container .btn{ border: 1px solid #d1d5db; border-radius: 10px; background: #fff; font-weight:600; }`;
+      const nodes = data.nodes.map((n,i)=>`  <button class="btn" style="grid-row:${n.rs} / span ${n.rspan}; grid-column:${n.cs} / span ${n.cspan}; justify-self:${n.justify}; align-self:${n.align};">${escapeHtml(n.label)}</button>`).join('\n');
+      const html = `<div class="container">\n${nodes}\n</div>`;
+      return css + "\n\n" + html;
+    }
+
+    function updateCode(){ codeEl.value = generateExport(); }
+
+    function snapIntoGrid(n){
+      // グリッド端を超えた場合の補正
+      const maxR = parseInt(rowsEl.value); const maxC = parseInt(colsEl.value);
+      n.dataset.rs = clamp(+n.dataset.rs, 1, Math.max(1, maxR - (+n.dataset.rspan) + 1));
+      n.dataset.cs = clamp(+n.dataset.cs, 1, Math.max(1, maxC - (+n.dataset.cspan) + 1));
+      n.dataset.rspan = clamp(+n.dataset.rspan, 1, maxR - (+n.dataset.rs) + 1);
+      n.dataset.cspan = clamp(+n.dataset.cspan, 1, maxC - (+n.dataset.cs) + 1);
+      updateGridPos(n);
+    }
+
+    function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+
+    function escapeHtml(str){
+      return String(str).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;');
+    }
+
+    async function pickFile(accept){
+      return new Promise(resolve=>{
+        const inp = Object.assign(document.createElement('input'), { type:'file', accept });
+        inp.onchange = () => resolve(inp.files);
+        inp.click();
+      });
+    }
+
+    function download(name, text){
+      const blob = new Blob([text], {type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a'); a.href = url; a.download = name; a.click();
+      setTimeout(()=> URL.revokeObjectURL(url), 5000);
+    }
+
+    async function copyToClipboard(text){
+      try{ await navigator.clipboard.writeText(text); toast('コピーしました'); }
+      catch{ toast('コピー失敗: 手動で選択してください'); }
+    }
+
+    function toast(msg){
+      const t = Object.assign(document.createElement('div'), { textContent: msg });
+      Object.assign(t.style, { position:'fixed', left:'50%', bottom:'24px', transform:'translateX(-50%)', background:'#111827', color:'#fff', padding:'10px 14px', borderRadius:'10px', fontSize:'13px', zIndex:9999, opacity:0 });
+      document.body.appendChild(t); requestAnimationFrame(()=>{ t.style.transition='opacity .25s ease'; t.style.opacity=1; });
+      setTimeout(()=>{ t.style.opacity=0; setTimeout(()=> t.remove(), 300); }, 1200);
+    }
+
+    // ---- 永続化（ローカル） ----
+    function saveLocal(){ localStorage.setItem('grid-btn-editor', JSON.stringify(serialize())); }
+    function loadLocal(){ const t = localStorage.getItem('grid-btn-editor'); if(!t) return; try{ deserialize(JSON.parse(t)); }catch{} }
+    window.addEventListener('load', loadLocal);
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "container": {
+    "rows": 6,
+    "columns": 12,
+    "gap": 6,
+    "buttons": [
+      { "label": "F1",  "row": 1, "rowSpan": 1, "col": 1,  "colSpan": 2 },
+      { "label": "F2",  "row": 1, "rowSpan": 1, "col": 3,  "colSpan": 2 },
+      { "label": "F3",  "row": 1, "rowSpan": 1, "col": 5,  "colSpan": 2 },
+      { "label": "F4",  "row": 1, "rowSpan": 1, "col": 7,  "colSpan": 2 },
+      { "label": "F5",  "row": 1, "rowSpan": 1, "col": 9,  "colSpan": 2 },
+      { "label": "F6",  "row": 1, "rowSpan": 1, "col": 11, "colSpan": 2 },
+      { "label": "F7",  "row": 2, "rowSpan": 1, "col": 1,  "colSpan": 2 },
+      { "label": "F8",  "row": 2, "rowSpan": 1, "col": 3,  "colSpan": 2 },
+      { "label": "F9",  "row": 2, "rowSpan": 1, "col": 5,  "colSpan": 2 },
+      { "label": "F10", "row": 2, "rowSpan": 1, "col": 7,  "colSpan": 2 },
+      { "label": "F11", "row": 2, "rowSpan": 1, "col": 9,  "colSpan": 2 },
+      { "label": "F12", "row": 2, "rowSpan": 1, "col": 11, "colSpan": 2 }
+    ]
+  }
+}
