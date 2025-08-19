@@ -74,7 +74,7 @@
                         const signature = await ed25519.sign(new TextEncoder().encode(databody), secretKey);
                         const signatureBase64 = uint8ArrayToBase64(signature);
                         dataChannel.send("cb" + signatureBase64);
-                        changepage("c_manu");
+                        changepage("c_menu");
                     } catch (err) {
                         console.error(err);
                     }

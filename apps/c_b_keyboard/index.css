@@ -12,6 +12,7 @@
     border-radius: 10px;
     padding: 5px;
     border: #0771d4 solid 2px;
+    margin: 10px 0 0 10px;
   }
 
   .key{
@@ -45,6 +46,7 @@
   .w2{ grid-column: span 4; }   /* 2u相当（Tab/Caps/Shift 左など） */
   .w2-5{ grid-column: span 5; }
   .w3{ grid-column: span 6; }   /* Backspace/Enterなどに使用 */
+  .w4{ grid-column: span 8; }   /* Backspace/Enterなどに使用 */
 
   /* 高さまたぎ（Enter） */
   .h2{ grid-row: span 2; }

@@ -1,101 +1,100 @@
-<button ontouchstart="window.changepage('c_manu')">戻る</button>
+<button onclick="changepage('c_menu')">戻る</button>
 
 <div class="kbd">
   <!-- Row 1: F1〜F12, Num Lock, Print Screen, Insert, Delete -->
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('F1')"  ontouchend="window.SendRtcKUp('F1')">F1</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('F2')"  ontouchend="window.SendRtcKUp('F2')">F2</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('F3')"  ontouchend="window.SendRtcKUp('F3')">F3</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('F4')"  ontouchend="window.SendRtcKUp('F4')">F4</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('F5')"  ontouchend="window.SendRtcKUp('F5')">F5</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('F6')"  ontouchend="window.SendRtcKUp('F6')">F6</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('F7')"  ontouchend="window.SendRtcKUp('F7')">F7</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('F8')"  ontouchend="window.SendRtcKUp('F8')">F8</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('F9')"  ontouchend="window.SendRtcKUp('F9')">F9</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('F10')" ontouchend="window.SendRtcKUp('F10')">F10</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('F11')" ontouchend="window.SendRtcKUp('F11')">F11</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('F12')" ontouchend="window.SendRtcKUp('F12')">F12</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('NumLock')"  ontouchend="window.SendRtcKUp('NumLock')">Num Lk</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('PrintScr')" ontouchend="window.SendRtcKUp('PrintScr')">Prt Sc</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('Insert')"   ontouchend="window.SendRtcKUp('Insert')">Insert</div>
-  <div class="key r1 w1" ontouchstart="window.SendRtcKDown('Delete')"   ontouchend="window.SendRtcKUp('Delete')">Delete</div>
+  <div class="key r1 w1" data-id="1">F1</div>
+  <div class="key r1 w1" data-id="2">F2</div>
+  <div class="key r1 w1" data-id="3">F3</div>
+  <div class="key r1 w1" data-id="4">F4</div>
+  <div class="key r1 w1" data-id="5">F5</div>
+  <div class="key r1 w1" data-id="6">F6</div>
+  <div class="key r1 w1" data-id="7">F7</div>
+  <div class="key r1 w1" data-id="8">F8</div>
+  <div class="key r1 w1" data-id="9">F9</div>
+  <div class="key r1 w1" data-id="10">F10</div>
+  <div class="key r1 w1" data-id="11">F11</div>
+  <div class="key r1 w1" data-id="12">F12</div>
+  <div class="key r1 w1" data-id="13">Num Lk</div>
+  <div class="key r1 w1" data-id="14">Prt Sc</div>
+  <div class="key r1 w1" data-id="15">Insert</div>
+  <div class="key r1 w1" data-id="16">Delete</div>
 
-  <!-- Row 2: 半/全, 数字, 記号, Backspace -->
-  <div class="key r2 w1" ontouchstart="window.SendRtcKDown('半/全')" ontouchend="window.SendRtcKUp('半/全')">半/全</div>
-  <div class="key r2 w1" ontouchstart="window.SendRtcKDown('1')"   ontouchend="window.SendRtcKUp('1')">1</div>
-  <div class="key r2 w1" ontouchstart="window.SendRtcKDown('2')"   ontouchend="window.SendRtcKUp('2')">2</div>
-  <div class="key r2 w1" ontouchstart="window.SendRtcKDown('3')"   ontouchend="window.SendRtcKUp('3')">3</div>
-  <div class="key r2 w1" ontouchstart="window.SendRtcKDown('4')"   ontouchend="window.SendRtcKUp('4')">4</div>
-  <div class="key r2 w1" ontouchstart="window.SendRtcKDown('5')"   ontouchend="window.SendRtcKUp('5')">5</div>
-  <div class="key r2 w1" ontouchstart="window.SendRtcKDown('6')"   ontouchend="window.SendRtcKUp('6')">6</div>
-  <div class="key r2 w1" ontouchstart="window.SendRtcKDown('7')"   ontouchend="window.SendRtcKUp('7')">7</div>
-  <div class="key r2 w1" ontouchstart="window.SendRtcKDown('8')"   ontouchend="window.SendRtcKUp('8')">8</div>
-  <div class="key r2 w1" ontouchstart="window.SendRtcKDown('9')"   ontouchend="window.SendRtcKUp('9')">9</div>
-  <div class="key r2 w1" ontouchstart="window.SendRtcKDown('0')"   ontouchend="window.SendRtcKUp('0')">0</div>
-  <div class="key r2 w1" ontouchstart="window.SendRtcKDown('=-')"  ontouchend="window.SendRtcKUp('=-')">=<br>-</div>
-  <div class="key r2 w1" ontouchstart="window.SendRtcKDown('~^')"  ontouchend="window.SendRtcKUp('~^')">~<br>^</div>
-  <div class="key r2 w1" ontouchstart="window.SendRtcKDown('|¥')"  ontouchend="window.SendRtcKUp('|¥')">|<br>¥</div>
-  <div class="key r2 w2" ontouchstart="window.SendRtcKDown('Backspace')" ontouchend="window.SendRtcKUp('Backspace')">Backspace</div>
+  <!-- Row 2 -->
+  <div class="key r2 w1" data-id="17">半/全</div>
+  <div class="key r2 w1" data-id="18">1</div>
+  <div class="key r2 w1" data-id="19">2</div>
+  <div class="key r2 w1" data-id="20">3</div>
+  <div class="key r2 w1" data-id="21">4</div>
+  <div class="key r2 w1" data-id="22">5</div>
+  <div class="key r2 w1" data-id="23">6</div>
+  <div class="key r2 w1" data-id="24">7</div>
+  <div class="key r2 w1" data-id="25">8</div>
+  <div class="key r2 w1" data-id="26">9</div>
+  <div class="key r2 w1" data-id="27">0</div>
+  <div class="key r2 w1" data-id="28">=<br>-</div>
+  <div class="key r2 w1" data-id="29">~<br>^</div>
+  <div class="key r2 w1" data-id="30">|<br>¥</div>
+  <div class="key r2 w2" data-id="31">Backspace</div>
 
-  <!-- Row 3: Tab, Q〜P, 記号, Enter -->
-  <div class="key r3 w1-5" ontouchstart="window.SendRtcKDown('Tab')"   ontouchend="window.SendRtcKUp('Tab')">Tab</div>
-  <div class="key r3 w1"   ontouchstart="window.SendRtcKDown('Q')"     ontouchend="window.SendRtcKUp('Q')">Q</div>
-  <div class="key r3 w1"   ontouchstart="window.SendRtcKDown('W')"     ontouchend="window.SendRtcKUp('W')">W</div>
-  <div class="key r3 w1"   ontouchstart="window.SendRtcKDown('E')"     ontouchend="window.SendRtcKUp('E')">E</div>
-  <div class="key r3 w1"   ontouchstart="window.SendRtcKDown('R')"     ontouchend="window.SendRtcKUp('R')">R</div>
-  <div class="key r3 w1"   ontouchstart="window.SendRtcKDown('T')"     ontouchend="window.SendRtcKUp('T')">T</div>
-  <div class="key r3 w1"   ontouchstart="window.SendRtcKDown('Y')"     ontouchend="window.SendRtcKUp('Y')">Y</div>
-  <div class="key r3 w1"   ontouchstart="window.SendRtcKDown('U')"     ontouchend="window.SendRtcKUp('U')">U</div>
-  <div class="key r3 w1"   ontouchstart="window.SendRtcKDown('I')"     ontouchend="window.SendRtcKUp('I')">I</div>
-  <div class="key r3 w1"   ontouchstart="window.SendRtcKDown('O')"     ontouchend="window.SendRtcKUp('O')">O</div>
-  <div class="key r3 w1"   ontouchstart="window.SendRtcKDown('P')"     ontouchend="window.SendRtcKUp('P')">P</div>
-  <div class="key r3 w1"   ontouchstart="window.SendRtcKDown('`@')"    ontouchend="window.SendRtcKUp('`@')">`<br>@</div>
-  <div class="key r3 w1"   ontouchstart="window.SendRtcKDown('{[')"    ontouchend="window.SendRtcKUp('{[')">&#123;<br>[</div>
-  <div class="key r3 w2 h2" ontouchstart="window.SendRtcKDown('Enter')" ontouchend="window.SendRtcKUp('Enter')">Enter</div>
+  <!-- Row 3 -->
+  <div class="key r3 w1-5" data-id="32">Tab</div>
+  <div class="key r3 w1" data-id="33">Q</div>
+  <div class="key r3 w1" data-id="34">W</div>
+  <div class="key r3 w1" data-id="35">E</div>
+  <div class="key r3 w1" data-id="36">R</div>
+  <div class="key r3 w1" data-id="37">T</div>
+  <div class="key r3 w1" data-id="38">Y</div>
+  <div class="key r3 w1" data-id="39">U</div>
+  <div class="key r3 w1" data-id="40">I</div>
+  <div class="key r3 w1" data-id="41">O</div>
+  <div class="key r3 w1" data-id="42">P</div>
+  <div class="key r3 w1" data-id="43">`<br>@</div>
+  <div class="key r3 w1" data-id="44">&#123;<br>[</div>
+  <div class="key r3 w2 h2" data-id="45">Enter</div>
 
-  <!-- Row 4: CapsLock, A〜L, 記号 -->
-  <div class="key r4 w2" ontouchstart="window.SendRtcKDown('CapsLock')" ontouchend="window.SendRtcKUp('CapsLock')">Caps Lock</div>
-  <div class="key r4 w1" ontouchstart="window.SendRtcKDown('A')" ontouchend="window.SendRtcKUp('A')">A</div>
-  <div class="key r4 w1" ontouchstart="window.SendRtcKDown('S')" ontouchend="window.SendRtcKUp('S')">S</div>
-  <div class="key r4 w1" ontouchstart="window.SendRtcKDown('D')" ontouchend="window.SendRtcKUp('D')">D</div>
-  <div class="key r4 w1" ontouchstart="window.SendRtcKDown('F')" ontouchend="window.SendRtcKUp('F')">F</div>
-  <div class="key r4 w1" ontouchstart="window.SendRtcKDown('G')" ontouchend="window.SendRtcKUp('G')">G</div>
-  <div class="key r4 w1" ontouchstart="window.SendRtcKDown('H')" ontouchend="window.SendRtcKUp('H')">H</div>
-  <div class="key r4 w1" ontouchstart="window.SendRtcKDown('J')" ontouchend="window.SendRtcKUp('J')">J</div>
-  <div class="key r4 w1" ontouchstart="window.SendRtcKDown('K')" ontouchend="window.SendRtcKUp('K')">K</div>
-  <div class="key r4 w1" ontouchstart="window.SendRtcKDown('L')" ontouchend="window.SendRtcKUp('L')">L</div>
-  <div class="key r4 w1" ontouchstart="window.SendRtcKDown('+;')" ontouchend="window.SendRtcKUp('+;')">+<br>;</div>
-  <div class="key r4 w1" ontouchstart="window.SendRtcKDown('*:')" ontouchend="window.SendRtcKUp('*:')">*<br>:</div>
-  <div class="key r4 w1" ontouchstart="window.SendRtcKDown('}]')" ontouchend="window.SendRtcKUp('}]')">&#125;<br>]</div>
+  <!-- Row 4 -->
+  <div class="key r4 w2" data-id="46">Caps Lock</div>
+  <div class="key r4 w1" data-id="47">A</div>
+  <div class="key r4 w1" data-id="48">S</div>
+  <div class="key r4 w1" data-id="49">D</div>
+  <div class="key r4 w1" data-id="50">F</div>
+  <div class="key r4 w1" data-id="51">G</div>
+  <div class="key r4 w1" data-id="52">H</div>
+  <div class="key r4 w1" data-id="53">J</div>
+  <div class="key r4 w1" data-id="54">K</div>
+  <div class="key r4 w1" data-id="55">L</div>
+  <div class="key r4 w1" data-id="56">+<br>;</div>
+  <div class="key r4 w1" data-id="57">*<br>:</div>
+  <div class="key r4 w1" data-id="58">&#125;<br>]</div>
 
-  <!-- Row 5: Shift左右, Z〜/, 矢印, Fn -->
-  <div class="key r5 w2-5" ontouchstart="window.SendRtcKDown('LShift')" ontouchend="window.SendRtcKUp('LShift')">Shift</div>
-  <div class="key r5 w1" ontouchstart="window.SendRtcKDown('Z')" ontouchend="window.SendRtcKUp('Z')">Z</div>
-  <div class="key r5 w1" ontouchstart="window.SendRtcKDown('X')" ontouchend="window.SendRtcKUp('X')">X</div>
-  <div class="key r5 w1" ontouchstart="window.SendRtcKDown('C')" ontouchend="window.SendRtcKUp('C')">C</div>
-  <div class="key r5 w1" ontouchstart="window.SendRtcKDown('V')" ontouchend="window.SendRtcKUp('V')">V</div>
-  <div class="key r5 w1" ontouchstart="window.SendRtcKDown('B')" ontouchend="window.SendRtcKUp('B')">B</div>
-  <div class="key r5 w1" ontouchstart="window.SendRtcKDown('N')" ontouchend="window.SendRtcKUp('N')">N</div>
-  <div class="key r5 w1" ontouchstart="window.SendRtcKDown('M')" ontouchend="window.SendRtcKUp('M')">M</div>
-  <div class="key r5 w1" ontouchstart="window.SendRtcKDown('&lt;,')" ontouchend="window.SendRtcKUp('&lt;,')">&lt;<br>,</div>
-  <div class="key r5 w1" ontouchstart="window.SendRtcKDown('>.')" ontouchend="window.SendRtcKUp('>.')">&gt;<br>.</div>
-  <div class="key r5 w1" ontouchstart="window.SendRtcKDown('?/')" ontouchend="window.SendRtcKUp('?/')">?<br>/</div>
-  <div class="key r5 w1" ontouchstart="window.SendRtcKDown('_\\')" ontouchend="window.SendRtcKUp('_\\')">_<br>\</div>
-  <div class="key r5 w1" ontouchstart="window.SendRtcKDown('RShift')" ontouchend="window.SendRtcKUp('RShift')">Shift</div>
-  <div class="key r5 w1" ontouchstart="window.SendRtcKDown('UpArrow')" ontouchend="window.SendRtcKUp('UpArrow')">↑</div>
-  <div class="key r5 w0-5" ontouchstart="window.SendRtcKDown('Fn')" ontouchend="window.SendRtcKUp('Fn')">Fn</div>
+  <!-- Row 5 -->
+  <div class="key r5 w2-5" data-id="59">Shift</div>
+  <div class="key r5 w1" data-id="60">Z</div>
+  <div class="key r5 w1" data-id="61">X</div>
+  <div class="key r5 w1" data-id="62">C</div>
+  <div class="key r5 w1" data-id="63">V</div>
+  <div class="key r5 w1" data-id="64">B</div>
+  <div class="key r5 w1" data-id="65">N</div>
+  <div class="key r5 w1" data-id="66">M</div>
+  <div class="key r5 w1" data-id="67">&lt;<br>,</div>
+  <div class="key r5 w1" data-id="68">&gt;<br>.</div>
+  <div class="key r5 w1" data-id="69">?<br>/</div>
+  <div class="key r5 w1" data-id="70">_<br>\</div>
+  <div class="key r5 w1" data-id="71">Shift</div>
+  <div class="key r5 w1" data-id="72">↑</div>
+  <div class="key r5 w0-5" data-id="73">Fn</div>
 
-  <!-- Row 6: Ctrl/Meta/Alt/Space/変換/かな/矢印 -->
-  <div class="key r6 w1-5" ontouchstart="window.SendRtcKDown('LControl')" ontouchend="window.SendRtcKUp('LControl')">Ctrl</div>
-  <div class="key r6 w1"   ontouchstart="window.SendRtcKDown('LMeta')"    ontouchend="window.SendRtcKUp('LMeta')">Win</div>
-  <div class="key r6 w1"   ontouchstart="window.SendRtcKDown('LAlt')"     ontouchend="window.SendRtcKUp('LAlt')">Alt</div>
-  <div class="key r6 w1"   ontouchstart="window.SendRtcKDown('無変換')"   ontouchend="window.SendRtcKUp('無変換')">無変換</div>
-  <div class="key r6 w3"   ontouchstart="window.SendRtcKDown('Space')"    ontouchend="window.SendRtcKUp('Space')"></div>
-  <div class="key r6 w1"   ontouchstart="window.SendRtcKDown('変換')"     ontouchend="window.SendRtcKUp('変換')">変換</div>
-  <div class="key r6 w1"   ontouchstart="window.SendRtcKDown('Kana')" ontouchend="window.SendRtcKUp('Kana')">ひら<br>ｶﾀｶﾅ</div>
-  <div class="key r6 w1"   ontouchstart="window.SendRtcKDown('RAlt')"     ontouchend="window.SendRtcKUp('RAlt')">Alt</div>
-  <div class="key r6 w1"   ontouchstart="window.SendRtcKDown('RMeta')"    ontouchend="window.SendRtcKUp('RMeta')">Win</div>
-  <div class="key r6 w1"   ontouchstart="window.SendRtcKDown('RControl')" ontouchend="window.SendRtcKUp('RControl')">Ctrl</div>
-  <div class="key r6 w1"   ontouchstart="window.SendRtcKDown('LeftArrow')"  ontouchend="window.SendRtcKUp('LeftArrow')">←</div>
-  <div class="key r6 w1"   ontouchstart="window.SendRtcKDown('DownArrow')"  ontouchend="window.SendRtcKUp('DownArrow')">↓</div>
-  <div class="key r6 w1"   ontouchstart="window.SendRtcKDown('RightArrow')" ontouchend="window.SendRtcKUp('RightArrow')">→</div>
+  <!-- Row 6 -->
+  <div class="key r6 w1-5" data-id="74">Ctrl</div>
+  <div class="key r6 w1" data-id="75">Win</div>
+  <div class="key r6 w1" data-id="76">Alt</div>
+  <div class="key r6 w1" data-id="77">無変換</div>
+  <div class="key r6 w4" data-id="78"></div>
+  <div class="key r6 w1" data-id="79">変換</div>
+  <div class="key r6 w1" data-id="80">Alt</div>
+  <div class="key r6 w1" data-id="81">Win</div>
+  <div class="key r6 w2" data-id="82">Ctrl</div>
+  <div class="key r6 w1" data-id="83">←</div>
+  <div class="key r6 w1" data-id="84">↓</div>
+  <div class="key r6 w1" data-id="85">→</div>
 </div>

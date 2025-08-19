@@ -3,7 +3,7 @@
     flex-wrap: wrap;
     background-color: #fff;
 }
-.manu_card{
+.menu_card{
     width: 240px;
     flex-grow: 1;
     background-color: #fff;
@@ -13,9 +13,9 @@
     margin: 10px;
     transition: all 0.05s ease;
 }
-.manu_card:hover{
+.menu_card:hover{
     box-shadow: none;
 }
-.manu_card img{
+.menu_card img{
     width: 200px;
 }
