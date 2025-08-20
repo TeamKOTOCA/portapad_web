@@ -1,5 +1,4 @@
-
-const keyMapNoShift = {
+const keyMap = {
   1: 'F1', 2: 'F2', 3: 'F3', 4: 'F4', 5: 'F5', 6: 'F6', 7: 'F7', 8: 'F8',
   9: 'F9', 10: 'F10', 11: 'F11', 12: 'F12', 13: 'NumLock', 14: 'PrintScr',
   15: 'Insert', 16: 'Delete', 17: 'HanZen', 18: '1', 19: '2', 20: '3', 21: '4',
@@ -13,30 +12,54 @@ const keyMapNoShift = {
   75: 'LMeta', 76: 'LAlt', 77: 'NonConvert', 78: 'Space', 79: 'Convert', 80: 'Kana',
   81: 'RAlt', 82: 'RMeta', 83: 'RControl', 84: 'LeftArrow', 85: 'DownArrow', 86: 'RightArrow'
 };
+//押したまんまにする特殊キーの管理
+const SetKey = {
+  RShift: false,
+  LShift: false,
+  RControl: false,
+  LControl: false
+};
 
 // kbd 内のすべてのキーを監視
 document.querySelectorAll('.kbd .key').forEach(key => {
   key.addEventListener('touchstart', (e) => {
     e.preventDefault(); // 二重処理防止
     const id = key.dataset.id;
-    const value = keyMapNoShift[id];
-    console.log('押されたキー:', value);
-    window.SendRtcKDown(value);
-    
+    const value = keyMap[id];
+      console.log('押されたキー:', value);
+    if(!(value in SetKey)){
+      window.SendRtcKDown(value);
+    }else{
+      //特殊キーである
+      if(SetKey[value]){
+        //キーが押されている
+        window.SendRtcKUp(value);
+        const highlightkey = document.querySelector('[data-id="' + id +'"]');
+        highlightkey.classList.remove("pushedKey");
+        SetKey[value] = false;
+      }else{
+        //キーが押されていない
+        window.SendRtcKDown(value);
+        const highlightkey = document.querySelector('[data-id="' + id +'"]');
+        highlightkey.classList.add("pushedKey");
+        SetKey[value] = true;
+      }
+    }
   });
   key.addEventListener('touchend', (e) => {
     e.preventDefault(); // 二重処理防止
     const id = key.dataset.id;
-    const value = keyMapNoShift[id];
-    console.log('押されたキー:', value);
-    window.SendRtcKUp(value);
-    
+    const value = keyMap[id];
+      console.log('離されたキー:', value);
+    if(!(value in SetKey)){
+      window.SendRtcKUp(value);
+    }
   });
 
   // クリックでも反応するように（PC向け）
   key.addEventListener('click', () => {
     const id = key.dataset.id;
-    const value = keyMapNoShift[id];
+    const value = keyMap[id];
     console.log('クリックされたキー:', value);
   });
 });
