@@ -47,3 +47,6 @@ h1{
 .small_button:hover{
     box-shadow: none;
 }
+p{
+    margin: 10px;
+}
