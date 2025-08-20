@@ -2,3 +2,7 @@
     text-align: center;
     margin-top: 10vh;
 }
+canvas{
+    border: #1f6acc 2px solid;
+    border-radius: 10px;
+}
