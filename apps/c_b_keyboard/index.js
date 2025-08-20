@@ -25,6 +25,9 @@ document.querySelectorAll('.kbd .key').forEach(key => {
   key.addEventListener('touchstart', (e) => {
     e.preventDefault(); // 二重処理防止
     const id = key.dataset.id;
+    if(id == 0){
+      changepage('c_menu');
+    }
     const value = keyMap[id];
       console.log('押されたキー:', value);
     if(!(value in SetKey)){
