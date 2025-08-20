@@ -21,6 +21,7 @@ document.querySelectorAll('.kbd .key').forEach(key => {
     const id = key.dataset.id;
     const value = keyMapNoShift[id];
     console.log('押されたキー:', value);
+    window.SendRtcKDown(value);
     
   });
   key.addEventListener('touchend', (e) => {
@@ -28,6 +29,7 @@ document.querySelectorAll('.kbd .key').forEach(key => {
     const id = key.dataset.id;
     const value = keyMapNoShift[id];
     console.log('押されたキー:', value);
+    window.SendRtcKUp(value);
     
   });
 
