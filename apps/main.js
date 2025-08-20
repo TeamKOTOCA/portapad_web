@@ -2,8 +2,6 @@
         if(localStorage.getItem("sigserver") == null || localStorage.getItem("sigserver") == ""){
             localStorage.setItem("sigserver", "wss://portapad-signal.onrender.com");
         }
-        var sigserverinput = document.getElementById("sigserver_address");
-        sigserverinput.value = localStorage.getItem("sigserver");
 
         var ws;
         ws = new WebSocket(localStorage.getItem("sigserver"));
@@ -198,13 +196,6 @@
 
 
 
-        //設定の保存（トップページ）
-        window.savesetting_top = function(){
-            var sigserverinput = document.getElementById("sigserver_address");
-            localStorage.setItem("sigserver", sigserverinput.value);
-            window.location.reload()
-        }
-
 
     //実際に送信する関数
 
@@ -286,8 +277,8 @@
     //changepage('c_b_trackpad')
     //こんな感じで呼び出す
     window.changepage = async function(topage){
-
         try {
+            // HTML
             const res = await fetch("./" + topage +"/index.html");
             if (!res.ok) throw new Error('fetch HTML error');
             const html = await res.text();
@@ -295,22 +286,42 @@
         } catch (e) {
             console.error("html関連エラー: " + e);
         }
+
         try {
+            // CSS
             const res = await fetch("./" + topage +"/index.css");
             const css = await res.text();
-
             const css_f = "<style>" + css + "</style>";
             document.getElementById('bodybox').innerHTML += css_f;
         } catch (e) {
             console.error("css無しorエラー: " + e);
         }
 
-        try{
+        try {
+            // JS
             const module = await import(`./${topage}/index.js?${Date.now()}`);
-        }catch(e){
+        } catch (e) {
             console.error("jsモジュールエラー: " + e);
         }
-    }
+
+        // location.hash に保存
+        location.hash = topage;
+    };
+
+    // リロード時にハッシュから復元
+    window.addEventListener("load", () => {
+        location.hash = "";  // ハッシュを消す
+        window.changepage("c_home");  // ここをトップページのIDに変更
+    });
+
+    // 戻る/進む対応
+    window.addEventListener("hashchange", () => {
+        if (location.hash) {
+            const page = location.hash.substring(1);
+            window.changepage(page);
+        }
+    });
+
 
     window.viewform = function(a){
         window.open(a);

@@ -1,0 +1,19 @@
+        <div id="bodybox">
+            <h1>PCコードを選択</h1>
+            <div id="a_codes">
+            </div>
+            <button class="a_card" onclick="window.location.reload()">
+                <h2>&#x21BB;リストの更新</h2>
+            </button>
+            <button id="installBtn">インストール</button>
+            <h2>設定</h2>
+            <div>
+                <label for="name">
+                    シグナリングサーバー:
+                    <input id="sigserver_address" type="text" name="sigserver_address" />
+                </label>
+            </div>
+            <button class="small_button" id="setting_save_button" onclick="savesetting_top();">設定の保存</button>
+            <button class="small_button" onclick="localStorage.clear();window.location.reload();">ホストリストの削除</button>
+            <p><small>※すべてのホストとのペアリングが解除されます。また、設定も削除されます。</small></p>
+        </div>

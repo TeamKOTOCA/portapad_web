@@ -1,0 +1,47 @@
+
+h1{
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 2em;
+}
+.a_card{
+    width: 90vw;
+    margin: 10px 5vw;
+    border: 2px solid #1464cc;
+    border-radius: 10px;
+    box-shadow: #aaa 0px 0px 10px;
+    background-color: #fff;
+    cursor: pointer;
+}
+.a_card:hover{
+    box-shadow: #ddd 0px 0px 5px;
+}
+.a_card h2{
+    padding-left: 10px;
+}
+#installBtn{
+    display: none;
+}
+#sigserver_address{
+    border: none;
+    border-bottom: #1464cc 1px solid;
+    width: 300px;
+    padding: 10px 5px 5px 5px;
+}
+#sigserver_address:focus{
+    outline: none;
+    background-color: #eee;
+}
+.small_button{
+    display: block;
+    margin: 20px auto 0 auto;
+    background-color: #fff;
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: 2px solid #1464cc;
+    box-shadow: #ddd 0px 0px 10px;
+    transition: all 0.05s ease;
+}
+.small_button:hover{
+    box-shadow: none;
+}
