@@ -1,0 +1,21 @@
+#bodybox{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #fff;
+}
+.menu_card{
+    width: 240px;
+    flex-grow: 1;
+    background-color: #fff;
+    box-shadow: #aaa 0px 0px 10px;
+    border-radius: 20px;
+    border: #0771d4 solid 2px;
+    margin: 10px;
+    transition: all 0.05s ease;
+}
+.menu_card:hover{
+    box-shadow: none;
+}
+.menu_card img{
+    width: 200px;
+}
