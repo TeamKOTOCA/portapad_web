@@ -9,15 +9,16 @@ const keyMap = {
   52: 'h', 53: 'j', 54: 'k', 55: 'l', 56: ';', 57: ':', 58: ']', 59: 'LShift',
   60: 'z', 61: 'x', 62: 'c', 63: 'v', 64: 'b', 65: 'n', 66: 'm', 67: ',',
   68: '.', 69: '/', 70: '\\', 71: 'RShift', 72: 'UpArrow', 73: 'Fn', 74: 'LControl',
-  75: 'LMeta', 76: 'LAlt', 77: 'NonConvert', 78: 'Space', 79: 'Convert', 80: 'Kana',
-  81: 'RAlt', 82: 'RMeta', 83: 'RControl', 84: 'LeftArrow', 85: 'DownArrow', 86: 'RightArrow'
+  75: 'LMeta', 76: 'LAlt', 77: 'NonConvert', 78: 'Space', 79: 'Convert', 80: 'RAlt',
+  18: 'RMeta', 82: 'RControl', 83: 'LeftArrow', 84: 'DownArrow', 85: 'RightArrow'
 };
 //押したまんまにする特殊キーの管理
 const SetKey = {
   RShift: false,
   LShift: false,
   RControl: false,
-  LControl: false
+  LControl: false,
+  Fn: false
 };
 
 // kbd 内のすべてのキーを監視
