@@ -1,6 +1,7 @@
 #bodybox{
   height: 100vh;
   width: 100svw;
+    background-color: #fff;
 }
 .kbd{
     display: grid;
@@ -21,6 +22,7 @@
     user-select: none;
     border: #0771d4 solid 2px;
     border-radius: 8px;
+    background-color: #fff;
     box-shadow: #ddd 0px 0px 5px;
     font: 13px/1.2 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     box-sizing: border-box;
