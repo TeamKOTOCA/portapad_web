@@ -1,6 +1,12 @@
 .bodybox{
     text-align: center;
 }
+img{
+    height: 50px;
+    width: 50px;
+    padding: 10px calc(50svw - 25px);
+    border-bottom: 2px solid #1464cc;
+}
 h1{
     text-align: center;
     margin-top: 1em;
@@ -14,7 +20,7 @@ h2{
     margin: 10px 5vw;
     border: 2px solid #1464cc;
     border-radius: 10px;
-    box-shadow: #aaa 0px 0px 10px;
+    box-shadow: #ccc 0px 0px 10px;
     background-color: #fff;
     cursor: pointer;
 }

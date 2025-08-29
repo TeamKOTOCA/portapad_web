@@ -1,0 +1,172 @@
+@font-face {
+	font-family: 'topfont';
+	src: url(../../apps/Kiwi_maru.ttf);
+}
+@font-face {
+	font-family: 'tegaki';
+	src: url(../../apps/yosugara.ttf);
+}
+
+body,html{
+    margin: 0;
+    font-family: topfont, serif;
+}
+header{
+    top: 0;
+    height: 50px;
+    width: 100px;
+    position: fixed;
+    display: flex;
+    z-index: 3;
+    margin: 5px calc(50% - 55px);
+    padding: 0 5px;
+    background: linear-gradient(45deg, #054d91 0, #0771d4 50%,  #054d91 100%);
+    background-size: 200% 100%;
+    background-position: left bottom;
+    border-radius: 10px;
+    transition: background-position 0.3s ease;
+}
+header:hover{
+    background-position: right bottom;
+}
+header .logo{
+    height: 50px;
+    width: 50px;
+}
+header button{
+    background: none;
+    border: 0;
+}
+header button img{
+    height: 30px;
+    padding: 0 5px;
+}
+
+menu{
+    position: fixed;
+    background: linear-gradient(45deg, #054d91, #0771d4);
+    z-index: 2;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+menu ul{
+    padding: 0;
+    margin-bottom: 20px;
+    list-style: none;
+}
+menu ul li{
+    padding: 0.5em 0;
+    border-bottom: solid 2px #fff;
+    width: 200px;
+    text-align: right;
+    background: none;
+    padding-right: 20px;
+    padding-left: 0;
+    transition: padding 0.3s ease, color 0.3s ease;
+}
+menu ul a{
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.5em;
+}
+menu ul li:hover{
+        padding-right: 0;
+    padding-left: 20px;
+}
+.showmenu{
+    animation: slideDownFade 0.4s ease-out forwards;
+}
+@keyframes slideDownFade {
+  0% {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+.closemenu{
+    animation: slideUpFade 0.4s ease-out forwards;
+}
+@keyframes slideUpFade {
+  0% {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+}
+
+.link{
+    background: linear-gradient(to right, #222222 50%, #555555 50%);
+    margin: 5px auto;
+    height: 36px;
+    border-radius: 23px;
+    display: flex;
+    width: 200px;
+    padding: 5px;
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: background-position 0.3s ease;
+
+}
+.link img{
+    height: 36px;
+    width: 36px;
+    border-radius: 50%;
+}
+.link a{
+    text-decoration: none;
+    color: #fff;
+    margin: 0 10px;
+    font-size: 22px;
+}
+.link:hover {
+    background-position: left bottom;
+}
+
+
+h1{
+    font-family: 'tegaki', 'topfont', serif;
+    text-align: center;
+    font-size: 3em;
+    margin: 80px 10px auto 10px;
+}
+h1 span{
+    background: linear-gradient(45deg, #054d91, #0771d4); 
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.fined{
+    color: #41972f;
+}
+p{
+    margin: 0 10px;
+    color: #999;
+}
+h2{
+    margin: 15px;
+    color: #043869;
+}
+.step_div{
+    margin-left: 20px;
+    border-left: #054d91 solid 4px;
+    border-radius: 4px;
+    padding: 20px;
+}
+.step_div p{
+    color: #000;
+}

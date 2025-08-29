@@ -56,7 +56,7 @@
             <h1>Portapad</h1>
         </div>
         <div id="install">
-            <a href="https://github.com/TeamKOTOCA/PortaPad/releases/download/v2.0.1/portapad_installer.exe" class="host">ホストをインストール<br><small>for windows10,11</small></a>
+            <button id="install_btn" class="host">ホストをインストール<br><small>for windows10,11</small></button>
             <a href="./apps/index.html">クライアントを開く</a>
         </div>
         <div class="howtouse_out">
@@ -101,15 +101,15 @@
             <h2>お知らせ</h2>
             <div id="update_box">
                 <div class="update_card">
-                    <p class="update_time">2025/08/09</p>
-                    <h4 class="update_h4">v2.0.1リリース</h4>
-                    <p class="update_detil">v2.0.1のアプリケーションが完成しました。</p>
+                    <p class="update_time">2025/08/24</p>
+                    <h4 class="update_h4">u22プログラミングコンテスト応募</h4>
+                    <p class="update_detil">Portapadをu22プログラミングコンテストに応募しました。</p>
                 </div>
                 <hr>
                 <div class="update_card">
-                    <p class="update_time">2025/06/27</p>
-                    <h4 class="update_h4">大幅なバグ消し</h4>
-                    <p class="update_detil">いろんなバグを取り除きました!</p>
+                    <p class="update_time">2025/08/09</p>
+                    <h4 class="update_h4">v2.0.1リリース</h4>
+                    <p class="update_detil">v2.0.1のアプリケーションが完成しました。</p>
                 </div>
                 <hr>
                 <div class="update_card">
@@ -220,23 +220,6 @@
             <div class="link"><img src="./x.jpg" alt="x logo"><a href="https://x.com/portapad_dev" target="_blank" rel="noopener noreferrer">公式X</a></div>
             <p>© 2025 <a href="https://kotoca.net">TeamKOTOCA</a>. Licensed under CC BY-SA 4.0</p>
         </footer>
-        <script>
-            var menu_view = false;
-            var menu_btn = document.getElementById("hamburger");
-            var menu = document.getElementById("menu");
-            function hamburger(){
-                if(menu_view == false){
-                    menu.classList.remove("closemenu");
-                    menu.classList.add("showmenu");
-                    menu_btn.src = "./ham_close.png";
-                    menu_view = true;
-                }else{
-                    menu.classList.remove("showmenu");
-                    menu.classList.add("closemenu");
-                    menu_btn.src = "./humbar.png";
-                    menu_view = false;
-                }
-            }
-        </script>
+        <script src="./script.js"></script>
     </body>
 </html>
