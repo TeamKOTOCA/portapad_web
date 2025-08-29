@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ed25519 署名 (Raw鍵)</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; }
+        textarea { width: 100%; height: 80px; margin-bottom: 10px; }
+        button { padding: 10px 20px; margin-right: 10px; }
+        .output { background-color: #f0f0f0; padding: 10px; border-radius: 5px; margin-top: 10px; word-wrap: break-word; }
+        .error { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Ed25519 署名（Raw秘密鍵）</h1>
+
+    <label for="rawSecretKey">秘密鍵 (Base64エンコード, 32バイト):</label>
+    <textarea id="rawSecretKey" placeholder="例: Pa8P+GEF2u9fUFRUJmwHL4JcZ1vyT4z3T7Fc775djuU="></textarea>
+
+    <label for="messageToSign">署名するメッセージ:</label>
+    <textarea id="messageToSign" placeholder="署名したいメッセージを入力してください。"></textarea>
+
+    <button id="signButton">署名する</button>
+
+    <div class="output">
+        <p><strong>公開鍵 (Base64):</strong> <span id="publicKeyOutput"></span></p>
+        <p><strong>署名 (Base64):</strong> <span id="signatureOutput"></span></p>
+    </div>
+
+<script type="module">
+    import * as ed25519 from "https://esm.sh/@noble/ed25519";
+    import { sha512 } from "https://esm.sh/@noble/hashes/sha512?target=es2020";
+
+    // 💡 SHA-512 を noble-ed25519 に登録
+    ed25519.etc.sha512Sync = sha512;
+
+    const base64ToUint8Array = (b64) =>
+        Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+    const uint8ArrayToBase64 = (bytes) =>
+        btoa(String.fromCharCode(...bytes));
+
+    document.getElementById('signButton').addEventListener('click', async () => {
+        const secretBase64 = document.getElementById('rawSecretKey').value.trim();
+        const message = document.getElementById('messageToSign').value;
+        const publicKeyOutput = document.getElementById('publicKeyOutput');
+        const signatureOutput = document.getElementById('signatureOutput');
+
+        publicKeyOutput.textContent = '';
+        signatureOutput.textContent = '';
+
+        if (!secretBase64 || !message) {
+            alert("秘密鍵とメッセージを入力してください。");
+            return;
+        }
+
+        try {
+            const secretKey = base64ToUint8Array(secretBase64);
+            if (secretKey.length !== 32) {
+                throw new Error("秘密鍵は32バイトである必要があります（Raw鍵）");
+            }
+
+            const pubKey = await ed25519.getPublicKey(secretKey);
+            const signature = await ed25519.sign(new TextEncoder().encode(message), secretKey);
+
+            publicKeyOutput.textContent = uint8ArrayToBase64(pubKey);
+            signatureOutput.textContent = uint8ArrayToBase64(signature);
+        } catch (err) {
+            console.error(err);
+            alert("署名に失敗しました: " + err.message);
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<html>
+  <body>
+    <div class="keypad-buttons">
+        <button href="#" class="keypad-button">Tab</button>
+        <button href="#" class="keypad-button">/</button>
+        <button href="#" class="keypad-button">*</button>
+        <button href="#" class="keypad-button">戻る</button>
+
+        <button href="#" class="keypad-button">7</button>
+        <button href="#" class="keypad-button">8</button>
+        <button href="#" class="keypad-button">9</button>
+        <button href="#" class="keypad-button">-</button>
+
+        <button href="#" class="keypad-button">4</button>
+        <button href="#" class="keypad-button">5</button>
+        <button href="#" class="keypad-button">6</button>
+        <button href="#" class="keypad-button">+</button>
+
+        <button href="#" class="keypad-button">1</button>
+        <button href="#" class="keypad-button">2</button>
+        <button href="#" class="keypad-button">3</button>
+        <button href="#" class="keypad-button h-sec">↵</button>
+
+        <button href="#" class="keypad-button w-sec">0</button>
+        <button href="#" class="keypad-button">.</button>
+    </div>
+    <style>
+      .keypad-buttons {
+        margin: 20px;
+          display: grid;
+          height: calc(100% - 40px);
+          grid-template-columns: repeat(4, 1fr);
+          grid-template-rows: repeat(5, 1fr);
+          gap: 8px;
+      }
+
+      .keypad-button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background: linear-gradient(45deg, #ddd, #fff);
+          color: #333;
+          text-decoration: none;
+          font-size: 1.5em;
+          font-weight: bold;
+          border-radius: 8px;
+          box-shadow: 0 2px 5px #00000033;
+          border: 5px solid #1464cc;
+          transition: all 0.05s ease;
+      }
+
+      .keypad-button:hover{
+          margin: 2px;
+          box-shadow: none;
+      }
+
+      .w-sec {
+          grid-column: span 2;
+      }
+      .h-sec {
+          grid-row: span 2;
+      }
+    </style>
+  </body>
+</html>
