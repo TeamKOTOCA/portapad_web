@@ -8,8 +8,8 @@
 
 
         //認証用ed25519のいろいろ
-        import * as ed25519 from "https://esm.sh/@noble/ed25519";
-        import { sha512 } from "https://esm.sh/@noble/hashes/sha512?target=es2020";
+        import * as ed25519 from "./libs/index.js";
+        import { sha512 } from "./libs/sha2.js";
         ed25519.etc.sha512Sync = sha512;
         const base64ToUint8Array = (b64) =>
             Uint8Array.from(atob(b64), c => c.charCodeAt(0));
