@@ -270,6 +270,14 @@
             console.log("dataChannelがまだ開いていません");
         }
     }
+    window.SendRtcCust = function(code){
+        const sendkey = code;
+        if (dataChannel && dataChannel.readyState === "open") {
+            dataChannel.send(sendkey);
+        } else {
+            console.log("dataChannelがまだ開いていません");
+        }
+    }
 
 
     //ページ移管

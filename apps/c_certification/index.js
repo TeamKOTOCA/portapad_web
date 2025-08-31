@@ -46,6 +46,7 @@ loadJsQR().then(() => {
             if (decoded.length === 32) {
               output.textContent += " ✅ 有効なEd25519秘密鍵です";
               localStorage.setItem(window.pccode, code.data);
+              window.SendRtcCust("cc");
               //window.changepage("c_menu");
               location.reload();
             } else {
