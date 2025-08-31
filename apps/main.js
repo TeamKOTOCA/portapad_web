@@ -8,9 +8,8 @@
 
 
         //認証用ed25519のいろいろ
-        import * as ed25519 from "./libs/index.js";
-        import { sha512 } from "./libs/sha2.js";
-        ed25519.etc.sha512Sync = sha512;
+        import * as ed from './libs/ed25519/index.js';
+
         const base64ToUint8Array = (b64) =>
             Uint8Array.from(atob(b64), c => c.charCodeAt(0));
         const uint8ArrayToBase64 = (bytes) =>
@@ -57,9 +56,9 @@
                     }
                 }else if(datatype == "ca"){
                     window.pccode = databody;
-                    //ダミーコードを用意
+                    //ダミーコード
                     let private_key = "Gj+nyCMQ+Ylu0InwPRTxxyfN2Kc6ycdV7Q/sC4gMisU=";
-                    if(localStorage.getItem(databody) !== null){
+                    if (localStorage.getItem(databody) !== null) {
                         private_key = localStorage.getItem(databody);
                     }
                     try {
@@ -68,8 +67,8 @@
                             throw new Error("秘密鍵は32バイトである必要があります");
                         }
 
-                        //const pubKey = await ed25519.getPublicKey(secretKey);
-                        const signature = await ed25519.sign(new TextEncoder().encode(databody), secretKey);
+                        // ← ここを同期 sign から非同期 signAsync に変更
+                        const signature = await ed.signAsync(new TextEncoder().encode(databody), secretKey);
                         const signatureBase64 = uint8ArrayToBase64(signature);
                         dataChannel.send("cb" + signatureBase64);
                         changepage("c_menu");
