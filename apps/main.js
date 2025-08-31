@@ -78,7 +78,7 @@
                 }else if(datatype == "cb"){
                     changepage("c_certification");
                 }
-
+                 
             };
             dataChannel.onclose = () => {
                 window.location.reload();
