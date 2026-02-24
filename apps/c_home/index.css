@@ -1,69 +1,124 @@
-.bodybox{
-    text-align: center;
+body {
+    margin: 0;
+    font-family: "Segoe UI", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    background: #f6f8fc;
+    color: #1f2a37;
 }
-img{
-    height: 50px;
-    width: 50px;
-    padding: 10px calc(50svw - 25px);
+
+.home_container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 16px 28px;
+}
+
+img {
+    height: 56px;
+    width: 56px;
+    display: block;
+    padding: 14px 0;
+    margin: 0 auto;
     border-bottom: 2px solid #1464cc;
 }
-h1{
+
+h1 {
     text-align: center;
-    margin-top: 1em;
-    margin-bottom: 2em;
+    margin: 0.8em 0 1.1em;
 }
-h2{
+
+h2 {
     text-align: center;
+    margin: 0;
 }
-.a_card{
-    width: 90vw;
-    margin: 10px 5vw;
-    border: 2px solid #1464cc;
-    border-radius: 10px;
-    box-shadow: #ccc 0px 0px 10px;
+
+.a_card {
+    width: 100%;
+    margin: 10px 0;
+    border: 1px solid #d3deee;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(20, 100, 204, 0.08);
     background-color: #fff;
     cursor: pointer;
+    transition: transform 0.08s ease, box-shadow 0.15s ease;
 }
-.a_card:hover{
-    box-shadow: #ddd 0px 0px 5px;
+
+.a_card:hover {
+    box-shadow: 0 6px 16px rgba(20, 100, 204, 0.15);
+    transform: translateY(-1px);
 }
-.a_card h2{
-    padding-left: 10px;
+
+.a_card h2 {
+    padding: 14px 10px;
+    font-size: 1.05rem;
 }
-.setting_div{
+
+.refresh_button {
+    margin-top: 12px;
+}
+
+.setting_panel {
+    margin-top: 24px;
+    background: #fff;
+    border: 1px solid #d3deee;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 4px 14px rgba(20, 100, 204, 0.06);
+}
+
+.setting_div {
     text-align: center;
+    margin-top: 14px;
 }
-#installBtn{
+
+#installBtn {
     display: none;
 }
-#sigserver_address{
-    border: none;
-    border-bottom: #1464cc 1px solid;
-    width: 300px;
-    padding: 10px 5px 5px 5px;
+
+#sigserver_address {
+    border: 1px solid #b6c7e6;
+    border-radius: 8px;
+    width: min(100%, 420px);
+    box-sizing: border-box;
+    margin-top: 8px;
+    padding: 10px;
+    background: #fff;
 }
-#sigserver_address:focus{
-    outline: none;
-    background-color: #eee;
+
+#sigserver_address:focus {
+    outline: 2px solid #a9c8f5;
+    border-color: #1464cc;
+    background-color: #fafdff;
 }
-.small_button{
+
+.small_button {
     display: block;
-    margin: 20px auto 0 auto;
+    margin: 14px auto 0;
     background-color: #fff;
-    padding: 5px 10px;
+    padding: 8px 14px;
     border-radius: 10px;
-    border: 2px solid #1464cc;
-    box-shadow: #ddd 0px 0px 10px;
-    transition: all 0.05s ease;
+    border: 1px solid #1464cc;
+    color: #0f4b9d;
+    box-shadow: 0 2px 10px rgba(20, 100, 204, 0.12);
+    cursor: pointer;
 }
-.small_button:hover{
-    box-shadow: none;
+
+.small_button:hover {
+    box-shadow: 0 2px 4px rgba(20, 100, 204, 0.1);
 }
-p{
-    margin: 10px;
+
+.danger_button {
+    border-color: #d9534f;
+    color: #b93b36;
+}
+
+p {
+    margin: 12px 0 2px;
     text-align: center;
+    color: #5b6472;
 }
-label{
+
+label {
+    display: block;
     text-align: center;
     margin: 10px;
+    font-weight: 600;
 }
