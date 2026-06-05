@@ -1,18 +1,27 @@
-            console.log("pentab");
-            document.body.style.backgroundImage = `url(${localStorage.getItem("backgroundurls")})`;
-            var bodybox = document.getElementById("body");
-            bodybox.style.height = window.RCHeight / window.RCScal;
-            bodybox.style.width = window.RCWidth / window.RCScal;
+console.log('pentab');
 
-            bodybox.addEventListener('touchmove', (event) => {
-                const touches = event.changedTouches;
-                const touch = touches[0];
-                var x = Math.floor(touch.clientX) * window.RCScal;
-                var y = Math.floor(touch.clientY) * window.RCScal;
-                if(x <= window.RCWidth && y <= window.RCHeight){
-                    window.SendRtcMPosition(x,y);
-                }
-            });
-            bodybox.addEventListener('touchend', (event) => {
+const bodybox = document.getElementById('body');
+const background = localStorage.getItem('backgroundurls');
 
-            });
+if (background) {
+  document.body.style.backgroundImage = `url(${background})`;
+}
+
+if (bodybox) {
+  const scale = Number(window.RCScal) || 1;
+  bodybox.style.height = `${Math.max((Number(window.RCHeight) || 0) / scale, 1)}px`;
+  bodybox.style.width = `${Math.max((Number(window.RCWidth) || 0) / scale, 1)}px`;
+
+  bodybox.addEventListener('touchmove', event => {
+    const touch = event.changedTouches[0];
+    if (!touch) {
+      return;
+    }
+
+    const x = Math.floor(touch.clientX * scale);
+    const y = Math.floor(touch.clientY * scale);
+    if (x <= window.RCWidth && y <= window.RCHeight) {
+      window.SendRtcMPosition(x, y);
+    }
+  });
+}

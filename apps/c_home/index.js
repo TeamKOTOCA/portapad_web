@@ -1,13 +1,28 @@
-// 設定の保存（トップページ）
-window.savesetting_top = function () {
-    const sigserverinput = document.getElementById("sigserver_address");
-    const value = sigserverinput.value.trim();
-    localStorage.setItem("sigserver", value);
-    window.location.reload();
+window.savesetting_top = function savesetting_top() {
+  const input = document.getElementById('sigserver_address');
+  const value = input ? input.value.trim() : '';
+  if (value) {
+    localStorage.setItem('sigserver', normalizeSignalServerUrl(value));
+  }
+  window.location.reload();
 };
 
-const sigserverinput = document.getElementById("sigserver_address");
-const savedSigserver = localStorage.getItem("sigserver");
-if (savedSigserver) {
-    sigserverinput.value = savedSigserver;
+function normalizeSignalServerUrl(value) {
+  const trimmed = value.trim();
+  if (trimmed.startsWith('ws://') || trimmed.startsWith('wss://')) {
+    return trimmed;
+  }
+  if (trimmed.startsWith('http://')) {
+    return `ws://${trimmed.slice('http://'.length)}`;
+  }
+  if (trimmed.startsWith('https://')) {
+    return `wss://${trimmed.slice('https://'.length)}`;
+  }
+  return `wss://${trimmed}`;
+}
+
+const sigserverInput = document.getElementById('sigserver_address');
+const savedSigserver = localStorage.getItem('sigserver');
+if (sigserverInput && savedSigserver) {
+  sigserverInput.value = savedSigserver;
 }

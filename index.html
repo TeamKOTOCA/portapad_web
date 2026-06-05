@@ -1,237 +1,196 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-2QE6V3KEG0"></script>
-        <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
+  <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2QE6V3KEG0"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-2QE6V3KEG0');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico">
+    <title>PortaPad - スマホをPCの入力デバイスにする</title>
+    <meta name="description" content="PortaPad は、スマートフォンを使って PC を遠隔操作できる入力アプリです。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://portapad.kotoca.net">
+    <meta property="og:title" content="PortaPad - スマホをPCの入力デバイスにする">
+    <meta property="og:description" content="スマートフォンから PC を操作できる入力アプリ、PortaPad の公式サイトです。">
+    <meta property="og:image" content="https://portapad.kotoca.net/assets/portapad_backg.png">
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://portapad.kotoca.net">
+    <meta property="twitter:title" content="PortaPad - スマホをPCの入力デバイスにする">
+    <meta property="twitter:description" content="スマートフォンから PC を操作できる入力アプリ、PortaPad の公式サイトです。">
+    <meta property="twitter:image" content="https://portapad.kotoca.net/assets/portapad_backg.png">
+  </head>
+  <body>
+    <header>
+      <img src="./portapad.webp" class="logo" alt="PortaPad ロゴ">
+      <button type="button" onclick="hamburger()">
+        <img id="hamburger" src="./humbar.png" alt="メニュー">
+      </button>
+    </header>
 
-        gtag('config', 'G-2QE6V3KEG0');
-        </script>
-        <!--基本情報-->
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0">
-        <link rel="stylesheet" href="./style.css">
-        <link rel="icon" href="favicon.ico">
-        <title>PortaPad - ニッチで便利なインプット。</title>
-        <meta name="description" content="Portapadは、スマホのブラウザからPCを操作することができる「手軽に」をコンセプトとした遠隔操作用のソフトウェアです。
-">
+    <menu id="menu">
+      <ul>
+        <a href="#update" onclick="hamburger()"><li>News</li></a>
+        <a href="#qanda" onclick="hamburger()"><li>Q&A</li></a>
+        <a href="#fordev" onclick="hamburger()"><li>For Developer</li></a>
+        <a href="https://forms.office.com/r/crkcUE4GD6" target="_blank" rel="noopener noreferrer" onclick="hamburger()"><li>Contact</li></a>
+      </ul>
+      <div class="link">
+        <img src="./x.jpg" alt="X ロゴ">
+        <a href="https://x.com/portapad_dev" target="_blank" rel="noopener noreferrer">Official X</a>
+      </div>
+    </menu>
 
-        <!-- Open Graph Meta Tags -->
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://portapad.kotoca.net">
-        <meta property="og:title" content="PortaPad - ニッチで便利なインプット。">
-        <meta property="og:description" content="Portapadは、スマホのブラウザからPCを操作することができる「手軽に」をコンセプトとした遠隔操作用のソフトウェアです。
-">
-        <meta property="og:image" content="https://portapad.kotoca.net/assets/portapad_backg.png">
+    <main>
+      <section class="top">
+        <h2><span>スマホを</span><span>PCの操作パッドに</span></h2>
+        <img src="./portapad.webp" alt="PortaPad">
+        <h1>PortaPad</h1>
+      </section>
 
-        <!-- Twitter Meta Tags -->
-        <meta property="twitter:card" content="summary_large_image">
-        <meta property="twitter:url" content="https://portapad.kotoca.net">
-        <meta property="twitter:title" content="PortaPad - ニッチで便利なインプット。">
-        <meta property="twitter:description" content="Portapadは、スマホのブラウザからPCを操作することができる「手軽に」をコンセプトとした遠隔操作用のソフトウェアです。
-">
-        <meta property="twitter:image" content="https://portapad.kotoca.net/assets/portapad_backg.png">
+      <section id="install">
+        <button id="install_btn" class="host" type="button" onclick="installPwa()" hidden>
+          ホストをインストール<br><small>Windows 10 / 11</small>
+        </button>
+        <a href="./apps/index.html">クライアントを開く</a>
+      </section>
 
-    </head>
-	<body>
-        <header>
-                <img src="./portapad.webp" class="logo" alt="PortaPad-logo">
-                <button onclick="hamburger()"><img id="hamburger" src="./humbar.png" alt="hamburgermenu"></button>
-        </header>
-        <menu id="menu">
-            <ul>
-                <a href="#update" onclick="hamburger()"><li>News</li></a>
-                <a href="#qanda" onclick="hamburger()"><li>Q&A</li></a>
-                <a href="#fordev" onclick="hamburger()"><li>ForDeveloper</li></a>
-                <a href="https://forms.office.com/r/crkcUE4GD6" target="_blank" onclick="hamburger()"><li>Contact</li></a>
-            </ul>
-            <div class="link"><img src="./x.jpg" alt="x logo"><a href="https://x.com/portapad_dev" target="_blank" rel="noopener noreferrer">OfficialX</a></div>
-        </menu>
-        <div class="top">
-            <h2><span>ニッチで便利な</span><span>インプット。</span></h2>
-            <img src="./portapad.webp" alt="トップイメージ">
-            <h1>Portapad</h1>
+      <div class="howtouse_out">
+        <a class="howtouse" href="./pages/HowToUse/index.html">使い方を確認する</a>
+      </div>
+
+      <section id="aboutportapad">
+        <div>
+          <img src="./assets/top_connect.png" alt="接続イメージ">
+          <div>
+            <h3>スマホと PC をつなぐ</h3>
+            <p>離れた場所からでも、スマートフォンだけで PC を操作できます。マウスやキーボードとして使えるので、作業のちょっとした補助にも向いています。</p>
+          </div>
         </div>
-        <div id="install">
-            <button id="install_btn" class="host">ホストをインストール<br><small>for windows10,11</small></button>
-            <a href="./apps/index.html">クライアントを開く</a>
+        <div>
+          <img src="./assets/top_speed.png" alt="速度イメージ">
+          <div>
+            <h3>軽快に動く操作感</h3>
+            <p>P2P 接続を前提に、できるだけ軽い通信で動くように設計しています。カーソル移動やクリックを、できるだけ自然に扱えるようにしています。</p>
+          </div>
         </div>
-        <div class="howtouse_out">
-            <a class="howtouse" href="./pages/HowToUse/index.html">※使い方がわからないときは？></a>
+        <div>
+          <img src="./assets/top_key.png" alt="セキュリティイメージ">
+          <div>
+            <h3>QR 認証で安全に</h3>
+            <p>初回接続時は QR コードを使って認証します。PC 側で発行された鍵をスマホで読み取ることで、なりすましを防ぎます。</p>
+          </div>
         </div>
-        <div id="aboutportapad">
-            <div>
-                <img src="./assets/top_connect.png" alt="">
-                <div>
-                    <h3>スマホが<span>マウス・キーボード</span>に</h3>
-                    <p>
-                        離れた場所からでも、スマートフォンでPCを自由自在に操作。<br>
-                        ソファでくつろぎながらPCの動画を再生したり、ベッドから音楽を変えたり。<br>
-                        まるでPCの前にいるような快適操作を実現します。
-                    </p>
-                </div>
-            </div>
-            <div>
-                <img src="./assets/top_speed.png" alt="">
-                <div>
-                    <h3>サクサク動く。<span>遅延なし</span></h3>
-                    <p>
-                        最新のP2P技術により、タップした瞬間にPCが反応。<br>
-                        動画のスキップもスクロールも、ストレスフリーでスムーズ。<br>
-                        従来のリモートアプリにありがちな「もっさり感」は一切ありません。
-                    </p>
-                </div>
-            </div>
-            <div>
-                <img src="./assets/top_key.png" alt="">
-                <div>
-                    <h3><span>強固で、安全</span>なセキュリティ</h3>
-                    <p>
-                        デジタル署名による強固なセキュリティで、あなたのPCを守ります。<br>
-                        同じWi-Fi内でのみ動作し、外部からの不正アクセスを完全シャットアウト。<br>
-                        設定も簡単、QRコードを読み取るだけで完了です。
-                    </p>
-                </div>
-            </div>
+      </section>
+
+      <section id="update">
+        <h2>更新情報</h2>
+        <div id="update_box">
+          <div class="update_card">
+            <p class="update_time">2025/12/26</p>
+            <h4 class="update_h4">サービス準備中</h4>
+            <p class="update_detil">シグナリングサーバーを含む公開環境の調整を進めています。</p>
+          </div>
+          <hr>
+          <div class="update_card">
+            <p class="update_time">2025/08/09</p>
+            <h4 class="update_h4">v2.0.1 リリース</h4>
+            <p class="update_detil">アプリ本体と Web クライアントを更新しました。</p>
+          </div>
+          <hr>
+          <div class="update_card">
+            <p class="update_time">2025/06/20</p>
+            <h4 class="update_h4">インストーラ改善</h4>
+            <p class="update_detil">初回セットアップ時のエラー表示と導線を見直しました。</p>
+          </div>
         </div>
-        <div id="update">
-            <h2>お知らせ</h2>
-            <div id="update_box">
-				<div class="update_card">
-                    <p class="update_time">2025/12/26</p>
-                    <h4 class="update_h4">サービス停止中</h4>
-                    <p class="update_detil">接続に必要なシグナリングサーバーDownしています。<br>※各自でシグナリングサーバーを構築した場合は継続して使用可能です。</p>
-                </div>
-                <hr>
-				<div class="update_card">
-                    <p class="update_time">2025/09/27</p>
-                    <h4 class="update_h4">開発停止中</h4>
-                    <p class="update_detil">開発者のモチベーションの関係で開発が停止しています。<br>※当サービスは継続して使用可能です。</p>
-                </div>
-                <hr>
-                <div class="update_card">
-                    <p class="update_time">2025/08/24</p>
-                    <h4 class="update_h4">u22プログラミングコンテスト応募</h4>
-                    <p class="update_detil">Portapadをu22プログラミングコンテストに応募しました。</p>
-                </div>
-                <hr>
-                <div class="update_card">
-                    <p class="update_time">2025/08/09</p>
-                    <h4 class="update_h4">v2.0.1リリース</h4>
-                    <p class="update_detil">v2.0.1のアプリケーションが完成しました。</p>
-                </div>
-                <hr>
-                <div class="update_card">
-                    <p class="update_time">2025/06/26</p>
-                    <h4 class="update_h4">正式版リリース!</h4>
-                    <p class="update_detil">正式版としてリリースを始めました。</p>
-                </div>
-                <hr>
-                <div class="update_card">
-                    <p class="update_time">2025/06/21</p>
-                    <h4 class="update_h4">公式サイトの修正</h4>
-                    <p class="update_detil">開発者向け情報の追加、デザインの変更を行いました。</p>
-                </div>
-                <hr>
-                <div class="update_card">
-                    <p class="update_time">2025/06/20</p>
-                    <h4 class="update_h4">インストーラーの修正</h4>
-                    <p class="update_detil">インストール時のエラーの要因を修正しました。それに合わせてインストール完了時の再起動も同時に行うように変更しました。</p>
-                </div>
-            </div>
+      </section>
+
+      <section id="qanda">
+        <h2>よくある質問</h2>
+        <div>
+          <h4>ペンタブレットは必要ですか？</h4>
+          <p>必要ありません。スマートフォンだけで操作できます。</p>
         </div>
-        <div id="qanda">
-            <h2>よくある質問</h2>
-            <div>
-                <h4>ペンタブ機能とかありませんか？</h4>
-                <p>まだありませんが、そのうち実装する予定です。少々お待ちください。</p>
-            </div>
-            <div>
-                <h4>スマホ版のアプリはありますか？</h4>
-                <p>今現在はスマホはweb版のみとなっています。</p>
-            </div>
-            <div>
-                <h4>インストール方法がわかりません。</h4>
-                <p>解説動画を作るのでお待ち下さい。</p>
-            </div>
+        <div>
+          <h4>スマホ用アプリはありますか？</h4>
+          <p>現在は Web 版のクライアントを利用します。</p>
         </div>
-        <div id="fordev">
-            <h2>開発者向けの情報</h2>
-            <div id="fordev_repo">
-                <h3>リポジトリ</h3>
-                <table class="fordev_tables">
-                    <tr>
-                        <th>ホスト側アプリ</th>
-                        <td><a href="https://github.com/TeamKOTOCA/PortaPad">PortaPad</a></td>
-                    </tr>
-                    <tr>
-                        <th>クライアントサイト</th>
-                        <td><a href="https://github.com/TeamKOTOCA/portapad_web">portapad_web</a></td>
-                    </tr>
-                    <tr>
-                        <th>シグナリングサーバー</th>
-                        <td><a href="https://github.com/TeamKOTOCA/Portapad_signal_pub">Portapad_signal_pub</a></td>
-                    </tr>
-                </table>
-            </div>
-            <div id="fordev_doc">
-                <h3>開発者向けドキュメント</h3>
-                <table class="fordev_tables">
-                    <tr>
-                        <th>通信規格</th>
-                        <td><a href="./pages/document_fordev/index.html">リンク</a></td>
-                    </tr>
-                    <tr>
-                        <th>DeepWiki</th>
-                        <td><a href="https://deepwiki.com/TeamKOTOCA/PortaPad">ホスト</a></td>
-                        <td><a href="https://deepwiki.com/TeamKOTOCA/portapad_web">クライアント</a></td>
-                        <td><a href="https://deepwiki.com/TeamKOTOCA/Portapad_signal_pub">シグナリング鯖</a></td>
-                    </tr>
-                </table>
-            </div>
-            <div id="fordev_bag" class="maxwidth400">
-                <h3>バグ報告先</h3>
-                <table class="fordev_tables">
-                    <tr>
-                        <th>ホストの不具合</th>
-                        <td><a href="https://github.com/TeamKOTOCA/PortaPad/issues">Github Issues</a></td>
-                    </tr>
-                    <tr>
-                        <th>クライアントの不具合</th>
-                        <td><a href="https://github.com/TeamKOTOCA/portapad_web/issues">Github Issues</a></td>
-                    </tr>
-                    <tr>
-                        <th>シグナリングサーバー関連の不具合</th>
-                        <td><a href="https://github.com/TeamKOTOCA/Portapad_signal_pub">Github Issues</a></td>
-                    </tr>
-                </table>
-                <p>どこが悪いのかわからない不具合は<strong>ホストの不具合</strong>に投げてください。</p>
-            </div>
-            <div id="fordev_lic" class="maxwidth400">
-                <h3>ライセンス</h3>
-                <p>
-                    PortaPadに関係するサイトやアプリケーションには
-                    <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener noreferrer">
-                    Creative Commons Attribution-ShareAlike 4.0 International（CC BY-SA 4.0）
-                    </a>
-                    ライセンスが適用されます。
-                </p>
-                <p>
-                    再配布や改変は可能ですが、改変内容について
-                    <a href="mailto:contact@kotoca.net">メール</a>又は公式XのDMにてご一報いただけると助かります。
-                    PortaPad開発陣の名誉を著しく損なわない限り、改変中止をお願いすることはありません。
-                    また、ご報告に対して返信がない場合も、開発を進めていただいて問題ありません。
-                </p>
-                <a id="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja"><img class="license_img" src="./by-sa.png" alt="ライセンス表記"></a>
-            </div>
+        <div>
+          <h4>インストールでつまずいたら？</h4>
+          <p>使い方ページを確認して、それでも解決しない場合は Contact から連絡してください。</p>
         </div>
-        <footer>
-            <div class="link"><img src="./x.jpg" alt="x logo"><a href="https://x.com/portapad_dev" target="_blank" rel="noopener noreferrer">公式X</a></div>
-            <p>© 2025 <a href="https://kotoca.net">TeamKOTOCA</a>. Licensed under CC BY-SA 4.0</p>
-        </footer>
-        <script src="./script.js"></script>
-    </body>
+      </section>
+
+      <section id="fordev">
+        <h2>開発者向け情報</h2>
+        <div id="fordev_repo">
+          <h3>リポジトリ</h3>
+          <table class="fordev_tables">
+            <tr>
+              <th>ホストアプリ</th>
+              <td><a href="https://github.com/TeamKOTOCA/PortaPad">PortaPad</a></td>
+            </tr>
+            <tr>
+              <th>クライアントサイト</th>
+              <td><a href="https://github.com/TeamKOTOCA/portapad_web">portapad_web</a></td>
+            </tr>
+            <tr>
+              <th>シグナリングサーバー</th>
+              <td><a href="https://github.com/TeamKOTOCA/Portapad_signal_pub">Portapad_signal_pub</a></td>
+            </tr>
+          </table>
+        </div>
+
+        <div id="fordev_doc">
+          <h3>ドキュメント</h3>
+          <table class="fordev_tables">
+            <tr>
+              <th>使い方</th>
+              <td><a href="./pages/HowToUse/index.html">リンク</a></td>
+            </tr>
+            <tr>
+              <th>DeepWiki</th>
+              <td><a href="https://deepwiki.com/TeamKOTOCA/PortaPad">ホスト</a></td>
+              <td><a href="https://deepwiki.com/TeamKOTOCA/portapad_web">クライアント</a></td>
+              <td><a href="https://deepwiki.com/TeamKOTOCA/Portapad_signal_pub">サーバー</a></td>
+            </tr>
+          </table>
+        </div>
+
+        <div id="fordev_lic" class="maxwidth400">
+          <h3>ライセンス</h3>
+          <p>
+            PortaPad に関するサイトやアプリケーションは
+            <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>
+            の範囲で公開しています。
+          </p>
+          <p>
+            不具合報告や改善提案は
+            <a href="mailto:contact@kotoca.net">メール</a>
+            または各リポジトリの Issue からお願いします。
+          </p>
+          <a id="license" href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja">
+            <img class="license_img" src="./by-sa.png" alt="CC BY-SA 4.0">
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="link">
+        <img src="./x.jpg" alt="X ロゴ">
+        <a href="https://x.com/portapad_dev" target="_blank" rel="noopener noreferrer">公式 X</a>
+      </div>
+      <p>&copy; 2025 TeamKOTOCA. Licensed under CC BY-SA 4.0</p>
+    </footer>
+
+    <script src="./script.js"></script>
+  </body>
 </html>

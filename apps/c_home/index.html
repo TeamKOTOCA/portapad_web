@@ -1,23 +1,28 @@
 <main class="home_container">
-    <img src="../portapad.webp" alt="PortaPad logo">
-    <h1>PCを選択</h1>
+  <img src="../portapad.webp" alt="PortaPad ロゴ">
+  <h1>接続先の PC を選んでください</h1>
 
-    <div id="a_codes"></div>
+  <section class="status_panel">
+    <p class="status_label">シグナリング接続</p>
+    <p id="connectionStatus" class="status_value">接続を確認しています</p>
+  </section>
 
-    <button class="a_card refresh_button" onclick="window.location.reload()">
-        <h2>&#x21BB; リストの更新</h2>
-    </button>
+  <div id="a_codes" aria-live="polite"></div>
 
-    <button id="installBtn">インストール</button>
+  <button class="a_card refresh_button" type="button" onclick="window.location.reload()">
+    <h2>一覧を更新</h2>
+  </button>
 
-    <section class="setting_panel">
-        <h2>設定</h2>
-        <div class="setting_div">
-            <label for="sigserver_address">シグナリングサーバー:</label>
-            <input id="sigserver_address" type="text" name="sigserver_address" />
-        </div>
-        <button class="small_button" id="setting_save_button" onclick="savesetting_top();">設定の保存</button>
-        <button class="small_button danger_button" onclick="localStorage.clear();window.location.reload();">ホストリストの削除</button>
-        <p><small>※すべてのホストとのペアリングが解除されます。また、設定も削除されます。</small></p>
-    </section>
+  <button id="installBtn" type="button" onclick="installPwa()" hidden>アプリをインストール</button>
+
+  <section class="setting_panel">
+    <h2>設定</h2>
+    <div class="setting_div">
+      <label for="sigserver_address">シグナリングサーバー</label>
+      <input id="sigserver_address" type="text" name="sigserver_address" autocomplete="off" placeholder="wss://example.com:8443">
+    </div>
+    <button class="small_button" id="setting_save_button" type="button" onclick="savesetting_top();">保存して再読み込み</button>
+    <button class="small_button danger_button" type="button" onclick="localStorage.clear();window.location.reload();">保存内容をすべて削除</button>
+    <p><small>接続先が変わったら、保存後に一覧を再読み込みしてください。</small></p>
+  </section>
 </main>

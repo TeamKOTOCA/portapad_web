@@ -1,335 +1,533 @@
-        //シグナリングサーバーが設定されていなければ公式のものを追加
-        if(localStorage.getItem("sigserver") == null || localStorage.getItem("sigserver") == ""){
-            localStorage.setItem("sigserver", "wss://portapad-signal.onrender.com");
-        }
+import * as ed from './libs/ed25519/index.js';
 
-        var ws;
-        ws = new WebSocket(localStorage.getItem("sigserver"));
+const DEFAULT_SIGSERVER = 'wss://portapad-signal.onrender.com';
+const BODY_BOX_ID = 'bodybox';
+const DYNAMIC_STYLE_ID = 'dynamic-page-style';
 
+const base64ToUint8Array = b64 => Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+const uint8ArrayToBase64 = bytes => btoa(String.fromCharCode(...bytes));
 
-        //認証用ed25519のいろいろ
-        import * as ed from './libs/ed25519/index.js';
+let ws = null;
+let pc = null;
+let dataChannel = null;
+let currentHostId = null;
+let pendingIceCandidates = [];
+let pendingSignalMessages = [];
+let currentPage = '';
+let deferredPrompt = null;
+let reconnectTimer = null;
+let reconnectAttempt = 0;
+let shouldReconnect = true;
+let signalConnectionState = '未接続';
 
-        const base64ToUint8Array = (b64) =>
-            Uint8Array.from(atob(b64), c => c.charCodeAt(0));
-        const uint8ArrayToBase64 = (bytes) =>
-            btoa(String.fromCharCode(...bytes));
+window.RCScal = 1;
+window.RCHeight = 1;
+window.RCWidth = 1;
+window.pccode = '';
 
+function normalizeSignalServerUrl(value) {
+  const trimmed = (value || '').trim();
+  if (!trimmed) {
+    return DEFAULT_SIGSERVER;
+  }
+  if (trimmed.startsWith('ws://') || trimmed.startsWith('wss://')) {
+    return trimmed;
+  }
+  if (trimmed.startsWith('http://')) {
+    return `ws://${trimmed.slice('http://'.length)}`;
+  }
+  if (trimmed.startsWith('https://')) {
+    return `wss://${trimmed.slice('https://'.length)}`;
+  }
+  return `wss://${trimmed}`;
+}
 
-        // WebRTCの初期化
-        let pc;
-        if (!pc) {
-        pc = new RTCPeerConnection();
-        }
-        // ICE候補の保留
-        const pendingIceCandidates = [];
-        let fromhost = null;
+function getSignalServer() {
+  const saved = localStorage.getItem('sigserver');
+  if (!saved) {
+    localStorage.setItem('sigserver', DEFAULT_SIGSERVER);
+    return DEFAULT_SIGSERVER;
+  }
+  return normalizeSignalServerUrl(saved);
+}
 
-        
-        window.RCScal = 1;
-        window.RCHeight = 1;
-        window.RCWidth = 1;
-        window.pccode = "";
+function getBodyBox() {
+  return document.getElementById(BODY_BOX_ID);
+}
 
-        const dataChannel = pc.createDataChannel("operate");
-        // データチャネルのイベントハンドラ
-        dataChannel.onopen = () => {
-            console.log("データチャネルが開きました");
-            dataChannel.onmessage = async (event) => {
-                console.log("受信メッセ:", event.data);
-                const datatype = event.data.slice(0,2);
-                const databody = event.data.slice(2);
-                if(datatype == "ms"){
-                    const remotemonitor = databody.split(",");
-                    const innerWidth = window.innerWidth;
-                    const innerHeight = window.innerHeight;
-                    const widthscal = remotemonitor[0] / innerWidth;
-                    const heightscal = remotemonitor[1] / innerHeight;
-                    RCWidth = remotemonitor[0];
-                    RCHeight = remotemonitor[1];
-                    if(widthscal < heightscal){
-                        console.log("縦のほうが長くなる")
-                        RCScal = heightscal;
-                    }else if(widthscal > heightscal){
-                        console.log("yokoのほうが長くなる")
-                        RCScal = widthscal;
-                    }
-                }else if(datatype == "ca"){
-                    window.pccode = databody;
-                    //ダミーコード
-                    let private_key = "Gj+nyCMQ+Ylu0InwPRTxxyfN2Kc6ycdV7Q/sC4gMisU=";
-                    if (localStorage.getItem(databody) !== null) {
-                        private_key = localStorage.getItem(databody);
-                    }
-                    try {
-                        const secretKey = base64ToUint8Array(private_key.trim());
-                        if (secretKey.length !== 32) {
-                            throw new Error("秘密鍵は32バイトである必要があります");
-                        }
+function updateConnectionStatusUi() {
+  const statusElement = document.getElementById('connectionStatus');
+  if (statusElement) {
+    statusElement.textContent = signalConnectionState;
+  }
+}
 
-                        // ← ここを同期 sign から非同期 signAsync に変更
-                        const signature = await ed.signAsync(new TextEncoder().encode(databody), secretKey);
-                        const signatureBase64 = uint8ArrayToBase64(signature);
-                        dataChannel.send("cb" + signatureBase64);
-                        changepage("c_menu");
-                    } catch (err) {
-                        console.error(err);
-                    }
-                }else if(datatype == "cb"){
-                    changepage("c_certification");
-                }
-                 
-            };
-            dataChannel.onclose = () => {
-                window.location.reload();
-            }
-        };
+window.setConnectionStatus = function setConnectionStatus(status) {
+  signalConnectionState = status;
+  updateConnectionStatusUi();
+};
 
-        ws.onopen = () => {
-            console.log('WebSocket接続が開きました。');
-            ws.send('client');
-            ws.send('hostview');
-        };
+function ensurePeerConnection() {
+  if (pc && pc.connectionState !== 'closed') {
+    return pc;
+  }
 
-        ws.onmessage = (event) => {
-            console.log('WebSocketメッセージ受信:', event.data);
-            // 受信したメッセージを処理
-            const message = JSON.parse(event.data);
+  resetPeerConnection();
 
-            console.log(event.data);
-            if(message.mtype === "hosts"){
-                let hostids = JSON.parse(message.body);
+  pc = new RTCPeerConnection();
+  dataChannel = pc.createDataChannel('operate');
+  window.dataChannel = dataChannel;
 
+  dataChannel.onopen = () => {
+    console.log('データチャネルが開きました');
+  };
 
-                const container = document.getElementById("a_codes");
-                container.innerHTML = "";
-                console.log("hosts: " + hostids);
-                hostids.forEach((id, index) => {
-                    container.innerHTML += `
-                        <button class="a_card" onclick="peersend('${id}')">
-                            <h2>${id}</h2>
-                        </button>
-                    `;
-                });
-            }else if(message.mtype === "sdp"){
-                // 受信したSDPをリモートのSDPとして設定
-                pc.setRemoteDescription(new RTCSessionDescription(message.body))
-                    .then(() => {
-                        fromhost = message.fromhost;
-                        
-                        // バッファに貯めたICE候補をまとめて送信
-                        pendingIceCandidates.forEach(candidate => {
-                            const icesend = {
-                                mtype: 'ice',
-                                tohost: fromhost,
-                                body: candidate
-                            };
-                            ws.send(JSON.stringify(icesend));
-                            console.log("[ICE送信:バッファ] ", icesend);
-                        });
-                        pendingIceCandidates.length = 0; // バッファクリア
-                    })
-                    .catch(error => {
-                        console.error("setRemoteDescription失敗:", error);
-                    });
+  dataChannel.onclose = () => {
+    console.log('データチャネルが閉じました');
+    window.location.reload();
+  };
 
-            } else if(message.mtype === "ice"){
-                // ICE候補を追加する前に、必ずsetRemoteDescriptionが完了していることを確認
-                console.log("受け取ったICE候補 message.body:", message.body);
-                if (pc.remoteDescription) {
-                    const candidate = new RTCIceCandidate(message.body);
-                    pc.addIceCandidate(candidate)
-                        .catch(e => console.error("ICE候補の追加に失敗:", e));
-                    console.log("iceきた");
-                } else {
-                    console.log("[ICEバッファ] Remote descriptionがまだ設定されていないため、候補を保留します。");
-                    pendingIceCandidates.push(message.body);
-                }
-            }
-        };
+  dataChannel.onmessage = async event => {
+    const text = event.data ?? '';
+    const datatype = text.slice(0, 2);
+    const databody = text.slice(2);
 
-        pc.onicecandidate = (event) => {
-            console.log("ice1");
-            if (event.candidate) {
-                const candidate = event.candidate;
-                if (fromhost) {
-                    const icesend = {
-                        mtype: 'ice',
-                        tohost: fromhost,
-                        body: candidate
-                    };
-                    ws.send(JSON.stringify(icesend));
-                    console.log("[ICE送信] ", icesend);
-                } else {
-                    // fromhostなし＞バッファに貯める
-                    pendingIceCandidates.push(candidate);
-                    console.log("[ICEバッファ] fromhost未定なので一時保存");
-                }
-            }
-        };
+    if (datatype === 'ms') {
+      const [remoteWidth = '1', remoteHeight = '1'] = databody.split(',');
+      const parsedWidth = Number(remoteWidth) || 1;
+      const parsedHeight = Number(remoteHeight) || 1;
+      const widthScale = parsedWidth / Math.max(window.innerWidth, 1);
+      const heightScale = parsedHeight / Math.max(window.innerHeight, 1);
 
-        ws.onerror = (error) => {
-            console.error('WebSocket Error:', error);
-            // エラー発生時の処理を記述
-            alert('WebSocket接続でエラーが発生しました。');
-        };
-
-        // peersend関数
-        window.peersend = function(tohost){
-            console.log(tohost);
-            pc.createOffer()
-            .then(offer => pc.setLocalDescription(offer).then(() => offer)) // 作成したofferをローカルのSDPとして設定
-            .then(offer => {
-                // offerをJSON形式に変換（シグナリングサーバーへ送信する代わりにコンソールに出力）
-                const offerData = {
-                    mtype: 'sdpoffer',
-                    tohost: tohost,
-                    body: JSON.stringify(offer)
-                };
-                // offerをシグナリングサーバーに送信
-                ws.send(JSON.stringify(offerData));
-                console.log("[SDP Offer送信]", JSON.stringify(offerData));
-            })
-            .catch(error => console.error("Offer作成エラー:", error));
-        }
-
-
-
-
-    //実際に送信する関数
-
-    window.SendRtcMBtn = function(btype){
-        const sendbtn = "mb" + btype;
-        if (dataChannel && dataChannel.readyState === "open") {
-            dataChannel.send(sendbtn);
-        } else {
-            console.log("dataChannelがまだ開いていません!");
-        }
-    }
-    window.SendRtcMMove = function(x,y){
-        const sendmove = "mm" + x + "," + y;
-        if (dataChannel && dataChannel.readyState === "open") {
-            dataChannel.send(sendmove);
-        } else {
-            console.log("dataChannelがまだ開いていません!");
-        }
-    }
-    window.SendRtcMPosition = function(x,y){
-        const sendmove = "mp" + x + "," + y;
-        if (dataChannel && dataChannel.readyState === "open") {
-            dataChannel.send(sendmove);
-        } else {
-            console.log("dataChannelがまだ開いていません!");
-        }
-    }
-    window.SendRtcMDrag = function(x,y){
-        const sendmove = "md" + x + "," + y;
-        if (dataChannel && dataChannel.readyState === "open") {
-            dataChannel.send(sendmove);
-        } else {
-            console.log("dataChannelがまだ開いていません!");
-        }
-    }
-    window.SendRtcMScroll = function(x,y){
-        const sendmove = "ms" + x + "," + y;
-        if (dataChannel && dataChannel.readyState === "open") {
-            dataChannel.send(sendmove);
-        } else {
-            console.log("dataChannelがまだ開いていません!");
-        }
-    }
-    window.SendRtcMUp = function(){
-        const sendmove = "mu";
-        if (dataChannel && dataChannel.readyState === "open") {
-            dataChannel.send(sendmove);
-        } else {
-            console.log("dataChannelがまだ開いていません!");
-        }
-    }
-    window.SendRtcKPush = function(key){
-        const sendkey = "kp" + key;
-        if (dataChannel && dataChannel.readyState === "open") {
-            dataChannel.send(sendkey);
-        } else {
-            console.log("dataChannelがまだ開いていません");
-        }
-    }
-    window.SendRtcKDown = function(key){
-        const sendkey = "kd" + key;
-        if (dataChannel && dataChannel.readyState === "open") {
-            dataChannel.send(sendkey);
-        } else {
-            console.log("dataChannelがまだ開いていません");
-        }
-    }
-    window.SendRtcKUp = function(key){
-        const sendkey = "ku" + key;
-        if (dataChannel && dataChannel.readyState === "open") {
-            dataChannel.send(sendkey);
-        } else {
-            console.log("dataChannelがまだ開いていません");
-        }
-    }
-    window.SendRtcCust = function(code){
-        const sendkey = code;
-        if (dataChannel && dataChannel.readyState === "open") {
-            dataChannel.send(sendkey);
-        } else {
-            console.log("dataChannelがまだ開いていません");
-        }
+      window.RCWidth = parsedWidth;
+      window.RCHeight = parsedHeight;
+      window.RCScal = Math.max(widthScale, heightScale);
+      return;
     }
 
+    if (datatype === 'ca') {
+      window.pccode = databody;
+      const storedKey = localStorage.getItem(databody);
 
-    //ページ移管
-    //changepage('c_b_trackpad')
-    //こんな感じで呼び出す
-    window.changepage = async function(topage){
-        try {
-            // HTML
-            const res = await fetch("./" + topage +"/index.html");
-            if (!res.ok) throw new Error('fetch HTML error');
-            const html = await res.text();
-            document.getElementById('bodybox').innerHTML = html;
-        } catch (e) {
-            console.error("html関連エラー: " + e);
+      if (!storedKey) {
+        await window.changepage('c_certification');
+        return;
+      }
+
+      try {
+        const secretKey = base64ToUint8Array(storedKey.trim());
+        if (secretKey.length !== 32) {
+          throw new Error('秘密鍵の長さが不正です');
         }
 
-        try {
-            // CSS
-            const res = await fetch("./" + topage +"/index.css");
-            const css = await res.text();
-            const css_f = "<style>" + css + "</style>";
-            document.getElementById('bodybox').innerHTML += css_f;
-        } catch (e) {
-            console.error("css無しorエラー: " + e);
-        }
+        const signature = await ed.signAsync(new TextEncoder().encode(databody), secretKey);
+        dataChannel.send('cb' + uint8ArrayToBase64(signature));
+        await window.changepage('c_menu');
+      } catch (error) {
+        console.error('署名に失敗しました', error);
+        await window.changepage('c_certification');
+      }
+      return;
+    }
 
-        try {
-            // JS
-            const module = await import(`./${topage}/index.js?${Date.now()}`);
-        } catch (e) {
-            console.error("jsモジュールエラー: " + e);
-        }
+    if (datatype === 'cb') {
+      await window.changepage('c_certification');
+    }
+  };
 
-        // location.hash に保存
-        location.hash = topage;
-    };
+  pc.onicecandidate = event => {
+    if (!event.candidate) {
+      return;
+    }
 
-    // リロード時にハッシュから復元
-    window.addEventListener("load", () => {
-        location.hash = "";  // ハッシュを消す
-        window.changepage("c_home");  // ここをトップページのIDに変更
+    const candidate = event.candidate;
+    if (!currentHostId) {
+      pendingIceCandidates.push(candidate);
+      return;
+    }
+
+    sendSignal({
+      mtype: 'ice',
+      tohost: currentHostId,
+      body: candidate,
     });
+  };
 
-    // 戻る/進む対応
-    window.addEventListener("hashchange", () => {
-        if (location.hash) {
-            const page = location.hash.substring(1);
-            window.changepage(page);
-        }
-    });
-
-
-    window.viewform = function(a){
-        window.open(a);
+  pc.ondatachannel = event => {
+    if (!event.channel) {
+      return;
     }
+  };
+
+  return pc;
+}
+
+function resetPeerConnection() {
+  try {
+    if (pc) {
+      pc.close();
+    }
+  } catch (error) {
+    console.debug('PeerConnection の close に失敗しました', error);
+  }
+
+  pc = null;
+  dataChannel = null;
+  window.dataChannel = null;
+  currentHostId = null;
+  pendingIceCandidates = [];
+}
+
+function sendSignal(payload) {
+  if (!ws || ws.readyState !== WebSocket.OPEN) {
+    pendingSignalMessages.push(payload);
+    console.warn('シグナリングサーバーに接続していません。送信を保留しました');
+    return;
+  }
+  ws.send(JSON.stringify(payload));
+}
+
+function flushPendingSignals() {
+  if (!ws || ws.readyState !== WebSocket.OPEN || pendingSignalMessages.length === 0) {
+    return;
+  }
+
+  const queue = pendingSignalMessages;
+  pendingSignalMessages = [];
+  for (const payload of queue) {
+    ws.send(JSON.stringify(payload));
+  }
+}
+
+function flushPendingIceCandidates() {
+  if (!currentHostId || pendingIceCandidates.length === 0) {
+    return;
+  }
+
+  const queue = pendingIceCandidates;
+  pendingIceCandidates = [];
+  for (const candidate of queue) {
+    sendSignal({
+      mtype: 'ice',
+      tohost: currentHostId,
+      body: candidate,
+    });
+  }
+}
+
+function getDynamicStyleElement() {
+  let style = document.getElementById(DYNAMIC_STYLE_ID);
+  if (!style) {
+    style = document.createElement('style');
+    style.id = DYNAMIC_STYLE_ID;
+    document.head.appendChild(style);
+  }
+  return style;
+}
+
+function renderHostList(hostIds) {
+  const container = document.getElementById('a_codes');
+  if (!container) {
+    return;
+  }
+
+  container.innerHTML = '';
+
+  if (hostIds.length === 0) {
+    const empty = document.createElement('p');
+    empty.className = 'empty_state';
+    empty.textContent = '接続できる PC がまだ見つかっていません。';
+    container.appendChild(empty);
+    return;
+  }
+
+  for (const id of hostIds) {
+    const button = document.createElement('button');
+    button.className = 'a_card';
+    button.type = 'button';
+    button.addEventListener('click', () => window.peersend(id));
+
+    const heading = document.createElement('h2');
+    heading.textContent = id;
+    button.appendChild(heading);
+    container.appendChild(button);
+  }
+}
+
+function refreshInstallButton() {
+  const button = document.getElementById('installBtn');
+  if (!button) {
+    return;
+  }
+  button.hidden = !deferredPrompt;
+}
+
+function clearReconnectTimer() {
+  if (reconnectTimer) {
+    clearTimeout(reconnectTimer);
+    reconnectTimer = null;
+  }
+}
+
+function scheduleReconnect() {
+  if (!shouldReconnect) {
+    return;
+  }
+
+  clearReconnectTimer();
+  const delay = Math.min(1000 * (2 ** reconnectAttempt), 15000);
+  reconnectAttempt += 1;
+  signalConnectionState = `再接続中... (${Math.round(delay / 1000)} 秒後)`;
+  updateConnectionStatusUi();
+  reconnectTimer = setTimeout(() => {
+    connectSignalSocket();
+  }, delay);
+}
+
+async function loadPageAssets(topage) {
+  const box = getBodyBox();
+  if (!box) {
+    throw new Error('bodybox が見つかりません');
+  }
+
+  const htmlResponse = await fetch(`./${topage}/index.html`);
+  if (!htmlResponse.ok) {
+    throw new Error(`HTML の読み込みに失敗しました: ${topage}`);
+  }
+  box.innerHTML = await htmlResponse.text();
+
+  const cssResponse = await fetch(`./${topage}/index.css`);
+  if (cssResponse.ok) {
+    getDynamicStyleElement().textContent = await cssResponse.text();
+  } else {
+    getDynamicStyleElement().textContent = '';
+  }
+
+  try {
+    await import(`./${topage}/index.js?ts=${Date.now()}`);
+  } catch (error) {
+    console.debug(`JS モジュールの読み込みをスキップしました: ${topage}`, error);
+  }
+
+  updateConnectionStatusUi();
+  refreshInstallButton();
+}
+
+async function syncPageHash(topage) {
+  if (location.hash !== `#${topage}`) {
+    location.hash = topage;
+  }
+}
+
+window.changepage = async function changepage(topage, options = {}) {
+  currentPage = topage;
+  await loadPageAssets(topage);
+  if (options.syncHash !== false) {
+    await syncPageHash(topage);
+  }
+};
+
+window.viewform = function viewform(url) {
+  window.open(url, '_blank', 'noopener,noreferrer');
+};
+
+window.fullscreen = async function fullscreen() {
+  try {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen();
+    }
+  } catch (error) {
+    console.warn('フルスクリーン化に失敗しました', error);
+  }
+};
+
+function sendRtc(prefix, value) {
+  if (dataChannel && dataChannel.readyState === 'open') {
+    dataChannel.send(prefix + value);
+    return;
+  }
+  console.warn('データチャネルがまだ開いていません');
+}
+
+window.SendRtcMBtn = function SendRtcMBtn(button) {
+  sendRtc('mb', button);
+};
+
+window.SendRtcMMove = function SendRtcMMove(x, y) {
+  sendRtc('mm', `${x},${y}`);
+};
+
+window.SendRtcMPosition = function SendRtcMPosition(x, y) {
+  sendRtc('mp', `${x},${y}`);
+};
+
+window.SendRtcMDrag = function SendRtcMDrag(x, y) {
+  sendRtc('md', `${x},${y}`);
+};
+
+window.SendRtcMScroll = function SendRtcMScroll(x, y) {
+  sendRtc('ms', `${x},${y}`);
+};
+
+window.SendRtcMUp = function SendRtcMUp() {
+  sendRtc('mu', '');
+};
+
+window.SendRtcKPush = function SendRtcKPush(key) {
+  sendRtc('kp', key);
+};
+
+window.SendRtcKDown = function SendRtcKDown(key) {
+  sendRtc('kd', key);
+};
+
+window.SendRtcKUp = function SendRtcKUp(key) {
+  sendRtc('ku', key);
+};
+
+window.SendRtcCust = function SendRtcCust(code) {
+  sendRtc('', code);
+};
+
+window.installPwa = async function installPwa() {
+  if (!deferredPrompt) {
+    return;
+  }
+  deferredPrompt.prompt();
+  await deferredPrompt.userChoice;
+  deferredPrompt = null;
+
+  const button = document.getElementById('installBtn');
+  if (button) {
+    button.hidden = true;
+  }
+};
+
+function setupInstallPrompt() {
+  window.addEventListener('beforeinstallprompt', event => {
+    event.preventDefault();
+    deferredPrompt = event;
+    refreshInstallButton();
+  });
+}
+
+function connectSignalSocket() {
+  clearReconnectTimer();
+
+  if (ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)) {
+    return;
+  }
+
+  const server = getSignalServer();
+  signalConnectionState = `接続中: ${server}`;
+  updateConnectionStatusUi();
+
+  ws = new WebSocket(server);
+
+  ws.addEventListener('open', () => {
+    reconnectAttempt = 0;
+    ws.send('client');
+    ws.send('hostview');
+    signalConnectionState = `接続済み: ${server}`;
+    updateConnectionStatusUi();
+    flushPendingSignals();
+  });
+
+  ws.addEventListener('message', async event => {
+    let message;
+    try {
+      message = JSON.parse(event.data);
+    } catch (error) {
+      console.warn('シグナリングメッセージの解析に失敗しました', error);
+      return;
+    }
+
+    if (message.mtype === 'hosts') {
+      const hostIds = Array.isArray(message.body)
+        ? message.body
+        : JSON.parse(message.body || '[]');
+      renderHostList(hostIds);
+      return;
+    }
+
+    if (message.mtype === 'sdp') {
+      currentHostId = message.fromhost;
+      const connection = ensurePeerConnection();
+
+      try {
+        await connection.setRemoteDescription(new RTCSessionDescription(message.body));
+        flushPendingIceCandidates();
+      } catch (error) {
+        console.error('SDP の設定に失敗しました', error);
+      }
+      return;
+    }
+
+    if (message.mtype === 'ice') {
+      try {
+        if (pc?.remoteDescription) {
+          await pc.addIceCandidate(new RTCIceCandidate(message.body));
+        } else {
+          pendingIceCandidates.push(message.body);
+        }
+      } catch (error) {
+        console.error('ICE 候補の追加に失敗しました', error);
+      }
+    }
+  });
+
+  ws.addEventListener('error', error => {
+    console.error('WebSocket エラー', error);
+    signalConnectionState = '接続エラー';
+    updateConnectionStatusUi();
+  });
+
+  ws.addEventListener('close', () => {
+    console.warn('シグナリングサーバーとの接続が切れました');
+    scheduleReconnect();
+  });
+}
+
+function setupLocationSync() {
+  window.addEventListener('hashchange', () => {
+    const page = location.hash ? location.hash.slice(1) : 'c_home';
+    if (page !== currentPage) {
+      window.changepage(page, { syncHash: false });
+    }
+  });
+
+  window.addEventListener('load', async () => {
+    const initialPage = location.hash ? location.hash.slice(1) : 'c_home';
+    await window.changepage(initialPage, { syncHash: false });
+  });
+}
+
+window.peersend = async function peersend(tohost) {
+  const connection = ensurePeerConnection();
+  currentHostId = tohost;
+
+  try {
+    const offer = await connection.createOffer();
+    await connection.setLocalDescription(offer);
+    sendSignal({
+      mtype: 'sdpoffer',
+      tohost,
+      body: JSON.stringify(offer),
+    });
+    flushPendingIceCandidates();
+  } catch (error) {
+    console.error('Offer の作成に失敗しました', error);
+  }
+};
+
+setupInstallPrompt();
+setupSignalSocket();
+setupLocationSync();
+
+window.addEventListener('beforeunload', () => {
+  shouldReconnect = false;
+  clearReconnectTimer();
+  if (ws && ws.readyState === WebSocket.OPEN) {
+    ws.close();
+  }
+});
